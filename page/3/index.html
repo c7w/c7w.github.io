@@ -21,7 +21,7 @@
 <meta name="twitter:card" content="summary">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css,gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css?v=233" crossorigin>
   
-  <link rel="stylesheet" href="/css/style.css?v=1623070177027">
+  <link rel="stylesheet" href="/css/style.css?v=1623070865403">
 <meta name="generator" content="Hexo 5.2.0"></head>
 
 <body class="mdui-drawer-body-left">
@@ -102,7 +102,7 @@
   <div class="nexmoe-widget-wrap">
     <h3 class="nexmoe-widget-title">文章归档</h3>
     <div class="nexmoe-widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/">2020</a><span class="archive-list-count">13</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/">2020</a><span class="archive-list-count">11</span></li></ul>
     </div>
   </div>
 
@@ -128,6 +128,95 @@
   <div id="nexmoe-content">
     <div class="nexmoe-primary">
         <section class="nexmoe-posts">
+    
+    <div class="nexmoe-post">
+        <a href="/2020/inverse-element/">
+            
+                <div class="nexmoe-post-cover mdui-ripple" style="padding-bottom: 60.67415730337079%;"> 
+                    <img data-src="https://s3.ax1x.com/2020/12/05/DL3cFO.jpg" data-sizes="auto" alt="同余 逆元 费马小定理" class="lazyload">
+                    <h1>同余 逆元 费马小定理</h1>
+                </div>
+            
+        </a>
+
+        <div class="nexmoe-post-meta nexmoe-rainbow">
+            <a><i class="nexmoefont icon-calendar-fill"></i>2020年12月02日</a>
+            <a><i class="nexmoefont icon-areachart"></i>231 字</a>
+            <a><i class="nexmoefont icon-time-circle-fill"></i>大概 1 分钟</a>
+        </div>
+
+        <article>
+            
+                <p>　　　如果会数学就好了　　　　</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>菜鸡不会打【<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P7108?contestId=13515">P7108</a>】，来补数学知识</p>
+<h2 id="同余"><a href="#同余" class="headerlink" title="同余"></a>同余</h2><p>​        给定一个正整数$m$，如果两个整数$a$和$b$满足$a-b$能够被$m$整除，即$(a-b)/m$得到一个整数，那么就称整数$a$与$b$对模$m$同余，记作<script type="math/tex">a≡b(mod m)</script>。</p>
+<p>​        对模$m$同余是整数的一个<strong>等价关系</strong>。</p>
+<h2 id="费马小定理"><a href="#费马小定理" class="headerlink" title="费马小定理"></a>费马小定理</h2><p>​        如果$p$是一个质数，而整数$a$不是$p$的倍数，则有<script type="math/tex">a^{p-1}≡1（mod p）</script>。</p>
+<h2 id="逆元"><a href="#逆元" class="headerlink" title="逆元"></a>逆元</h2><script type="math/tex; mode=display">
+1\%p=a^{p-1}\%p \\
+=> \frac 1 a \% p = a^{p-2}\%p</script><p>​        因此，在计算$\frac{b^h-1}{b-1}$时，我们可以将其转化成$(b^h-1)*inverse(b-1)$计算。</p>
+<h2 id="最后有用的代码"><a href="#最后有用的代码" class="headerlink" title="最后有用的代码"></a>最后有用的代码</h2><pre><code class="lang-c++">long long invEl(int x)
+&#123;
+    return qpow(x, M - 2, M);
+&#125;
+</code></pre>
+<p>【黑人问号脸.jpeg】</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/kongbursi-2292702937/p/10582258.html">https://www.cnblogs.com/kongbursi-2292702937/p/10582258.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E8%B4%B9%E9%A9%AC%E5%B0%8F%E5%AE%9A%E7%90%86/4776158?fr=aladdin">https://baike.baidu.com/item/%E8%B4%B9%E9%A9%AC%E5%B0%8F%E5%AE%9A%E7%90%86/4776158?fr=aladdin</a></li>
+</ul>
+
+            
+        </article>
+    </div>
+    
+    <div class="nexmoe-post">
+        <a href="/2020/hash-table/">
+            
+                <div class="nexmoe-post-cover mdui-ripple" style="padding-bottom: NaN%;"> 
+                    <img data-src="https://s3.ax1x.com/2020/11/25/DUNGIx.png" data-sizes="auto" alt="Hash Table（散列表）" class="lazyload">
+                    <h1>Hash Table（散列表）</h1>
+                </div>
+            
+        </a>
+
+        <div class="nexmoe-post-meta nexmoe-rainbow">
+            <a><i class="nexmoefont icon-calendar-fill"></i>2020年11月25日</a>
+            <a><i class="nexmoefont icon-areachart"></i>395 字</a>
+            <a><i class="nexmoefont icon-time-circle-fill"></i>大概 1 分钟</a>
+        </div>
+
+        <article>
+            
+                <p>　　散列表的相关概念和内容　　</p>
+<p>​        <strong>散列表</strong>（<strong>Hash table</strong>，也叫<strong>哈希表</strong>），是根据键（Key）而直接访问在内存储存位置的数据结构。</p>
+<p>​        也就是说，它通过计算一个关于键值的函数，将所需查询的数据映射到表中一个位置来访问记录，这加快了查找速度。</p>
+<p>​        这个映射函数称做<strong>散列函数</strong>，存放记录的数组称做<strong>散列表</strong>。</p>
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><ul>
+<li>关键字为$k$的值存储在$f(k)$的存储位置中，称映射$f$为散列函数，按照这个思想建立的表称为<strong>散列表</strong>。</li>
+<li>对不同的关键字可能得到同一散列地址，即$k_1 \neq k_2$，而$f(k_1) = f(k_2)$，这种现象称为<strong>冲突</strong>（Collision）。具有相同函数值的关键字对该散列函数来说称做<strong>同义词</strong>。</li>
+<li>若对于关键字集合中的任一个关键字，经散列函数映象到地址集合中任何一个地址的概率是相等的，则称此类散列函数为<strong>均匀散列函数</strong>，这就使关键字经过散列函数得到一个“随机的地址”，从而减少冲突。</li>
+</ul>
+<h2 id="构造散列函数的方法"><a href="#构造散列函数的方法" class="headerlink" title="构造散列函数的方法"></a>构造散列函数的方法</h2><p>​        若采用求余的方法，采用质数可以在一定程度上解决冲突问题。</p>
+<h2 id="处理冲突的方法"><a href="#处理冲突的方法" class="headerlink" title="处理冲突的方法"></a>处理冲突的方法</h2><ul>
+<li>开放定址法</li>
+<li>避免聚集：<ul>
+<li>单独链表法</li>
+<li>再散列</li>
+</ul>
+</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%93%88%E5%B8%8C%E8%A1%A8">https://zh.wikipedia.org/wiki/%E5%93%88%E5%B8%8C%E8%A1%A8</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/zmxiangde_88/article/details/8025541">https://blog.csdn.net/zmxiangde_88/article/details/8025541</a></p>
+</li>
+<li>Computer Science: An Overview, § 9.5 Traditional File Structures.</li>
+</ul>
+
+            
+        </article>
+    </div>
     
     <div class="nexmoe-post">
         <a href="/2020/ds-heap/">
@@ -419,286 +508,6 @@ I_{n} &=\int \tan ^{n} x d x \\
         </article>
     </div>
     
-    <div class="nexmoe-post">
-        <a href="/2020/hello-world/">
-            
-                <div class="nexmoe-post-cover mdui-ripple" style="padding-bottom: NaN%;"> 
-                    <img data-src="https://s1.ax1x.com/2020/10/21/BPJPu8.jpg" data-sizes="auto" alt="Hello, World." class="lazyload">
-                    <h1>Hello, World.</h1>
-                </div>
-            
-        </a>
-
-        <div class="nexmoe-post-meta nexmoe-rainbow">
-            <a><i class="nexmoefont icon-calendar-fill"></i>2020年11月20日</a>
-            <a><i class="nexmoefont icon-areachart"></i>134 字</a>
-            <a><i class="nexmoefont icon-time-circle-fill"></i>大概 1 分钟</a>
-        </div>
-
-        <article>
-            
-                <p>没钱结款只得把自己博客搬家的屑</p>
-<h2 id="c7w-的破站-ver-2-0"><a href="#c7w-的破站-ver-2-0" class="headerlink" title="c7w 的破站 ver 2.0"></a>c7w 的破站 ver 2.0</h2><p>​        之前用 WordPress 搭的小站快要到期了，现在也不好找免费的虚拟主机薅羊毛，遂借用 github.io + Hexo 搭建本“静态博客”，来记录今后的点滴。</p>
-<p><s>         azaz，我打点滴第一候选项是垫底，bksw</s></p>
-<p>​        然后强行安利了贵班的文艺委员也用上了这种方法建的博客，甚至还组建了班级的github organisation.</p>
-<p>​    等有空了就写博文，咕咕咕</p>
-
-            
-        </article>
-    </div>
-    
-    <div class="nexmoe-post">
-        <a href="/2020/oop-06/">
-            
-                <div class="nexmoe-post-cover mdui-ripple" style="padding-bottom: NaN%;"> 
-                    <img data-src="https://z3.ax1x.com/2021/06/07/204701.png" data-sizes="auto" alt="OOP 课程笔记 Week 06 引用与复制" class="lazyload">
-                    <h1>OOP 课程笔记 Week 06 引用与复制</h1>
-                </div>
-            
-        </a>
-
-        <div class="nexmoe-post-meta nexmoe-rainbow">
-            <a><i class="nexmoefont icon-calendar-fill"></i>2020年03月29日</a>
-            <a><i class="nexmoefont icon-areachart"></i>1.6k 字</a>
-            <a><i class="nexmoefont icon-time-circle-fill"></i>大概 7 分钟</a>
-        </div>
-
-        <article>
-            
-                <h2 id="§-6-引用与复制"><a href="#§-6-引用与复制" class="headerlink" title="§ 6 引用与复制"></a>§ 6 引用与复制</h2><h3 id="§-6-0-Overview"><a href="#§-6-0-Overview" class="headerlink" title="§ 6.0 Overview"></a>§ 6.0 Overview</h3><ul>
-<li>6.1 常量引用</li>
-<li>6.2 拷贝构造函数</li>
-<li>6.3 右值引用</li>
-<li>6.4 移动构造函数</li>
-<li>6.5 赋值运算符</li>
-<li>6.6 类型转换</li>
-</ul>
-<h3 id="§-6-1-常量引用"><a href="#§-6-1-常量引用" class="headerlink" title="§ 6.1 常量引用"></a>§ 6.1 常量引用</h3><ul>
-<li>最小特权原则：给函数足够的权限去完成相应的任务，但不要给予他多余的权限。<ul>
-<li>例如函数<code>void add(int&amp; a, int&amp; b)</code>，如果将参数类型定义为<code>int&amp;</code>，则给予该函数在函数体内修改a和b的值的权限</li>
-<li>如果我们不想给予函数修改权限，则可以在参数中使用常量/常量引用</li>
-<li><code>void add(const int&amp; a, const int&amp; b)</code></li>
-<li>此时函数中仅能读取a和b的值，无法对a, b进行任何修改操作。</li>
-</ul>
-</li>
-</ul>
-<h3 id="§-6-2-拷贝构造函数"><a href="#§-6-2-拷贝构造函数" class="headerlink" title="§ 6.2 拷贝构造函数"></a>§ 6.2 拷贝构造函数</h3><ul>
-<li>拷贝构造函数是一种特殊的构造函数，它的参数是语言规定的，是同类对象的常量引用</li>
-<li><code>MyClass(const MyClass&amp;) &#123;&#125;</code></li>
-<li>拷贝构造函数被调用的三种常见情况<ul>
-<li>用一个类对象定义另一个新的类对象</li>
-<li>函数调用时以类的对象为形参</li>
-<li>函数返回类对象</li>
-</ul>
-</li>
-</ul>
-<pre><code class="lang-c++">// Example 6.2.1
-
-// a
-Test a; // NO
-Test b(a); //YES
-Test c = a; //YES
-
-// b
-Func(Test a)
-
-// c
-return a;
-</code></pre>
-<ul>
-<li>如果<strong>调用拷贝构造函数</strong>且当前<strong>没有</strong>给类<strong>显式定义</strong>拷贝构造函数，编译器将自动合成“<strong>隐式定义</strong>的拷贝构造函数”，其功能是<strong>调用所有数据成员的拷贝构造函数或拷贝赋值运算符</strong>。</li>
-<li>隐式定义拷贝构造函数在遇到<strong>指针类型</strong>成员时可能会出错,导致多个指针类型的变量指向同一个地址。</li>
-<li>拷贝构造函数的频繁调用会降低程序运行的效率，解决方法：<ul>
-<li>使用引用/常量引用来传参或返回对象</li>
-<li>将拷贝构造函数声明为 <code>private</code> ，或使用 <code>delete</code> 取消拷贝构造函数的隐式合成</li>
-</ul>
-</li>
-</ul>
-<h3 id="§-6-3-右值引用"><a href="#§-6-3-右值引用" class="headerlink" title="§ 6.3 右值引用"></a>§ 6.3 右值引用</h3><ul>
-<li>左值和右值<ul>
-<li>左值：可以取地址、有名字的值。</li>
-<li>右值：不能取地址、没有名字的值; 常见于常值、函数返回值、表达式</li>
-</ul>
-</li>
-</ul>
-<pre><code class="lang-c++">// Example 6.3.1
-int a = 1;
-int b = func();
-int c = a + b;
-// 其中a、b、c为左值，1、func函数返回值、a+b的结果为右值。
-</code></pre>
-<ul>
-<li>右值引用<ul>
-<li>虽然右值无法取地址，但可以被&amp;&amp;引用(右值引用)<ul>
-<li><code>int &amp;&amp;e = a+b;</code></li>
-</ul>
-</li>
-<li>右值引用无法绑定左值<ul>
-<li><code>int &amp;&amp;e = a; //Compile Error</code></li>
-</ul>
-</li>
-<li>例外：常量左值引用能也绑定右值<ul>
-<li><code>const int &amp;e = 3;</code></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="§-6-4-移动构造函数"><a href="#§-6-4-移动构造函数" class="headerlink" title="§ 6.4 移动构造函数"></a>§ 6.4 移动构造函数</h3><ul>
-<li>移动构造函数<ul>
-<li>右值引用可以延续即将销毁变量的生命周期，用于构造函数可以<strong>提升处理效率</strong>，在此过程中尽可能少地进行拷贝。</li>
-<li>使用右值引用作为参数的构造函数叫做移动构造函数。</li>
-</ul>
-</li>
-</ul>
-<pre><code class="lang-c++">// Example 6.4.1
-
-// 拷贝构造函数
-ClassName(const ClassName&amp; VariableName);
-// 移动构造函数
-ClassName(ClassName&amp;&amp; VariableName);
-</code></pre>
-<ul>
-<li>移动构造函数与拷贝构造函数最主要的差别就是类中堆内存是重新开辟并拷贝，还是直接将指针指向那块地址。</li>
-<li>对于一些即将析构的临时类，移动构造函数直接利用了原来临时对象中的堆内存，新的对象无需开辟内存，临时对象无需释放内存，从而大大提高计算效率。</li>
-</ul>
-<pre><code class="lang-c++">// Example 6.4.2
-
-class Test &#123;
-public:
-    int * buf; //// only for demo.
-    Test() &#123;
-        buf = new int[10]; //申请一块内存
-        cout &lt;&lt; &quot;Test(): this-&gt;buf @ &quot; &lt;&lt; hex &lt;&lt; buf &lt;&lt; endl;
-    &#125;
-    ~Test() &#123;
-        cout &lt;&lt; &quot;~Test(): this-&gt;buf @ &quot; &lt;&lt; hex &lt;&lt; buf &lt;&lt; endl;
-        if (buf) delete[] buf;
-    &#125;
-    Test(const Test&amp; t) : buf(new int[10]) &#123;
-        for(int i=0; i&lt;10; i++) 
-            buf[i] = t.buf[i]; //拷贝数据
-        cout &lt;&lt; &quot;Test(const Test&amp;) called. this-&gt;buf @ &quot;
-            &lt;&lt; hex &lt;&lt; buf &lt;&lt; endl;
-    &#125;
-    Test(Test&amp;&amp; t) : buf(t.buf) &#123; //直接复制地址，避免拷贝
-        cout &lt;&lt; &quot;Test(Test&amp;&amp;) called. this-&gt;buf @ &quot;
-            &lt;&lt; hex &lt;&lt; buf &lt;&lt; endl;
-        t.buf = nullptr; //将t.buf改为nullptr，使其不再指向原来内存区域
-    &#125;
-&#125;;
-
-Test GetTemp() &#123;
-    Test tmp;
-    cout &lt;&lt; &quot;GetTemp(): tmp.buf @ &quot;
-        &lt;&lt; hex &lt;&lt; tmp.buf &lt;&lt; endl;
-    return tmp;
-&#125;
-
-void fun(Test t) &#123;
-    cout &lt;&lt; &quot;fun(Test t): t.buf @ &quot;
-        &lt;&lt; hex &lt;&lt; t.buf &lt;&lt; endl;
-&#125;
-
-int main() &#123;
-    Test a = GetTemp();
-    cout &lt;&lt; &quot;main() : a.buf @ &quot; &lt;&lt; hex &lt;&lt; a.buf &lt;&lt; endl;
-    fun(a);
-    return 0;
-&#125;
-
-// g++ test.cpp --std=c++11 -fno-elide-constructors -o test
-</code></pre>
-<ul>
-<li>移动语义<ul>
-<li><code>std::move</code> 函数<ul>
-<li>输入：左值（包括变量等，该左值一般不再使用）</li>
-<li>返回值：该左值对应的右值</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="§-6-5-赋值运算符"><a href="#§-6-5-赋值运算符" class="headerlink" title="§ 6.5 赋值运算符"></a>§ 6.5 赋值运算符</h3><ul>
-<li>拷贝复制运算符</li>
-</ul>
-<pre><code class="lang-c++">// Example 6.5.1
-
-// 区分
-ClassName a;
-ClassName b;
-a = b;
-
-ClassName a = b;
-
-// 前者调用
-ClassName&amp; operator= (const ClassName&amp; right) &#123;
-   if (this != &amp;right) &#123;// 避免自己赋值给自己
-        // 将right对象中的内容拷贝到当前对象中...
-    &#125;
-   return *this;
-&#125;
-</code></pre>
-<ul>
-<li>移动赋值运算符</li>
-</ul>
-<pre><code class="lang-c++">// Example 6.5.2
-Test&amp; operator= (Test&amp;&amp; right) &#123;
-    if (this == &amp;right)  cout &lt;&lt; &quot;same obj!\n&quot;;
-    else &#123;    
-        this-&gt;buf = right.buf;  //直接赋值地址
-        right.buf = nullptr;
-    cout &lt;&lt; &quot;operator=(Test&amp;&amp;) called.\n&quot;;
-&#125;
-    return *this;
-&#125;
-</code></pre>
-<h3 id="§-6-6-类型转换"><a href="#§-6-6-类型转换" class="headerlink" title="§ 6.6 类型转换"></a>§ 6.6 类型转换</h3><ol>
-<li>在源类中定义<strong>目标类型转换运算符</strong></li>
-</ol>
-<pre><code class="lang-c++">// Example 6.6.1
-#include &lt;iostream&gt;
-using namespace std;
-
-
-class Dst &#123; //目标类Destination
-public:
-  Dst() &#123; cout &lt;&lt; &quot;Dst::Dst()&quot; &lt;&lt; endl; &#125;
-&#125;;
-
-
-
-class Src &#123; //源类Source
-public:
-  Src() &#123; cout &lt;&lt; &quot;Src::Src()&quot; &lt;&lt; endl; &#125;
-  operator Dst() const &#123; 
-    cout &lt;&lt; &quot;Src::operator Dst() called&quot; &lt;&lt; endl;
-    return Dst(); 
-  &#125;
-&#125;;
-</code></pre>
-<ol>
-<li><p>在目标类中定义“源类对象作参数的构造函数”</p>
-<p>```c++<br>// Example 6.6.2</p>
-<h1 id="include"><a href="#include" class="headerlink" title="include "></a>include <iostream></h1><p>using namespace std;</p>
-</li>
-</ol>
-<p>class Src;    // 前置类型声明，因为在Dst中要用到Src类<br>class Dst {<br>public:<br>  Dst() { cout &lt;&lt; “Dst::Dst()” &lt;&lt; endl; }<br>  Dst(const Src&amp; s) {<br>    cout &lt;&lt; “Dst::Dst(const Src&amp;)” &lt;&lt; endl;<br>  }<br>};</p>
-<p>class Src {<br>public:<br>  Src() { cout &lt;&lt; “Src::Src()” &lt;&lt; endl; }<br>};<br> ```</p>
-<ul>
-<li><p>注意：两种自动类型转换的方法不能同时使用，使用时请任选其中一种。</p>
-</li>
-<li><p>禁止自动类型转换</p>
-<ul>
-<li>如果用 <code>explicit</code> 修饰类型转换运算符或类型转换构造函数，则相应的类型转换必须显式地进行</li>
-</ul>
-</li>
-</ul>
-
-            
-        </article>
-    </div>
-    
 </section>
 
     <nav class="nexmoe-page-nav">
@@ -717,7 +526,7 @@ public:
 
 
 <script src="https://cdn.jsdelivr.net/gh/xtaodada/xtaodada.github.io@0.0.2/copy.js"></script>
- <script src="/js/app.js?v=1623070177029"></script>
+ <script src="/js/app.js?v=1623070865405"></script>
 
   
 
