@@ -1,18 +1,26 @@
 <!DOCTYPE html>
-
 <html lang="zh">
-
 <head>
-  
-  <title>OOP 课程笔记 Week 06 引用与复制 - c7w 的破站 v2.0</title>
   <meta charset="UTF-8">
-  <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
-  
-  
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
 
-  <link rel="shortcut icon" href="/favicon.ico" type="image/png" />
-  <meta name="description" content="§ 6 引用与复制§ 6.0 Overview 6.1 常量引用 6.2 拷贝构造函数 6.3 右值引用 6.4 移动构造函数 6.5 赋值运算符 6.6 类型转换  § 6.1 常量引用 最小特权原则：给函数足够的权限去完成相应的任务，但不要给予他多余的权限。 例如函数void add(int&amp; a, int&amp; b)，如果将参数类型定义为int&amp;，则给予该函数在函数体内修">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/avatar.jpg">
+  <link rel="mask-icon" href="/images/avatar.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"cc7w.cf","root":"/","images":"/images","scheme":"Gemini","version":"8.5.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="§ 6 引用与复制§ 6.0 Overview 6.1 常量引用 6.2 拷贝构造函数 6.3 右值引用 6.4 移动构造函数 6.5 赋值运算符 6.6 类型转换  § 6.1 常量引用 最小特权原则：给函数足够的权限去完成相应的任务，但不要给予他多余的权限。 例如函数void add(int&amp; a, int&amp; b)，如果将参数类型定义为int&amp;，则给予该函数在函数体内修">
 <meta property="og:type" content="article">
 <meta property="og:title" content="OOP 课程笔记 Week 06 引用与复制">
 <meta property="og:url" content="https://cc7w.cf/2021/oop-06/index.html">
@@ -20,146 +28,211 @@
 <meta property="og:description" content="§ 6 引用与复制§ 6.0 Overview 6.1 常量引用 6.2 拷贝构造函数 6.3 右值引用 6.4 移动构造函数 6.5 赋值运算符 6.6 类型转换  § 6.1 常量引用 最小特权原则：给函数足够的权限去完成相应的任务，但不要给予他多余的权限。 例如函数void add(int&amp; a, int&amp; b)，如果将参数类型定义为int&amp;，则给予该函数在函数体内修">
 <meta property="og:locale">
 <meta property="article:published_time" content="2021-03-28T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-06-07T13:00:55.064Z">
+<meta property="article:modified_time" content="2021-06-18T06:52:11.402Z">
 <meta property="article:author" content="c7w">
 <meta property="article:tag" content="OOP">
 <meta name="twitter:card" content="summary">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css,gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css?v=233" crossorigin>
-  
-  <link rel="stylesheet" href="/css/style.css?v=1623070865350">
-<meta name="generator" content="Hexo 5.2.0"></head>
 
-<body class="mdui-drawer-body-left">
-  
-  <div id="nexmoe-background">
-    <div class="nexmoe-bg" style="background-image: url(https://s3.ax1x.com/2020/12/05/DL3cFO.jpg)"></div>
-    <div class="mdui-appbar mdui-shadow-0">
-      <div class="mdui-toolbar">
-        <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
-        <div class="mdui-toolbar-spacer"></div>
-        <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
-        <a href="/" title="c7w" class="mdui-btn mdui-btn-icon"><img src="https://s3.ax1x.com/2020/12/05/DL3Kzj.png" alt="c7w"></a>
-       </div>
-    </div>
-  </div>
-  <div id="nexmoe-header">
-      <div class="nexmoe-drawer mdui-drawer" id="drawer">
-    <div class="nexmoe-avatar mdui-ripple">
-        <a href="/" title="c7w">
-            <img src="https://s3.ax1x.com/2020/12/05/DL3Kzj.png" alt="c7w" alt="c7w">
-        </a>
-    </div>
-    <div class="nexmoe-count">
-        <div><span>文章</span>13</div>
-        <div><span>标签</span>12</div>
-        <div><span>分类</span>0</div>
-    </div>
-    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
-        
-        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页">
-            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
-            <div class="mdui-list-item-content">
-                回到首页
-            </div>
-        </a>
-        
-        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/friends" title="友情链接">
-            <i class="mdui-list-item-icon nexmoefont icon-ellipsis"></i>
-            <div class="mdui-list-item-content">
-                友情链接
-            </div>
-        </a>
-        
-    </div>
-    <aside id="nexmoe-sidebar">
-  
-  <div class="nexmoe-widget-wrap">
-    <div class="nexmoe-widget nexmoe-search">
-        <form id="search_form" action_e="https://cn.bing.com/search?q=site:cc7w.cf" onsubmit="return search();">
-            <label><input id="search_value" name="q" type="search" placeholder="搜索"></label>
-        </form>
-    </div>
-</div>
-  
-  <div class="nexmoe-widget-wrap">
-    <div class="nexmoe-widget nexmoe-social">
-        <a class="mdui-ripple" href="https://github.com/c7w/" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
-            <i class="nexmoefont icon-github"></i>
-        </a><a class="mdui-ripple" href="https://space.bilibili.com/89009112" target="_blank" mdui-tooltip="{content: '哔哩哔哩'}" style="color: rgb(231, 106, 141);background-color: rgba(231, 106, 141, .15);">
-            <i class="nexmoefont icon-bilibili"></i>
-        </a>
-    </div>
-</div>
-  
+
+<link rel="canonical" href="https://cc7w.cf/2021/oop-06/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh","comments":true,"permalink":"https://cc7w.cf/2021/oop-06/","path":"2021/oop-06/","title":"OOP 课程笔记 Week 06 引用与复制"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>OOP 课程笔记 Week 06 引用与复制 | c7w 的破站 v2.0</title>
   
 
-  
-  
-  <div class="nexmoe-widget-wrap">
-    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
-      <a href="/tags/Calculus/" style="font-size: 10px;">Calculus</a> <a href="/tags/Data-Structure/" style="font-size: 20px;">Data Structure</a> <a href="/tags/Hash-Table/" style="font-size: 10px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 10px;">Heap</a> <a href="/tags/OOP/" style="font-size: 15px;">OOP</a> <a href="/tags/code/" style="font-size: 10px;">code</a> <a href="/tags/dp/" style="font-size: 10px;">dp</a> <a href="/tags/luogu/" style="font-size: 10px;">luogu</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 10px;">数学</a> <a href="/tags/%E6%97%A5%E5%BF%97/" style="font-size: 10px;">日志</a> <a href="/tags/%E8%83%8C%E5%8C%85/" style="font-size: 10px;">背包</a> <a href="/tags/%E9%80%86%E5%85%83/" style="font-size: 10px;">逆元</a>
-    </div>
-    
-  </div>
 
-  
-  
-  <div class="nexmoe-widget-wrap">
-    <h3 class="nexmoe-widget-title">文章归档</h3>
-    <div class="nexmoe-widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/">2020</a><span class="archive-list-count">11</span></li></ul>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
+  <div class="site-meta">
 
-<style>
-.nexmoe-widget .archive-list-count{
-	position : absolute;
-	right: 15px;
-	top:9px;
-	color: #DDD;
-}
-</style>
-
-  
-</aside>
-    <div class="nexmoe-copyright">
-        &copy; 2021 c7w
-        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
-        & <a href="https://github.com/theme-nexmoe/hexo-theme-nexmoe" target="_blank">Nexmoe</a>
-    </div>
-</div><!-- .nexmoe-drawer -->
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">c7w 的破站 v2.0</h1>
+      <i class="logo-line"></i>
+    </a>
   </div>
-  <div id="nexmoe-content">
-    <div class="nexmoe-primary">
-        <div class="nexmoe-post">
-  
-      <div class="nexmoe-post-cover" style="padding-bottom: NaN%;"> 
-          <img data-src="https://z3.ax1x.com/2021/06/07/204701.png" data-sizes="auto" alt="OOP 课程笔记 Week 06 引用与复制" class="lazyload">
-          <h1>OOP 课程笔记 Week 06 引用与复制</h1>
-      </div>
-  
-  
-  <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
-    <a><i class="nexmoefont icon-calendar-fill"></i>2021年03月29日</a>
-    <a><i class="nexmoefont icon-areachart"></i>1.6k 字</a>
-    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 7 分钟</a>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
 </div>
 
-  <div class="nexmoe-post-right">
-    
-      <div class="nexmoe-fixed">
-        <div class="nexmoe-valign">
-            <div class="nexmoe-toc">
-                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%C2%A7-6-%E5%BC%95%E7%94%A8%E4%B8%8E%E5%A4%8D%E5%88%B6"><span class="toc-number">1.</span> <span class="toc-text">§ 6 引用与复制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%C2%A7-6-0-Overview"><span class="toc-number">1.1.</span> <span class="toc-text">§ 6.0 Overview</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%C2%A7-6-1-%E5%B8%B8%E9%87%8F%E5%BC%95%E7%94%A8"><span class="toc-number">1.2.</span> <span class="toc-text">§ 6.1 常量引用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%C2%A7-6-2-%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="toc-number">1.3.</span> <span class="toc-text">§ 6.2 拷贝构造函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%C2%A7-6-3-%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8"><span class="toc-number">1.4.</span> <span class="toc-text">§ 6.3 右值引用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%C2%A7-6-4-%E7%A7%BB%E5%8A%A8%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="toc-number">1.5.</span> <span class="toc-text">§ 6.4 移动构造函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%C2%A7-6-5-%E8%B5%8B%E5%80%BC%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-number">1.6.</span> <span class="toc-text">§ 6.5 赋值运算符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%C2%A7-6-6-%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2"><span class="toc-number">1.7.</span> <span class="toc-text">§ 6.6 类型转换</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#include"><span class="toc-number"></span> <span class="toc-text">include </span></a>
-            </div>
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%C2%A7-6-%E5%BC%95%E7%94%A8%E4%B8%8E%E5%A4%8D%E5%88%B6"><span class="nav-number">1.</span> <span class="nav-text">§ 6 引用与复制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%C2%A7-6-0-Overview"><span class="nav-number">1.1.</span> <span class="nav-text">§ 6.0 Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%C2%A7-6-1-%E5%B8%B8%E9%87%8F%E5%BC%95%E7%94%A8"><span class="nav-number">1.2.</span> <span class="nav-text">§ 6.1 常量引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%C2%A7-6-2-%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="nav-number">1.3.</span> <span class="nav-text">§ 6.2 拷贝构造函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%C2%A7-6-3-%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8"><span class="nav-number">1.4.</span> <span class="nav-text">§ 6.3 右值引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%C2%A7-6-4-%E7%A7%BB%E5%8A%A8%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="nav-number">1.5.</span> <span class="nav-text">§ 6.4 移动构造函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%C2%A7-6-5-%E8%B5%8B%E5%80%BC%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">1.6.</span> <span class="nav-text">§ 6.5 赋值运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%C2%A7-6-6-%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2"><span class="nav-number">1.7.</span> <span class="nav-text">§ 6.6 类型转换</span></a></li></ol></li></ol></div>
         </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">c7w</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
       </div>
-    
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/c7w" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;c7w" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:admin@cc7w.cf" title="E-Mail → mailto:admin@cc7w.cf"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/c7wc7w" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;c7wc7w" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
   </div>
 
-  <article>
-    <h2 id="§-6-引用与复制"><a href="#§-6-引用与复制" class="headerlink" title="§ 6 引用与复制"></a>§ 6 引用与复制</h2><h3 id="§-6-0-Overview"><a href="#§-6-0-Overview" class="headerlink" title="§ 6.0 Overview"></a>§ 6.0 Overview</h3><ul>
+
+
+          </div>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh">
+    <link itemprop="mainEntityOfPage" href="https://cc7w.cf/2021/oop-06/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="c7w">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="c7w 的破站 v2.0">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          OOP 课程笔记 Week 06 引用与复制
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-03-29 00:00:00" itemprop="dateCreated datePublished" datetime="2021-03-29T00:00:00+08:00">2021-03-29</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-06-18 14:52:11" itemprop="dateModified" datetime="2021-06-18T14:52:11+08:00">2021-06-18</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="§-6-引用与复制"><a href="#§-6-引用与复制" class="headerlink" title="§ 6 引用与复制"></a>§ 6 引用与复制</h2><h3 id="§-6-0-Overview"><a href="#§-6-0-Overview" class="headerlink" title="§ 6.0 Overview"></a>§ 6.0 Overview</h3><ul>
 <li>6.1 常量引用</li>
 <li>6.2 拷贝构造函数</li>
 <li>6.3 右值引用</li>
@@ -186,19 +259,18 @@
 </ul>
 </li>
 </ul>
-<pre><code class="lang-c++">// Example 6.2.1
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 6.2.1
 
-// a
-Test a; // NO
-Test b(a); //YES
-Test c = a; //YES
+&#x2F;&#x2F; a
+Test a; &#x2F;&#x2F; NO
+Test b(a); &#x2F;&#x2F;YES
+Test c &#x3D; a; &#x2F;&#x2F;YES
 
-// b
+&#x2F;&#x2F; b
 Func(Test a)
 
-// c
-return a;
-</code></pre>
+&#x2F;&#x2F; c
+return a;</code></pre>
 <ul>
 <li>如果<strong>调用拷贝构造函数</strong>且当前<strong>没有</strong>给类<strong>显式定义</strong>拷贝构造函数，编译器将自动合成“<strong>隐式定义</strong>的拷贝构造函数”，其功能是<strong>调用所有数据成员的拷贝构造函数或拷贝赋值运算符</strong>。</li>
 <li>隐式定义拷贝构造函数在遇到<strong>指针类型</strong>成员时可能会出错,导致多个指针类型的变量指向同一个地址。</li>
@@ -215,12 +287,11 @@ return a;
 </ul>
 </li>
 </ul>
-<pre><code class="lang-c++">// Example 6.3.1
-int a = 1;
-int b = func();
-int c = a + b;
-// 其中a、b、c为左值，1、func函数返回值、a+b的结果为右值。
-</code></pre>
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 6.3.1
+int a &#x3D; 1;
+int b &#x3D; func();
+int c &#x3D; a + b;
+&#x2F;&#x2F; 其中a、b、c为左值，1、func函数返回值、a+b的结果为右值。</code></pre>
 <ul>
 <li>右值引用<ul>
 <li>虽然右值无法取地址，但可以被&amp;&amp;引用(右值引用)<ul>
@@ -245,64 +316,62 @@ int c = a + b;
 </ul>
 </li>
 </ul>
-<pre><code class="lang-c++">// Example 6.4.1
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 6.4.1
 
-// 拷贝构造函数
+&#x2F;&#x2F; 拷贝构造函数
 ClassName(const ClassName&amp; VariableName);
-// 移动构造函数
-ClassName(ClassName&amp;&amp; VariableName);
-</code></pre>
+&#x2F;&#x2F; 移动构造函数
+ClassName(ClassName&amp;&amp; VariableName);</code></pre>
 <ul>
 <li>移动构造函数与拷贝构造函数最主要的差别就是类中堆内存是重新开辟并拷贝，还是直接将指针指向那块地址。</li>
 <li>对于一些即将析构的临时类，移动构造函数直接利用了原来临时对象中的堆内存，新的对象无需开辟内存，临时对象无需释放内存，从而大大提高计算效率。</li>
 </ul>
-<pre><code class="lang-c++">// Example 6.4.2
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 6.4.2
 
 class Test &#123;
 public:
-    int * buf; //// only for demo.
-    Test() &#123;
-        buf = new int[10]; //申请一块内存
-        cout &lt;&lt; &quot;Test(): this-&gt;buf @ &quot; &lt;&lt; hex &lt;&lt; buf &lt;&lt; endl;
-    &#125;
-    ~Test() &#123;
-        cout &lt;&lt; &quot;~Test(): this-&gt;buf @ &quot; &lt;&lt; hex &lt;&lt; buf &lt;&lt; endl;
-        if (buf) delete[] buf;
-    &#125;
-    Test(const Test&amp; t) : buf(new int[10]) &#123;
-        for(int i=0; i&lt;10; i++) 
-            buf[i] = t.buf[i]; //拷贝数据
-        cout &lt;&lt; &quot;Test(const Test&amp;) called. this-&gt;buf @ &quot;
-            &lt;&lt; hex &lt;&lt; buf &lt;&lt; endl;
-    &#125;
-    Test(Test&amp;&amp; t) : buf(t.buf) &#123; //直接复制地址，避免拷贝
-        cout &lt;&lt; &quot;Test(Test&amp;&amp;) called. this-&gt;buf @ &quot;
-            &lt;&lt; hex &lt;&lt; buf &lt;&lt; endl;
-        t.buf = nullptr; //将t.buf改为nullptr，使其不再指向原来内存区域
-    &#125;
+	int * buf; &#x2F;&#x2F;&#x2F;&#x2F; only for demo.
+	Test() &#123;
+		buf &#x3D; new int[10]; &#x2F;&#x2F;申请一块内存
+		cout &lt;&lt; &quot;Test(): this-&gt;buf @ &quot; &lt;&lt; hex &lt;&lt; buf &lt;&lt; endl;
+	&#125;
+	~Test() &#123;
+		cout &lt;&lt; &quot;~Test(): this-&gt;buf @ &quot; &lt;&lt; hex &lt;&lt; buf &lt;&lt; endl;
+		if (buf) delete[] buf;
+	&#125;
+	Test(const Test&amp; t) : buf(new int[10]) &#123;
+		for(int i&#x3D;0; i&lt;10; i++) 
+			buf[i] &#x3D; t.buf[i]; &#x2F;&#x2F;拷贝数据
+		cout &lt;&lt; &quot;Test(const Test&amp;) called. this-&gt;buf @ &quot;
+			&lt;&lt; hex &lt;&lt; buf &lt;&lt; endl;
+	&#125;
+	Test(Test&amp;&amp; t) : buf(t.buf) &#123; &#x2F;&#x2F;直接复制地址，避免拷贝
+		cout &lt;&lt; &quot;Test(Test&amp;&amp;) called. this-&gt;buf @ &quot;
+			&lt;&lt; hex &lt;&lt; buf &lt;&lt; endl;
+		t.buf &#x3D; nullptr; &#x2F;&#x2F;将t.buf改为nullptr，使其不再指向原来内存区域
+	&#125;
 &#125;;
 
 Test GetTemp() &#123;
-    Test tmp;
-    cout &lt;&lt; &quot;GetTemp(): tmp.buf @ &quot;
-        &lt;&lt; hex &lt;&lt; tmp.buf &lt;&lt; endl;
-    return tmp;
+	Test tmp;
+	cout &lt;&lt; &quot;GetTemp(): tmp.buf @ &quot;
+		&lt;&lt; hex &lt;&lt; tmp.buf &lt;&lt; endl;
+	return tmp;
 &#125;
 
 void fun(Test t) &#123;
-    cout &lt;&lt; &quot;fun(Test t): t.buf @ &quot;
-        &lt;&lt; hex &lt;&lt; t.buf &lt;&lt; endl;
+	cout &lt;&lt; &quot;fun(Test t): t.buf @ &quot;
+		&lt;&lt; hex &lt;&lt; t.buf &lt;&lt; endl;
 &#125;
 
 int main() &#123;
-    Test a = GetTemp();
-    cout &lt;&lt; &quot;main() : a.buf @ &quot; &lt;&lt; hex &lt;&lt; a.buf &lt;&lt; endl;
-    fun(a);
-    return 0;
+	Test a &#x3D; GetTemp();
+	cout &lt;&lt; &quot;main() : a.buf @ &quot; &lt;&lt; hex &lt;&lt; a.buf &lt;&lt; endl;
+	fun(a);
+	return 0;
 &#125;
 
-// g++ test.cpp --std=c++11 -fno-elide-constructors -o test
-</code></pre>
+&#x2F;&#x2F; g++ test.cpp --std&#x3D;c++11 -fno-elide-constructors -o test</code></pre>
 <ul>
 <li>移动语义<ul>
 <li><code>std::move</code> 函数<ul>
@@ -316,69 +385,78 @@ int main() &#123;
 <h3 id="§-6-5-赋值运算符"><a href="#§-6-5-赋值运算符" class="headerlink" title="§ 6.5 赋值运算符"></a>§ 6.5 赋值运算符</h3><ul>
 <li>拷贝复制运算符</li>
 </ul>
-<pre><code class="lang-c++">// Example 6.5.1
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 6.5.1
 
-// 区分
+&#x2F;&#x2F; 区分
 ClassName a;
 ClassName b;
-a = b;
+a &#x3D; b;
 
-ClassName a = b;
+ClassName a &#x3D; b;
 
-// 前者调用
-ClassName&amp; operator= (const ClassName&amp; right) &#123;
-   if (this != &amp;right) &#123;// 避免自己赋值给自己
-        // 将right对象中的内容拷贝到当前对象中...
-    &#125;
+&#x2F;&#x2F; 前者调用
+ClassName&amp; operator&#x3D; (const ClassName&amp; right) &#123;
+   if (this !&#x3D; &amp;right) &#123;&#x2F;&#x2F; 避免自己赋值给自己
+		&#x2F;&#x2F; 将right对象中的内容拷贝到当前对象中...
+	&#125;
    return *this;
-&#125;
-</code></pre>
+&#125;</code></pre>
 <ul>
 <li>移动赋值运算符</li>
 </ul>
-<pre><code class="lang-c++">// Example 6.5.2
-Test&amp; operator= (Test&amp;&amp; right) &#123;
-    if (this == &amp;right)  cout &lt;&lt; &quot;same obj!\n&quot;;
-    else &#123;    
-        this-&gt;buf = right.buf;  //直接赋值地址
-        right.buf = nullptr;
-    cout &lt;&lt; &quot;operator=(Test&amp;&amp;) called.\n&quot;;
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 6.5.2
+Test&amp; operator&#x3D; (Test&amp;&amp; right) &#123;
+	if (this &#x3D;&#x3D; &amp;right)  cout &lt;&lt; &quot;same obj!\n&quot;;
+	else &#123;	
+		this-&gt;buf &#x3D; right.buf;  &#x2F;&#x2F;直接赋值地址
+		right.buf &#x3D; nullptr;
+	cout &lt;&lt; &quot;operator&#x3D;(Test&amp;&amp;) called.\n&quot;;
 &#125;
-    return *this;
-&#125;
-</code></pre>
+	return *this;
+&#125;</code></pre>
 <h3 id="§-6-6-类型转换"><a href="#§-6-6-类型转换" class="headerlink" title="§ 6.6 类型转换"></a>§ 6.6 类型转换</h3><ol>
 <li>在源类中定义<strong>目标类型转换运算符</strong></li>
 </ol>
-<pre><code class="lang-c++">// Example 6.6.1
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 6.6.1
 #include &lt;iostream&gt;
 using namespace std;
 
 
-class Dst &#123; //目标类Destination
+class Dst &#123; &#x2F;&#x2F;目标类Destination
 public:
   Dst() &#123; cout &lt;&lt; &quot;Dst::Dst()&quot; &lt;&lt; endl; &#125;
 &#125;;
 
 
 
-class Src &#123; //源类Source
+class Src &#123; &#x2F;&#x2F;源类Source
 public:
   Src() &#123; cout &lt;&lt; &quot;Src::Src()&quot; &lt;&lt; endl; &#125;
   operator Dst() const &#123; 
-    cout &lt;&lt; &quot;Src::operator Dst() called&quot; &lt;&lt; endl;
-    return Dst(); 
+	cout &lt;&lt; &quot;Src::operator Dst() called&quot; &lt;&lt; endl;
+	return Dst(); 
+  &#125;
+&#125;;</code></pre>
+<ol>
+<li>在目标类中定义“源类对象作参数的构造函数”</li>
+</ol>
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 6.6.2
+#include &lt;iostream&gt;
+using namespace std;
+
+class Src;	&#x2F;&#x2F; 前置类型声明，因为在Dst中要用到Src类
+class Dst &#123;
+public:
+  Dst() &#123; cout &lt;&lt; &quot;Dst::Dst()&quot; &lt;&lt; endl; &#125;
+  Dst(const Src&amp; s) &#123; 
+	cout &lt;&lt; &quot;Dst::Dst(const Src&amp;)&quot; &lt;&lt; endl; 
   &#125;
 &#125;;
-</code></pre>
-<ol>
-<li><p>在目标类中定义“源类对象作参数的构造函数”</p>
-<p>```c++<br>// Example 6.6.2</p>
-<h1 id="include"><a href="#include" class="headerlink" title="include "></a>include <iostream></h1><p>using namespace std;</p>
-</li>
-</ol>
-<p>class Src;    // 前置类型声明，因为在Dst中要用到Src类<br>class Dst {<br>public:<br>  Dst() { cout &lt;&lt; “Dst::Dst()” &lt;&lt; endl; }<br>  Dst(const Src&amp; s) {<br>    cout &lt;&lt; “Dst::Dst(const Src&amp;)” &lt;&lt; endl;<br>  }<br>};</p>
-<p>class Src {<br>public:<br>  Src() { cout &lt;&lt; “Src::Src()” &lt;&lt; endl; }<br>};<br> ```</p>
+
+class Src &#123;
+public:
+  Src() &#123; cout &lt;&lt; &quot;Src::Src()&quot; &lt;&lt; endl; &#125;
+&#125;;</code></pre>
 <ul>
 <li><p>注意：两种自动类型转换的方法不能同时使用，使用时请任选其中一种。</p>
 </li>
@@ -389,85 +467,81 @@ public:
 </li>
 </ul>
 
-  </article>
-
-  
-    
-
-  
-  
-  <div class="nexmoe-post-meta nexmoe-rainbow">
-    
-    
-        <a class="nexmoefont icon-tag-fill -none-link" href="/tags/OOP/" rel="tag">OOP</a>
-    
-</div>
-
-  <div class="nexmoe-post-footer">
-    <section class="nexmoe-comment">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css">
-<div id="gitalk"></div>
-<script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script>
-<script type="text/javascript">
-    var gitalk = new Gitalk({
-        clientID: '80b2453b6d5f37ad6225',
-        clientSecret: '43e99fa852795c9a7b3eb924b2558c64b84bbdeb',
-        id: window.location.pathname,
-        repo: 'nexmoe.github.io',
-        owner: 'nexmoe',
-        admin: 'nexmoe'
-    })
-    gitalk.render('gitalk')
-</script>
-</section>
-  </div>
-</div>
     </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/OOP/" rel="tag"><i class="fa fa-tag"></i> OOP</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/oop-05/" rel="prev" title="OOP 课程笔记 Week 05 创建和销毁">
+                  <i class="fa fa-chevron-left"></i> OOP 课程笔记 Week 05 创建和销毁
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/oop-08/" rel="next" title="OOP 课程笔记 Week 08 组合与继承">
+                  OOP 课程笔记 Week 08 组合与继承 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">c7w</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
   </div>
-  <script src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js?v=1"></script>
-<script>
-	hljs.initHighlightingOnLoad();
-</script>
 
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+    </div>
+  </footer>
 
-
-<script src="https://cdn.jsdelivr.net/gh/xtaodada/xtaodada.github.io@0.0.2/copy.js"></script>
- <script src="/js/app.js?v=1623070865354"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
 
   
 
 
 
 
+  
 
-    <!-- baidu Analytics -->
-<script>
-    var _hmt = _hmt || [];
-    (function() {var hm = document.createElement('script');
-    hm.src = 'https://hm.baidu.com/hm.js?6e071d56c527a2a71dfdf686b0f57665';
-    var s = document.getElementsByTagName('script')[0];
-        s.parentNode.insertBefore(hm, s);
-    })();
-</script>
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script> -->
-<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-mml-chtml.js","integrity":"sha256-ncNI9OXOS5Ek4tzVYiOMmN/KKCPZ6V0Cpv2P/zHntiA="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
 </body>
-
 </html>

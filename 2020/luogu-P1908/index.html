@@ -1,23 +1,31 @@
 <!DOCTYPE html>
-
 <html lang="zh">
-
 <head>
-  
-  <title>洛谷 P1908 求逆序对 - c7w 的破站 v2.0</title>
   <meta charset="UTF-8">
-  <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
-  
-  
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
 
-  <link rel="shortcut icon" href="/favicon.ico" type="image/png" />
-  <meta name="description" content="归并排序求逆序对数目#include &lt;iostream&gt; #include &lt;cstdio&gt; using namespace std;  unsigned long long result &#x3D; 0; int a[500001] &#x3D; &amp;#123;0&amp;#125;; int cache[500001] &#x3D; &amp;#123;0&amp;#125;;  void sort(int l, int">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/avatar.jpg">
+  <link rel="mask-icon" href="/images/avatar.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"cc7w.cf","root":"/","images":"/images","scheme":"Gemini","version":"8.5.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="归并排序求逆序对数目#include &lt;iostream&gt; #include &lt;cstdio&gt; using namespace std;  unsigned long long result &#x3D; 0; int a[500001] &#x3D; &amp;#123;0&amp;#125;; int cache[500001] &#x3D; &amp;#123;0&amp;#125;;  void">
 <meta property="og:type" content="article">
 <meta property="og:title" content="洛谷 P1908 求逆序对">
 <meta property="og:url" content="https://cc7w.cf/2020/luogu-P1908/index.html">
 <meta property="og:site_name" content="c7w 的破站 v2.0">
-<meta property="og:description" content="归并排序求逆序对数目#include &lt;iostream&gt; #include &lt;cstdio&gt; using namespace std;  unsigned long long result &#x3D; 0; int a[500001] &#x3D; &amp;#123;0&amp;#125;; int cache[500001] &#x3D; &amp;#123;0&amp;#125;;  void sort(int l, int">
+<meta property="og:description" content="归并排序求逆序对数目#include &lt;iostream&gt; #include &lt;cstdio&gt; using namespace std;  unsigned long long result &#x3D; 0; int a[500001] &#x3D; &amp;#123;0&amp;#125;; int cache[500001] &#x3D; &amp;#123;0&amp;#125;;  void">
 <meta property="og:locale">
 <meta property="article:published_time" content="2020-12-31T06:48:21.000Z">
 <meta property="article:modified_time" content="2020-12-31T06:49:23.172Z">
@@ -25,235 +33,293 @@
 <meta property="article:tag" content="code">
 <meta property="article:tag" content="luogu">
 <meta name="twitter:card" content="summary">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/npm/highlight.js@9.15.8/styles/atom-one-dark.css,gh/nexmoe/nexmoe.github.io@latest/lib/mdui_043tiny/css/mdui.css,gh/nexmoe/nexmoe.github.io@latest/lib/iconfont/iconfont.css,gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css?v=233" crossorigin>
-  
-  <link rel="stylesheet" href="/css/style.css?v=1623070865364">
-<meta name="generator" content="Hexo 5.2.0"></head>
 
-<body class="mdui-drawer-body-left">
-  
-  <div id="nexmoe-background">
-    <div class="nexmoe-bg" style="background-image: url(https://s3.ax1x.com/2020/12/05/DL3cFO.jpg)"></div>
-    <div class="mdui-appbar mdui-shadow-0">
-      <div class="mdui-toolbar">
-        <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon nexmoefont icon-menu"></i></a>
-        <div class="mdui-toolbar-spacer"></div>
-        <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
-        <a href="/" title="c7w" class="mdui-btn mdui-btn-icon"><img src="https://s3.ax1x.com/2020/12/05/DL3Kzj.png" alt="c7w"></a>
-       </div>
-    </div>
-  </div>
-  <div id="nexmoe-header">
-      <div class="nexmoe-drawer mdui-drawer" id="drawer">
-    <div class="nexmoe-avatar mdui-ripple">
-        <a href="/" title="c7w">
-            <img src="https://s3.ax1x.com/2020/12/05/DL3Kzj.png" alt="c7w" alt="c7w">
-        </a>
-    </div>
-    <div class="nexmoe-count">
-        <div><span>文章</span>13</div>
-        <div><span>标签</span>12</div>
-        <div><span>分类</span>0</div>
-    </div>
-    <div class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
-        
-        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页">
-            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
-            <div class="mdui-list-item-content">
-                回到首页
-            </div>
-        </a>
-        
-        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/friends" title="友情链接">
-            <i class="mdui-list-item-icon nexmoefont icon-ellipsis"></i>
-            <div class="mdui-list-item-content">
-                友情链接
-            </div>
-        </a>
-        
-    </div>
-    <aside id="nexmoe-sidebar">
-  
-  <div class="nexmoe-widget-wrap">
-    <div class="nexmoe-widget nexmoe-search">
-        <form id="search_form" action_e="https://cn.bing.com/search?q=site:cc7w.cf" onsubmit="return search();">
-            <label><input id="search_value" name="q" type="search" placeholder="搜索"></label>
-        </form>
-    </div>
-</div>
-  
-  <div class="nexmoe-widget-wrap">
-    <div class="nexmoe-widget nexmoe-social">
-        <a class="mdui-ripple" href="https://github.com/c7w/" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
-            <i class="nexmoefont icon-github"></i>
-        </a><a class="mdui-ripple" href="https://space.bilibili.com/89009112" target="_blank" mdui-tooltip="{content: '哔哩哔哩'}" style="color: rgb(231, 106, 141);background-color: rgba(231, 106, 141, .15);">
-            <i class="nexmoefont icon-bilibili"></i>
-        </a>
-    </div>
-</div>
-  
+
+<link rel="canonical" href="https://cc7w.cf/2020/luogu-P1908/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh","comments":true,"permalink":"https://cc7w.cf/2020/luogu-P1908/","path":"2020/luogu-P1908/","title":"洛谷 P1908 求逆序对"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>洛谷 P1908 求逆序对 | c7w 的破站 v2.0</title>
   
 
-  
-  
-  <div class="nexmoe-widget-wrap">
-    <div id="randomtagcloud" class="nexmoe-widget tagcloud nexmoe-rainbow">
-      <a href="/tags/Calculus/" style="font-size: 10px;">Calculus</a> <a href="/tags/Data-Structure/" style="font-size: 20px;">Data Structure</a> <a href="/tags/Hash-Table/" style="font-size: 10px;">Hash Table</a> <a href="/tags/Heap/" style="font-size: 10px;">Heap</a> <a href="/tags/OOP/" style="font-size: 15px;">OOP</a> <a href="/tags/code/" style="font-size: 10px;">code</a> <a href="/tags/dp/" style="font-size: 10px;">dp</a> <a href="/tags/luogu/" style="font-size: 10px;">luogu</a> <a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 10px;">数学</a> <a href="/tags/%E6%97%A5%E5%BF%97/" style="font-size: 10px;">日志</a> <a href="/tags/%E8%83%8C%E5%8C%85/" style="font-size: 10px;">背包</a> <a href="/tags/%E9%80%86%E5%85%83/" style="font-size: 10px;">逆元</a>
-    </div>
-    
-  </div>
 
-  
-  
-  <div class="nexmoe-widget-wrap">
-    <h3 class="nexmoe-widget-title">文章归档</h3>
-    <div class="nexmoe-widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/">2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/">2020</a><span class="archive-list-count">11</span></li></ul>
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
+  <div class="site-meta">
 
-<style>
-.nexmoe-widget .archive-list-count{
-	position : absolute;
-	right: 15px;
-	top:9px;
-	color: #DDD;
-}
-</style>
-
-  
-</aside>
-    <div class="nexmoe-copyright">
-        &copy; 2021 c7w
-        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
-        & <a href="https://github.com/theme-nexmoe/hexo-theme-nexmoe" target="_blank">Nexmoe</a>
-    </div>
-</div><!-- .nexmoe-drawer -->
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">c7w 的破站 v2.0</h1>
+      <i class="logo-line"></i>
+    </a>
   </div>
-  <div id="nexmoe-content">
-    <div class="nexmoe-primary">
-        <div class="nexmoe-post">
-  
-      <div class="nexmoe-post-cover" style="padding-bottom: 60.67415730337079%;"> 
-          <img data-src="https://s3.ax1x.com/2020/12/05/DL3cFO.jpg" data-sizes="auto" alt="洛谷 P1908 求逆序对" class="lazyload">
-          <h1>洛谷 P1908 求逆序对</h1>
-      </div>
-  
-  
-  <div class="nexmoe-post-meta nexmoe-rainbow" style="margin:10px 0!important;">
-    <a><i class="nexmoefont icon-calendar-fill"></i>2020年12月31日</a>
-    <a><i class="nexmoefont icon-areachart"></i>698 字</a>
-    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 4 分钟</a>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
 </div>
 
-  <div class="nexmoe-post-right">
-    
-      <div class="nexmoe-fixed">
-        <div class="nexmoe-valign">
-            <div class="nexmoe-toc">
-                <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F%E6%B1%82%E9%80%86%E5%BA%8F%E5%AF%B9%E6%95%B0%E7%9B%AE"><span class="toc-number">1.</span> <span class="toc-text">归并排序求逆序对数目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84-%E7%A6%BB%E6%95%A3%E5%8C%96%E6%B1%82%E9%80%86%E5%BA%8F%E5%AF%B9%E6%95%B0%E7%9B%AE"><span class="toc-number">2.</span> <span class="toc-text">树状数组+离散化求逆序对数目</span></a></li></ol>
-            </div>
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F%E6%B1%82%E9%80%86%E5%BA%8F%E5%AF%B9%E6%95%B0%E7%9B%AE"><span class="nav-number">1.</span> <span class="nav-text">归并排序求逆序对数目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84-%E7%A6%BB%E6%95%A3%E5%8C%96%E6%B1%82%E9%80%86%E5%BA%8F%E5%AF%B9%E6%95%B0%E7%9B%AE"><span class="nav-number">2.</span> <span class="nav-text">树状数组+离散化求逆序对数目</span></a></li></ol></div>
         </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">c7w</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
       </div>
-    
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/c7w" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;c7w" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:admin@cc7w.cf" title="E-Mail → mailto:admin@cc7w.cf"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/c7wc7w" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;c7wc7w" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
   </div>
 
-  <article>
-    <h2 id="归并排序求逆序对数目"><a href="#归并排序求逆序对数目" class="headerlink" title="归并排序求逆序对数目"></a>归并排序求逆序对数目</h2><pre><code class="lang-c++">#include &lt;iostream&gt;
+
+
+          </div>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh">
+    <link itemprop="mainEntityOfPage" href="https://cc7w.cf/2020/luogu-P1908/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="c7w">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="c7w 的破站 v2.0">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          洛谷 P1908 求逆序对
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2020-12-31 14:48:21 / Modified: 14:49:23" itemprop="dateCreated datePublished" datetime="2020-12-31T14:48:21+08:00">2020-12-31</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="归并排序求逆序对数目"><a href="#归并排序求逆序对数目" class="headerlink" title="归并排序求逆序对数目"></a>归并排序求逆序对数目</h2><pre class="language-c++" data-language="c++"><code class="language-c++">#include &lt;iostream&gt;
 #include &lt;cstdio&gt;
 using namespace std;
 
-unsigned long long result = 0;
-int a[500001] = &#123;0&#125;;
-int cache[500001] = &#123;0&#125;;
+unsigned long long result &#x3D; 0;
+int a[500001] &#x3D; &#123;0&#125;;
+int cache[500001] &#x3D; &#123;0&#125;;
 
 void sort(int l, int r)&#123;
-    if (r &lt;= l) return;
-    if(r-l==1)&#123;
+    if (r &lt;&#x3D; l) return;
+    if(r-l&#x3D;&#x3D;1)&#123;
         if(a[l]&gt;a[r])&#123;
-            int temp = a[l];
-            a[l] = a[r];
-            a[r] = temp;
+            int temp &#x3D; a[l];
+            a[l] &#x3D; a[r];
+            a[r] &#x3D; temp;
             result++;
         &#125;
         return;
     &#125;
-    int mid = (l + r) / 2;
-    //[l, mid] &amp;&amp; [mid+1, r]
+    int mid &#x3D; (l + r) &#x2F; 2;
+    &#x2F;&#x2F;[l, mid] &amp;&amp; [mid+1, r]
     sort(l, mid);
     sort(mid + 1, r);
-    int len = r - l + 1;
-    int x = l, y = mid + 1;
-    int pos = 0;
-    while(x&lt;=mid &amp;&amp; y&lt;=r)&#123;
-        while (x &lt;= mid &amp;&amp; y &lt;= r &amp;&amp; a[x] &lt;= a[y]) &#123;
+    int len &#x3D; r - l + 1;
+    int x &#x3D; l, y &#x3D; mid + 1;
+    int pos &#x3D; 0;
+    while(x&lt;&#x3D;mid &amp;&amp; y&lt;&#x3D;r)&#123;
+        while (x &lt;&#x3D; mid &amp;&amp; y &lt;&#x3D; r &amp;&amp; a[x] &lt;&#x3D; a[y]) &#123;
             pos++;
-            cache[pos] = a[x];
+            cache[pos] &#x3D; a[x];
             x++;
         &#125;
-        if (x &lt;= mid &amp;&amp; y &lt;= r &amp;&amp; a[x] &gt; a[y])&#123;
+        if (x &lt;&#x3D; mid &amp;&amp; y &lt;&#x3D; r &amp;&amp; a[x] &gt; a[y])&#123;
             pos++;
-            cache[pos] = a[y];
+            cache[pos] &#x3D; a[y];
             y++;
-            result += mid-x+1;
+            result +&#x3D; mid-x+1;
         &#125; 
         if(x&gt;mid)&#123;
-            while(y&lt;=r)&#123;
+            while(y&lt;&#x3D;r)&#123;
                 pos++;
-                cache[pos] = a[y];
+                cache[pos] &#x3D; a[y];
                 y++;
             &#125;
             break;
         &#125;
         if(y&gt;r)&#123;
-            while (x&lt;=mid) &#123;
+            while (x&lt;&#x3D;mid) &#123;
                 pos++;
-                cache[pos] = a[x];
+                cache[pos] &#x3D; a[x];
                 x++;
             &#125;
             break;
         &#125;
     &#125;
-    for (int i = l; i &lt;= r; i++)&#123;
-        a[i] = cache[i - l + 1];
+    for (int i &#x3D; l; i &lt;&#x3D; r; i++)&#123;
+        a[i] &#x3D; cache[i - l + 1];
     &#125;
 &#125;
 
 int main()&#123;
     int n;
     cin &gt;&gt; n;
-    for (int i = 1; i &lt;= n; i++)&#123;
+    for (int i &#x3D; 1; i &lt;&#x3D; n; i++)&#123;
         scanf(&quot;%d&quot;, &amp;a[i]);
     &#125;
     sort(1, n);
     cout &lt;&lt; result;
     return 0;
-&#125;
-</code></pre>
-<h2 id="树状数组-离散化求逆序对数目"><a href="#树状数组-离散化求逆序对数目" class="headerlink" title="树状数组+离散化求逆序对数目"></a>树状数组+离散化求逆序对数目</h2><pre><code class="lang-c++">#include &lt;iostream&gt;
+&#125;</code></pre>
+<h2 id="树状数组-离散化求逆序对数目"><a href="#树状数组-离散化求逆序对数目" class="headerlink" title="树状数组+离散化求逆序对数目"></a>树状数组+离散化求逆序对数目</h2><pre class="language-c++" data-language="c++"><code class="language-c++">#include &lt;iostream&gt;
 #define MAXN 500001
 using namespace std;
 
 int n;
-unsigned long long result = 0;
-int a[MAXN] = &#123;0&#125;;
-int ft[MAXN + 1] = &#123;0&#125;;
+unsigned long long result &#x3D; 0;
+int a[MAXN] &#x3D; &#123;0&#125;;
+int ft[MAXN + 1] &#x3D; &#123;0&#125;;
 
 int lowbit(int x) &#123;
     return x &amp; (-x);
 &#125;
 
 void update(int index, int val) &#123;
-    for (int i = index; i &lt;= n; i = i + lowbit(i)) &#123;
-        ft[i] += val;
+    for (int i &#x3D; index; i &lt;&#x3D; n; i &#x3D; i + lowbit(i)) &#123;
+        ft[i] +&#x3D; val;
     &#125;
 &#125;
 
 int getSum(int index) &#123;
-    int result = 0;
-    for (int k = index; k &gt; 0; k -= lowbit(k)) &#123;
-        result += ft[k];
+    int result &#x3D; 0;
+    for (int k &#x3D; index; k &gt; 0; k -&#x3D; lowbit(k)) &#123;
+        result +&#x3D; ft[k];
     &#125;
     return result;
 &#125;
@@ -263,13 +329,13 @@ class entry &#123;
      int id, val, rank;
 &#125; m[500001];
 
-// Last Update: 2020-12-30
-/* Quick Sort With CMP Start */
-// Sort the element between [a+left, a+right)
-// You need to implement the &quot;compare&quot; function.
-// You&#39;d better implement a strict inequality in the set.
-// An example is given in pseudocode.
-/*
+&#x2F;&#x2F; Last Update: 2020-12-30
+&#x2F;* Quick Sort With CMP Start *&#x2F;
+&#x2F;&#x2F; Sort the element between [a+left, a+right)
+&#x2F;&#x2F; You need to implement the &quot;compare&quot; function.
+&#x2F;&#x2F; You&#39;d better implement a strict inequality in the set.
+&#x2F;&#x2F; An example is given in pseudocode.
+&#x2F;*
 bool compare(T A, T B)&#123;
     if(A precedes B)&#123;
         return true;
@@ -277,31 +343,31 @@ bool compare(T A, T B)&#123;
         return false;
     &#125;
 &#125;
-*/
+*&#x2F;
 template &lt;class T&gt;
 void quickSort(T* a, int left, int right, bool (*cmp)(T, T)) &#123;
-    T pivot = *(a + right - 1);
-    int l = left, r = right - 1;
+    T pivot &#x3D; *(a + right - 1);
+    int l &#x3D; left, r &#x3D; right - 1;
     while (l &lt; r) &#123;
-        while (l &lt; r &amp;&amp; !cmp(pivot, a[l])) &#123;  // a[l] &gt;= pivot then continue
+        while (l &lt; r &amp;&amp; !cmp(pivot, a[l])) &#123;  &#x2F;&#x2F; a[l] &gt;&#x3D; pivot then continue
             l++;
         &#125;
-        while (l &lt; r &amp;&amp; !cmp(a[r], pivot)) &#123;  // a[r] &lt;= pivot then continue
+        while (l &lt; r &amp;&amp; !cmp(a[r], pivot)) &#123;  &#x2F;&#x2F; a[r] &lt;&#x3D; pivot then continue
             r--;
         &#125;
-        if (l != r) &#123;
-            T temp = a[l];
-            a[l] = a[r];
-            a[r] = temp;
+        if (l !&#x3D; r) &#123;
+            T temp &#x3D; a[l];
+            a[l] &#x3D; a[r];
+            a[r] &#x3D; temp;
         &#125; else &#123;
-            a[right - 1] = a[l];
-            a[l] = pivot;
+            a[right - 1] &#x3D; a[l];
+            a[l] &#x3D; pivot;
             quickSort(a, left, l, cmp);
             quickSort(a, l + 1, right, cmp);
         &#125;
     &#125;
 &#125;
-/* Quick Sort With CMP End */
+&#x2F;* Quick Sort With CMP End *&#x2F;
 
 bool compare1(entry a, entry b)&#123;
     if (a.val &lt; b.val) return true;
@@ -319,104 +385,100 @@ bool compare2(entry a, entry b)&#123;
 
 int main()&#123;
     cin &gt;&gt; n;
-    for (int i = 1; i &lt;= n; i++)&#123;
+    for (int i &#x3D; 1; i &lt;&#x3D; n; i++)&#123;
         cin &gt;&gt; a[i];
-        m[i].id = i;
-        m[i].val = a[i]; 
+        m[i].id &#x3D; i;
+        m[i].val &#x3D; a[i]; 
     &#125;
     quickSort(m, 1, n + 1, compare1);
-    for (int i = 1; i &lt;= n; i++)&#123;
-        m[i].rank = i;
+    for (int i &#x3D; 1; i &lt;&#x3D; n; i++)&#123;
+        m[i].rank &#x3D; i;
     &#125;
     quickSort(m, 1, n + 1, compare2);
-    for (int i = n; i &gt;= 1; i--) &#123;
+    for (int i &#x3D; n; i &gt;&#x3D; 1; i--) &#123;
         update(m[i].rank, 1);
-        result = result + getSum(m[i].rank - 1);
+        result &#x3D; result + getSum(m[i].rank - 1);
     &#125;
     cout &lt;&lt; result;
     return 0;
-&#125;
-</code></pre>
+&#125;</code></pre>
 
-  </article>
-
-  
-    
-
-  
-  
-  <div class="nexmoe-post-meta nexmoe-rainbow">
-    
-    
-        <a class="nexmoefont icon-tag-fill -none-link" href="/tags/code/" rel="tag">code</a> <a class="nexmoefont icon-tag-fill -none-link" href="/tags/luogu/" rel="tag">luogu</a>
-    
-</div>
-
-  <div class="nexmoe-post-footer">
-    <section class="nexmoe-comment">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css">
-<div id="gitalk"></div>
-<script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script>
-<script type="text/javascript">
-    var gitalk = new Gitalk({
-        clientID: '80b2453b6d5f37ad6225',
-        clientSecret: '43e99fa852795c9a7b3eb924b2558c64b84bbdeb',
-        id: window.location.pathname,
-        repo: 'nexmoe.github.io',
-        owner: 'nexmoe',
-        admin: 'nexmoe'
-    })
-    gitalk.render('gitalk')
-</script>
-</section>
-  </div>
-</div>
     </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/code/" rel="tag"><i class="fa fa-tag"></i> code</a>
+              <a href="/tags/luogu/" rel="tag"><i class="fa fa-tag"></i> luogu</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/figure-of-some-curves/" rel="prev" title="一些参数方程/极坐标图像">
+                  <i class="fa fa-chevron-left"></i> 一些参数方程/极坐标图像
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/data-discreatization/" rel="next" title="数据的离散化">
+                  数据的离散化 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">c7w</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
   </div>
-  <script src="https://cdn.jsdelivr.net/combine/npm/lazysizes@5.1.0/lazysizes.min.js,gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js,npm/mdui@0.4.3/dist/js/mdui.min.js?v=1"></script>
-<script>
-	hljs.initHighlightingOnLoad();
-</script>
 
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+    </div>
+  </footer>
 
-
-<script src="https://cdn.jsdelivr.net/gh/xtaodada/xtaodada.github.io@0.0.2/copy.js"></script>
- <script src="/js/app.js?v=1623070865368"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
 
   
 
 
 
 
+  
 
-    <!-- baidu Analytics -->
-<script>
-    var _hmt = _hmt || [];
-    (function() {var hm = document.createElement('script');
-    hm.src = 'https://hm.baidu.com/hm.js?6e071d56c527a2a71dfdf686b0f57665';
-    var s = document.getElementsByTagName('script')[0];
-        s.parentNode.insertBefore(hm, s);
-    })();
-</script>
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script> -->
-<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-mml-chtml.js","integrity":"sha256-ncNI9OXOS5Ek4tzVYiOMmN/KKCPZ6V0Cpv2P/zHntiA="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
 </body>
-
 </html>

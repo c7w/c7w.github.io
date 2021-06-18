@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/avatar.jpg">
+  <link rel="mask-icon" href="/images/avatar.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"cc7w.cf","root":"/","images":"/images","scheme":"Gemini","version":"8.5.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Week 10 多态与模板10.0 Overview 纯虚函数与抽象类 向下类型转换 多重继承的虚函数表，多重继承的利弊 多态 函数模板与类模板  10.1 纯虚函数与抽象类 虚函数还可以进一步声明为纯虚函数，包含纯虚函数的类，通常被称为“抽象类”。  virtual 返回类型 函数名(形式参数) &#x3D; 0;   抽象类不允许定义对象，定义基类为抽象类的主要用途是为派生类规定共性“接口”   &amp;#x">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OOP 课程笔记 Week 10 多态与模板">
+<meta property="og:url" content="https://cc7w.cf/2021/oop-10/index.html">
+<meta property="og:site_name" content="c7w 的破站 v2.0">
+<meta property="og:description" content="Week 10 多态与模板10.0 Overview 纯虚函数与抽象类 向下类型转换 多重继承的虚函数表，多重继承的利弊 多态 函数模板与类模板  10.1 纯虚函数与抽象类 虚函数还可以进一步声明为纯虚函数，包含纯虚函数的类，通常被称为“抽象类”。  virtual 返回类型 函数名(形式参数) &#x3D; 0;   抽象类不允许定义对象，定义基类为抽象类的主要用途是为派生类规定共性“接口”   &amp;#x">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-04-25T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-06-18T06:56:02.820Z">
+<meta property="article:author" content="c7w">
+<meta property="article:tag" content="OOP">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://cc7w.cf/2021/oop-10/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh","comments":true,"permalink":"https://cc7w.cf/2021/oop-10/","path":"2021/oop-10/","title":"OOP 课程笔记 Week 10 多态与模板"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>OOP 课程笔记 Week 10 多态与模板 | c7w 的破站 v2.0</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">c7w 的破站 v2.0</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Week-10-%E5%A4%9A%E6%80%81%E4%B8%8E%E6%A8%A1%E6%9D%BF"><span class="nav-number">1.</span> <span class="nav-text">Week 10 多态与模板</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#10-0-Overview"><span class="nav-number">1.1.</span> <span class="nav-text">10.0 Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-1-%E7%BA%AF%E8%99%9A%E5%87%BD%E6%95%B0%E4%B8%8E%E6%8A%BD%E8%B1%A1%E7%B1%BB"><span class="nav-number">1.2.</span> <span class="nav-text">10.1 纯虚函数与抽象类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-2-%E5%90%91%E4%B8%8B%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2"><span class="nav-number">1.3.</span> <span class="nav-text">10.2 向下类型转换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-3-%E5%A4%9A%E9%87%8D%E7%BB%A7%E6%89%BF%E7%9A%84%E8%99%9A%E5%87%BD%E6%95%B0%E8%A1%A8%E4%B8%8E%E5%88%A9%E5%BC%8A"><span class="nav-number">1.4.</span> <span class="nav-text">10.3 多重继承的虚函数表与利弊</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-4-%E5%A4%9A%E6%80%81"><span class="nav-number">1.5.</span> <span class="nav-text">10.4 多态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-5-%E5%87%BD%E6%95%B0%E6%A8%A1%E6%9D%BF%E4%B8%8E%E7%B1%BB%E6%A8%A1%E6%9D%BF"><span class="nav-number">1.6.</span> <span class="nav-text">10.5 函数模板与类模板</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">c7w</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/c7w" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;c7w" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:admin@cc7w.cf" title="E-Mail → mailto:admin@cc7w.cf"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/c7wc7w" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;c7wc7w" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+  </div>
+
+
+
+          </div>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh">
+    <link itemprop="mainEntityOfPage" href="https://cc7w.cf/2021/oop-10/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="c7w">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="c7w 的破站 v2.0">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          OOP 课程笔记 Week 10 多态与模板
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-04-26 00:00:00" itemprop="dateCreated datePublished" datetime="2021-04-26T00:00:00+08:00">2021-04-26</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-06-18 14:56:02" itemprop="dateModified" datetime="2021-06-18T14:56:02+08:00">2021-06-18</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="Week-10-多态与模板"><a href="#Week-10-多态与模板" class="headerlink" title="Week 10 多态与模板"></a>Week 10 多态与模板</h2><h3 id="10-0-Overview"><a href="#10-0-Overview" class="headerlink" title="10.0 Overview"></a>10.0 Overview</h3><ul>
+<li>纯虚函数与抽象类</li>
+<li>向下类型转换</li>
+<li>多重继承的虚函数表，多重继承的利弊</li>
+<li>多态</li>
+<li>函数模板与类模板</li>
+</ul>
+<h3 id="10-1-纯虚函数与抽象类"><a href="#10-1-纯虚函数与抽象类" class="headerlink" title="10.1 纯虚函数与抽象类"></a>10.1 纯虚函数与抽象类</h3><ul>
+<li><p>虚函数还可以进一步声明为纯虚函数，包含纯虚函数的类，通常被称为“抽象类”。</p>
+<ul>
+<li><code>virtual 返回类型 函数名(形式参数) = 0;</code></li>
+</ul>
+</li>
+<li><p>抽象类不允许定义对象，定义基类为抽象类的主要用途是为派生类规定共性“接口”</p>
+</li>
+</ul>
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 10.1.1
+class A &#123;
+   public:
+    virtual void f() &#x3D; 0; &#x2F;&#x2F;&#x2F; 可在类外定义函数体提供默认实现。派生类通过 A::f() 调用
+&#125;;
+A obj; &#x2F;&#x2F;&#x2F; 不准抽象类定义对象！编译不通过！</code></pre>
+<ul>
+<li><p>抽象类</p>
+<ul>
+<li>定义：含有至少一个纯虚函数。</li>
+<li>特点：<ul>
+<li>不允许定义对象。</li>
+<li>只能为派生类提供接口。</li>
+<li>能避免对象切片：保证只有指针和引用能被向上类型转换。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>基类纯虚函数被派生类重写覆盖之前仍是纯虚函数。因此当继承一个抽象类时，必须实现所有纯虚函数，否则继承出的类也是抽象类。</p>
+</li>
+<li><strong>纯虚析构函数除外</strong><ul>
+<li>对于纯虚析构函数而言，即便派生类中不显式实现，编译器也会自动合成默认析构函数。因此，即使派生类不覆盖纯虚析构函数，派生类可以不是抽象类，可以定义派生类对象。</li>
+<li>回顾：虚函数与析构函数<ul>
+<li>析构函数能是虚的，且常常是虚的。<strong>虚析构函数仍需定义函数体</strong>。</li>
+<li>虚析构函数的用途：当删除基类对象指针时，编译器将根据指针所指对象的实际类型，调用相应的析构函数。</li>
+</ul>
+</li>
+<li>析构函数也可以是纯虚函数<ul>
+<li>纯虚析构函数仍然需要函数体</li>
+<li>目的：使基类成为抽象类，不能创建基类的对象。如果有其他函数是纯虚函数，则析构函数不必是纯虚的。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 10.1.2
+class Base &#123;
+   public: 
+    virtual ~Base()&#x3D;0; 
+&#125;;
+Base::~Base() &#123;&#125; &#x2F;&#x2F;&#x2F; 必须有函数体
+class Derive : public Base &#123;&#125;;
+int main() &#123;
+    Base b; &#x2F;&#x2F;&#x2F; 编译错误，基类是抽象类
+    Derive d1;
+    return 0;
+&#125;</code></pre>
+<h3 id="10-2-向下类型转换"><a href="#10-2-向下类型转换" class="headerlink" title="10.2 向下类型转换"></a>10.2 向下类型转换</h3><ul>
+<li>基类指针/引用转换成派生类指针/引用，则称为向下类型转换。（类层次中向下移动）</li>
+<li>如何确保转换的正确性？<ul>
+<li>如何保证基类指针指向的对象也可以被要转换的派生类的指针指向？—— 借助虚函数表进行动态类型检查！</li>
+</ul>
+</li>
+<li>C++提供了一个特殊的显式类型转换，称为<code>dynamic_cast</code>，是一种安全类型向下类型转换。<ul>
+<li>使用dynamic_cast的对象必须有虚函数，因为它使用了存储在虚函数表中的信息判断实际的类型。使用方法：<ul>
+<li>obj_p，obj_r分别是T1类型的指针和引用<ul>
+<li><code>T2* pObj = dynamic_cast&lt;T2*&gt;(obj_p);</code>//转换为T2指针，运行时失败返回 <code>nullptr</code></li>
+<li><code>T2&amp; refObj = dynamic_cast&lt;T2&amp;&gt;(obj_r);</code> //转换为T2引用，运行时失败抛出 <code>bad_cast</code> 异常</li>
+</ul>
+</li>
+<li>T1必须是多态类型（声明或继承了至少一个虚函数的类），否则不过编译；T2不必。T1,T2没有继承关系也能通过编译，只不过运行时会转换失败。</li>
+</ul>
+</li>
+<li>如果我们知道正在处理的是哪些类型，可以使用static_cast来避免这种开销。<ul>
+<li>static_cast在编译时静态浏览类层次，只检查继承关系。没有继承关系的类之间，必须具有转换途径才能进行转换（要么自定义，要么是语言语法支持），否则不过编译。运行时无法确认是否正确转换。</li>
+<li>static_cast使用方法：<ul>
+<li>obj_p，obj_r分别是T1类型的指针和引用</li>
+<li><code>T2* pObj = static_cast&lt;T2*&gt;(obj_p);</code>   //转换为T2指针</li>
+<li><code>T2&amp; refObj = static_cast&lt;T2&amp;&gt;(obj_r);</code>   //转换为T2引用</li>
+<li>不安全：不保证转换后的目标是T2类型的，可能导致非法内存访问。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 10.2.1
+#include &lt;iostream&gt;
+using namespace std;
+class B &#123;
+   public:
+    virtual void f()&#123;&#125;;
+&#125;;
+class D : public B &#123;
+   public:
+    int i&#123;2018&#125;;
+&#125;;
+int main() &#123;
+    D d;
+    B b;
+    &#x2F;&#x2F;    D d1 &#x3D; static_cast&lt;D&gt;(b); &#x2F;&#x2F;&#x2F;未定义类型转换方式
+    &#x2F;&#x2F;    D d2 &#x3D; dynamic_cast&lt;D&gt;(b); &#x2F;&#x2F;&#x2F;只允许指针和引用转换
+
+    D* pd1 &#x3D; static_cast&lt;D*&gt;(&amp;b);  &#x2F;&#x2F;&#x2F; 有继承关系，允许转换
+    if (pd1 !&#x3D; nullptr) &#123;
+        cout &lt;&lt; &quot;static_cast, B*(B) --&gt; D*: OK&quot; &lt;&lt; endl;
+        cout &lt;&lt; &quot;D::i&#x3D;&quot; &lt;&lt; pd1-&gt;i &lt;&lt; endl;
+    &#125;
+    &#x2F;&#x2F;&#x2F; 但是不安全：对D中成员i可能非法访问
+
+    D* pd2 &#x3D; dynamic_cast&lt;D*&gt;(&amp;b);
+    if (pd2 &#x3D;&#x3D; nullptr)  &#x2F;&#x2F;&#x2F; 不允许不安全的转换
+        cout &lt;&lt; &quot;dynamic_cast, B*(B) --&gt; D*: FAILED&quot; &lt;&lt; endl;
+&#125;
+
+&gt;&gt;&gt; static_cast, B*(B) --&gt; D*:OK
+&gt;&gt;&gt; D::i&#x3D;124455624
+&gt;&gt;&gt; dynamic_cast, B*(B) --&gt; D*: FAILED</code></pre>
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 10.2.2
+#include &lt;iostream&gt;
+using namespace std;
+class B &#123;
+   public:
+    virtual void f()&#123;&#125;;
+&#125;;
+class D : public B &#123;
+   public:
+    int i&#123;2018&#125;;
+&#125;;
+int main() &#123;
+    D d;
+    B b;
+    &#x2F;&#x2F;    D d1 &#x3D; static_cast&lt;D&gt;(b); &#x2F;&#x2F;&#x2F;未定义类型转换
+    &#x2F;&#x2F;    D d2 &#x3D; dynamic_cast&lt;D&gt;(b); &#x2F;&#x2F;&#x2F;只允许指针和引用转换
+    B* pb &#x3D; &amp;d;
+    D* pd3 &#x3D; static_cast&lt;D*&gt;(pb);
+    if (pd3 !&#x3D; nullptr) &#123;
+        cout &lt;&lt; &quot;static_cast, B*(D) --&gt; D*: OK&quot; &lt;&lt; endl;
+        cout &lt;&lt; &quot;D::i&#x3D;&quot; &lt;&lt; pd3-&gt;i &lt;&lt; endl;
+    &#125;
+    D* pd4 &#x3D; dynamic_cast&lt;D*&gt;(pb);
+    if (pd4 !&#x3D; nullptr) &#123;
+        cout &lt;&lt; &quot;dynamic_cast, B*(D) --&gt; D*: OK&quot; &lt;&lt; endl;
+        cout &lt;&lt; &quot;D::i&#x3D;&quot; &lt;&lt; pd4-&gt;i &lt;&lt; endl;
+    &#125;
+    return 0;
+&#125;
+
+&gt;&gt;&gt; static_cast, B*(D) --&gt; D*: OK
+&gt;&gt;&gt; D::i&#x3D;2018
+&gt;&gt;&gt; dynamic_cast, B*(D) --&gt; D*: OK
+&gt;&gt;&gt; D::i&#x3D;2018</code></pre>
+<ul>
+<li><p>重要原则(清楚指针所指向的真正对象)：<br>1）指针或引用的向上转换总是安全的；<br>2）向下转换时用dynamic_cast，安全检查；<br>3）避免对象之间的转换。</p>
+</li>
+<li><p>对于基类中有虚函数的情况：</p>
+<ul>
+<li>向上类型转换：<ul>
+<li>转换为基类指针或引用，则对应虚函数表仍为派生类的虚函数表（晚绑定）。</li>
+<li>转换为基类对象，则对应虚函数表是基类的虚函数表（早绑定）。</li>
+</ul>
+</li>
+<li>向下类型转换：<br>dynamic_cast通过虚函数表来判断是否能进行向下类型转换。</li>
+</ul>
+</li>
+</ul>
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 10.2.3
+#include &lt;iostream&gt;
+using namespace std;
+
+class Pet &#123;
+   public:
+    virtual ~Pet() &#123;&#125;
+&#125;;
+class Dog : public Pet &#123;
+   public:
+    void run() &#123; cout &lt;&lt; &quot;dog run&quot; &lt;&lt; endl; &#125;
+&#125;;
+class Bird : public Pet &#123;
+   public:
+    void fly() &#123; cout &lt;&lt; &quot;bird fly&quot; &lt;&lt; endl; &#125;
+&#125;;
+
+void action(Pet* p) &#123;
+    auto d &#x3D; dynamic_cast&lt;Dog*&gt;(p);   &#x2F;&#x2F;&#x2F; 向下类型转换
+    auto b &#x3D; dynamic_cast&lt;Bird*&gt;(p);  &#x2F;&#x2F;&#x2F; 向下类型转换
+    if (d)  &#x2F;&#x2F;&#x2F; 运行时根据实际类型表现特性
+        d-&gt;run();
+    else if (b)
+        b-&gt;fly();
+&#125;
+
+int main() &#123;
+    Pet* p[2];
+    p[0] &#x3D; new Dog;   &#x2F;&#x2F;&#x2F; 向上类型转换
+    p[1] &#x3D; new Bird;  &#x2F;&#x2F;&#x2F; 向上类型转换
+    for (int i &#x3D; 0; i &lt; 2; ++i) &#123;
+        action(p[i]);
+    &#125;
+    return 0;
+&#125;</code></pre>
+<h3 id="10-3-多重继承的虚函数表与利弊"><a href="#10-3-多重继承的虚函数表与利弊" class="headerlink" title="10.3 多重继承的虚函数表与利弊"></a>10.3 多重继承的虚函数表与利弊</h3><ul>
+<li>多重继承中的虚函数<ul>
+<li>最多继承一个非抽象类 <strong>避免</strong> 多重继承的二义性</li>
+<li>可以集成多个抽象类 <strong>利用</strong> 一个对象可以实现多个接口</li>
+</ul>
+</li>
+</ul>
+<h3 id="10-4-多态"><a href="#10-4-多态" class="headerlink" title="10.4 多态"></a>10.4 多态</h3><ul>
+<li><p>按照基类的接口定义，调用指针或引用所指对象的接口函数，函数执行过程因对象实际所属派生类的不同而呈现不同的效果（表现），这个现象被称为“多态”。</p>
+<ul>
+<li>当利用基类指针/引用调用函数时<ul>
+<li>虚函数在运行时确定执行哪个版本，取决于引用或指针对象的真实类型</li>
+<li>非虚函数在编译时绑定</li>
+</ul>
+</li>
+<li>当利用类的对象直接调用函数时<ul>
+<li>无论什么函数，均在编译时绑定</li>
+</ul>
+</li>
+<li>产生多态效果的条件：继承 &amp;&amp; 虚函数 &amp;&amp; (引用 || 指针)</li>
+</ul>
+</li>
+<li><p>应用：TEMPLATE METHOD设计模式</p>
+<ul>
+<li>在接口的一个方法中定义算法的骨架</li>
+<li>将一些步骤的实现延迟到子类中</li>
+<li>使得子类可以在不改变算法结构的情况下，重新定义算法中的某些步骤。</li>
+</ul>
+</li>
+<li>模板方法是一种源代码重用的基本技术，在类库的设计实现中应用十分广泛，因为这个设计模式能有效地解决 “类库提供公共行为”与“用户定制特殊细节”之间的折中平衡。</li>
+</ul>
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 10.4.1
+#include &lt;iostream&gt;
+using namespace std;
+
+class Base &#123;
+   public:
+    void action() &#123;
+        step1();
+        step2();
+        step3();
+    &#125;
+    virtual void step1() &#123; cout &lt;&lt; &quot;Base::step1&quot; &lt;&lt; endl; &#125;
+    virtual void step2() &#123; cout &lt;&lt; &quot;Base::step2&quot; &lt;&lt; endl; &#125;
+    virtual void step3() &#123; cout &lt;&lt; &quot;Base::step3&quot; &lt;&lt; endl; &#125;
+&#125;;
+
+class Derived1 : public Base &#123;
+    void step1() &#123; cout &lt;&lt; &quot;Derived1::step1&quot; &lt;&lt; endl; &#125;
+&#125;;
+class Derived2 : public Base &#123;
+    void step2() &#123; cout &lt;&lt; &quot;Derived2::step2&quot; &lt;&lt; endl; &#125;
+&#125;;
+
+int main() &#123;
+    Base* ba[] &#x3D; &#123;new Base, new Derived1, new Derived2&#125;;
+    for (int i &#x3D; 0; i &lt; 3; ++i) &#123;
+        ba[i]-&gt;action();
+        cout &lt;&lt; &quot;&#x3D;&#x3D;&#x3D;&quot; &lt;&lt; endl;
+    &#125;
+    return 0;
+&#125;
+
+&gt;&gt;&gt;
+Base::step1
+Base::step2
+Base::step3
+&#x3D;&#x3D;&#x3D;
+Derived1::step1
+Base::step2
+Base::step3
+&#x3D;&#x3D;&#x3D;
+Base::step1
+Derived2::step2
+Base::step3
+&#x3D;&#x3D;&#x3D;</code></pre>
+<h3 id="10-5-函数模板与类模板"><a href="#10-5-函数模板与类模板" class="headerlink" title="10.5 函数模板与类模板"></a>10.5 函数模板与类模板</h3><ol>
+<li>函数模板</li>
+</ol>
+<ul>
+<li>有些算法实现与类型无关，所以可以将函数的参数类型也定义为一种特殊的“参数”，这样就得到了“函数模板”。</li>
+<li>定义函数模板的方法<ul>
+<li><code>template &lt;typename T&gt; ReturnType Func(Args)；</code></li>
+<li>如：任意类型两个变量相加的“函数模板”</li>
+<li><code>template &lt;typename T&gt;  T sum(T a, T b) &#123; return a + b; &#125;</code></li>
+<li>注：typename也可换为class</li>
+</ul>
+</li>
+<li>函数模板在调用时，编译器能自动推导出实际参数的类型（这个过程叫做实例化）。<ul>
+<li>所以，形式上调用一个函数模板与普通函数没有区别。</li>
+<li>当多个参数的类型不一致时，无法推导：<ul>
+<li><code>cout &lt;&lt; sum(9, 2.1);</code> //编译错误</li>
+<li>手工指定调用类型：<code>sum&lt;int&gt;(9, 2.1);</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>类模板</li>
+</ol>
+<ul>
+<li>在定义类时也可以将一些类型信息抽取出来，用模板参数来替换，从而使类更具通用性。这种类被称为“类模板”。</li>
+</ul>
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 10.5.1
+#include &lt;iostream&gt;
+using namespace std;
+
+template &lt;typename T&gt;
+class A &#123;
+    T data;
+
+   public:
+    void print() &#123; cout &lt;&lt; data &lt;&lt; endl; &#125;
+&#125;;
+int main() &#123;
+    A&lt;int&gt; a;
+    a.print();
+&#125;</code></pre>
+<ul>
+<li>类模板中成员函数的类外定义</li>
+</ul>
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 10.5.2
+#include &lt;iostream&gt;
+using namespace std;
+
+template &lt;typename T&gt;
+class A &#123;
+    T data;
+
+   public:
+    void print();
+&#125;;
+
+template &lt;typename T&gt;
+void A&lt;T&gt;::print() &#123;
+    cout &lt;&lt; data &lt;&lt; endl;
+&#125;
+
+int main() &#123;
+    A&lt;int&gt; a;
+    a.print();
+&#125;</code></pre>
+<ul>
+<li>类模板的“模板参数”<ul>
+<li>类型参数：使用typename或class标记</li>
+<li>非类型参数：整数，枚举，指针（指向对象或函数），引用（引用对象或引用函数）。整数型比较常用。</li>
+</ul>
+</li>
+</ul>
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 10.5.3
+template &lt;typename T, unsigned size&gt;
+class array &#123;
+    T elems[size];
+    ...
+&#125;;
+
+array&lt;char, 10&gt; array0;</code></pre>
+<ul>
+<li>模板与多态<ul>
+<li>模板使用泛型标记，使用同一段代码，来关联不同但相似的特定行为，最后可以获得不同的结果。模板也是多态的一种体现。</li>
+<li>但模板的关联是在编译期处理，称为静多态。<ul>
+<li>往往和函数重载同时使用</li>
+<li>高效，省去函数调用</li>
+<li>编译后代码增多</li>
+</ul>
+</li>
+<li>基于继承和虚函数的多态在运行期处理，称为动多态<ul>
+<li>运行时，灵活方便</li>
+<li>侵入式，必须继承</li>
+<li>存在函数调用</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/OOP/" rel="tag"><i class="fa fa-tag"></i> OOP</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/oop-09/" rel="prev" title="OOP 课程笔记 Week 09 虚函数">
+                  <i class="fa fa-chevron-left"></i> OOP 课程笔记 Week 09 虚函数
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/oop-11/" rel="next" title="OOP 课程笔记 Week 11 模板与STL初步">
+                  OOP 课程笔记 Week 11 模板与STL初步 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">c7w</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-mml-chtml.js","integrity":"sha256-ncNI9OXOS5Ek4tzVYiOMmN/KKCPZ6V0Cpv2P/zHntiA="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
