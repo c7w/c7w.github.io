@@ -19,6 +19,116 @@
 ]]></content>
   </entry>
   <entry>
+    <title>树状数组-入门</title>
+    <url>/2020/ds-fenwick-tree-basic/</url>
+    <content><![CDATA[<h2 id="Basic-Concept"><a href="#Basic-Concept" class="headerlink" title="Basic Concept"></a>Basic Concept</h2><p>树状数组可以用于高效计算数列的前缀和，区间和等等。</p>
+<p>它可以支持在$O(logn)$的时间内得到任意前缀和，以及在$O(logn)$时间内支持对区间单点值的修改。空间复杂度为$O(n)$。</p>
+<h3 id="数组存储方式"><a href="#数组存储方式" class="headerlink" title="数组存储方式"></a>数组存储方式</h3><p><img src="https://s3.ax1x.com/2020/12/22/rD8IfS.png" alt="rD8IfS.png"></p>
+<p>如图所示。</p>
+<p>$A[i]$代表原数组的元素，$C[i]$代表树状数组中的元素。</p>
+<pre class="language-c++" data-language="c++"><code class="language-c++">C[1]&#x3D;A[1];
+C[2]&#x3D;A[1]+A[2];
+C[3]&#x3D;A[3];
+C[4]&#x3D;A[1]+A[2]+A[3]+A[4];
+C[5]&#x3D;A[5];
+C[6]&#x3D;A[5]+A[6];
+C[7]&#x3D;A[7];
+C[8]&#x3D;A[1]+A[2]+A[3]+A[4]+A[5]+A[6]+A[7]+A[8];</code></pre>
+<p>而其索引的二进制表示如下：</p>
+<pre class="language-c++" data-language="c++"><code class="language-c++">C[1] &#x3D; C[0001] &#x3D; A[1];
+C[2] &#x3D; C[0010] &#x3D; A[1]+A[2];
+C[3] &#x3D; C[0011] &#x3D; A[3];
+C[4] &#x3D; C[0100] &#x3D; A[1]+A[2]+A[3]+A[4];
+C[5] &#x3D; C[0101] &#x3D; A[5];
+C[6] &#x3D; C[0110] &#x3D; A[5]+A[6];
+C[7] &#x3D; C[0111] &#x3D; A[7];
+C[8] &#x3D; C[1000] &#x3D; A[1]+A[2]+A[3]+A[4]+A[5]+A[6]+A[7]+A[8];</code></pre>
+<p>我们可以找出规律，</p>
+<script type="math/tex; mode=display">
+C[i] =\sum_{k=把i二进制表示的最低位1置为0后，将新的值+1}^i A[k]</script><p>也就是说，问题在于如何找出$i$的最低位$1$所代表的数值。</p>
+<h3 id="lowbit"><a href="#lowbit" class="headerlink" title="lowbit"></a>lowbit</h3><p>这里我们可以引入<code>lowbit</code>函数。</p>
+<pre class="language-c++" data-language="c++"><code class="language-c++">int lowbit (int x)
+&#123;
+	return x &amp; (-x);
+&#125;</code></pre>
+<p>我们已经知道，对于整数表示，有</p>
+<ul>
+<li><p>正数的补码是其本身；</p>
+</li>
+<li><p>负数的补码是在反码的基础上$+1$；</p>
+</li>
+</ul>
+<p>因此<code>x &amp; (-x)</code>就可以满足我们对于查找最低位$1$的需求。</p>
+<p>举个例子：</p>
+<ul>
+<li>二进制数 $11010$ (1) </li>
+<li><p>其反码为 $00101$ (2)</p>
+</li>
+<li><p>加 $1$ 后为 $00110$ (3)</p>
+</li>
+<li>将(1)(3)两者相与便得到最低位的 $1$ 所表示的数值</li>
+</ul>
+<h2 id="树状数组的建立"><a href="#树状数组的建立" class="headerlink" title="树状数组的建立"></a>树状数组的建立</h2><p>上面准备工作都做好了，码就行了:(</p>
+<pre class="language-c++" data-language="c++"><code class="language-c++">#include &lt;iostream&gt;
+#define MAXN 12
+using namespace std;
+
+int ft[MAXN+1] &#x3D; &#123;0&#125;;
+int a[MAXN + 1] &#x3D; &#123;0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12&#125;;
+
+int lowbit(int x)&#123;
+    return x &amp; (-x);
+&#125;
+
+void generateTree()&#123;
+    for (int i &#x3D; 1; i &lt;&#x3D; MAXN; i++)&#123;
+        for (int k &#x3D; i - lowbit(i) + 1; k &lt;&#x3D; i; k++)
+            ft[i] +&#x3D; a[k];
+    &#125;
+&#125;
+
+int main()&#123;
+    generateTree();
+    return 0;
+&#125;</code></pre>
+<h2 id="单点更新"><a href="#单点更新" class="headerlink" title="单点更新"></a>单点更新</h2><p>再把这张图拿过来：</p>
+<p><img src="https://s3.ax1x.com/2020/12/22/rD8IfS.png" alt="rD8IfS.png"></p>
+<p>如果我们要更改$A[3]$的值，那么我们知道，$C[3], C[4], C[8]$ 的值都会受到影响。</p>
+<ul>
+<li>$3(011)$ =&gt; <code>C[3] += temp;</code></li>
+<li>$lowbit(3) = 001$, $3 + lowbit(3)= 100 = 4(100)$ =&gt; <code>C[4] += temp;</code></li>
+<li>$lowbit(4) = 100$, $4+lowbit(4)=1000=8(1000)$ =&gt; <code>C[8] += temp;</code></li>
+<li>……</li>
+</ul>
+<p>因此，我们只需要对所要更新的数据不断使其自增lowbit后，</p>
+<p>使树状数组的对应索引增加 temp 值即可。</p>
+<pre class="language-c++" data-language="c++"><code class="language-c++">void update(int index, int val)&#123;
+    for (int i &#x3D; index; i &lt;&#x3D; MAXN; i &#x3D; i + lowbit(i))&#123;
+        ft[i] +&#x3D; val;
+    &#125;
+&#125;</code></pre>
+<h2 id="区间查询"><a href="#区间查询" class="headerlink" title="区间查询"></a>区间查询</h2><p>假设现在我们要查询1~7的前缀和。</p>
+<pre class="language-c++" data-language="c++"><code class="language-c++">C[7] &#x3D; C[0111] &#x3D; A[7];
+C[6] &#x3D; C[0110] &#x3D; A[5] + A[6];
+C[4] &#x3D; C[0100] &#x3D; A[1] + A[2] + A[3] + A[4];</code></pre>
+<p>归纳可知，我们只需每次将索引减少i的lowbit，然后将对应的树状数组的值求和即可。</p>
+<pre class="language-c++" data-language="c++"><code class="language-c++">int getSum(int index)&#123;
+    int result &#x3D; 0;
+    for (int k &#x3D; index; k &gt; 0; k-&#x3D;lowbit(k))&#123;
+        result +&#x3D; ft[k];
+    &#125;
+    return result;
+&#125;</code></pre>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a href="https://zh.wikipedia.org/wiki/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84">https://zh.wikipedia.org/wiki/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84</a>‘</li>
+<li><a href="https://bestsort.cn/2019/04/26/195/">https://bestsort.cn/2019/04/26/195/</a></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>Data Structure</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>动态规划的背包问题</title>
     <url>/2020/dp-backpack/</url>
     <content><![CDATA[<p>所以为什么要找一个背包图片当头图啊喂</p>
@@ -133,145 +243,6 @@ int main()&#123;
         <tag>dp</tag>
         <tag>背包</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>树状数组-入门</title>
-    <url>/2020/ds-fenwick-tree-basic/</url>
-    <content><![CDATA[<h2 id="Basic-Concept"><a href="#Basic-Concept" class="headerlink" title="Basic Concept"></a>Basic Concept</h2><p>树状数组可以用于高效计算数列的前缀和，区间和等等。</p>
-<p>它可以支持在$O(logn)$的时间内得到任意前缀和，以及在$O(logn)$时间内支持对区间单点值的修改。空间复杂度为$O(n)$。</p>
-<h3 id="数组存储方式"><a href="#数组存储方式" class="headerlink" title="数组存储方式"></a>数组存储方式</h3><p><img src="https://s3.ax1x.com/2020/12/22/rD8IfS.png" alt="rD8IfS.png"></p>
-<p>如图所示。</p>
-<p>$A[i]$代表原数组的元素，$C[i]$代表树状数组中的元素。</p>
-<pre class="language-c++" data-language="c++"><code class="language-c++">C[1]&#x3D;A[1];
-C[2]&#x3D;A[1]+A[2];
-C[3]&#x3D;A[3];
-C[4]&#x3D;A[1]+A[2]+A[3]+A[4];
-C[5]&#x3D;A[5];
-C[6]&#x3D;A[5]+A[6];
-C[7]&#x3D;A[7];
-C[8]&#x3D;A[1]+A[2]+A[3]+A[4]+A[5]+A[6]+A[7]+A[8];</code></pre>
-<p>而其索引的二进制表示如下：</p>
-<pre class="language-c++" data-language="c++"><code class="language-c++">C[1] &#x3D; C[0001] &#x3D; A[1];
-C[2] &#x3D; C[0010] &#x3D; A[1]+A[2];
-C[3] &#x3D; C[0011] &#x3D; A[3];
-C[4] &#x3D; C[0100] &#x3D; A[1]+A[2]+A[3]+A[4];
-C[5] &#x3D; C[0101] &#x3D; A[5];
-C[6] &#x3D; C[0110] &#x3D; A[5]+A[6];
-C[7] &#x3D; C[0111] &#x3D; A[7];
-C[8] &#x3D; C[1000] &#x3D; A[1]+A[2]+A[3]+A[4]+A[5]+A[6]+A[7]+A[8];</code></pre>
-<p>我们可以找出规律，</p>
-<script type="math/tex; mode=display">
-C[i] =\sum_{k=把i二进制表示的最低位1置为0后，将新的值+1}^i A[k]</script><p>也就是说，问题在于如何找出$i$的最低位$1$所代表的数值。</p>
-<h3 id="lowbit"><a href="#lowbit" class="headerlink" title="lowbit"></a>lowbit</h3><p>这里我们可以引入<code>lowbit</code>函数。</p>
-<pre class="language-c++" data-language="c++"><code class="language-c++">int lowbit (int x)
-&#123;
-	return x &amp; (-x);
-&#125;</code></pre>
-<p>我们已经知道，对于整数表示，有</p>
-<ul>
-<li><p>正数的补码是其本身；</p>
-</li>
-<li><p>负数的补码是在反码的基础上$+1$；</p>
-</li>
-</ul>
-<p>因此<code>x &amp; (-x)</code>就可以满足我们对于查找最低位$1$的需求。</p>
-<p>举个例子：</p>
-<ul>
-<li>二进制数 $11010$ (1) </li>
-<li><p>其反码为 $00101$ (2)</p>
-</li>
-<li><p>加 $1$ 后为 $00110$ (3)</p>
-</li>
-<li>将(1)(3)两者相与便得到最低位的 $1$ 所表示的数值</li>
-</ul>
-<h2 id="树状数组的建立"><a href="#树状数组的建立" class="headerlink" title="树状数组的建立"></a>树状数组的建立</h2><p>上面准备工作都做好了，码就行了:(</p>
-<pre class="language-c++" data-language="c++"><code class="language-c++">#include &lt;iostream&gt;
-#define MAXN 12
-using namespace std;
-
-int ft[MAXN+1] &#x3D; &#123;0&#125;;
-int a[MAXN + 1] &#x3D; &#123;0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12&#125;;
-
-int lowbit(int x)&#123;
-    return x &amp; (-x);
-&#125;
-
-void generateTree()&#123;
-    for (int i &#x3D; 1; i &lt;&#x3D; MAXN; i++)&#123;
-        for (int k &#x3D; i - lowbit(i) + 1; k &lt;&#x3D; i; k++)
-            ft[i] +&#x3D; a[k];
-    &#125;
-&#125;
-
-int main()&#123;
-    generateTree();
-    return 0;
-&#125;</code></pre>
-<h2 id="单点更新"><a href="#单点更新" class="headerlink" title="单点更新"></a>单点更新</h2><p>再把这张图拿过来：</p>
-<p><img src="https://s3.ax1x.com/2020/12/22/rD8IfS.png" alt="rD8IfS.png"></p>
-<p>如果我们要更改$A[3]$的值，那么我们知道，$C[3], C[4], C[8]$ 的值都会受到影响。</p>
-<ul>
-<li>$3(011)$ =&gt; <code>C[3] += temp;</code></li>
-<li>$lowbit(3) = 001$, $3 + lowbit(3)= 100 = 4(100)$ =&gt; <code>C[4] += temp;</code></li>
-<li>$lowbit(4) = 100$, $4+lowbit(4)=1000=8(1000)$ =&gt; <code>C[8] += temp;</code></li>
-<li>……</li>
-</ul>
-<p>因此，我们只需要对所要更新的数据不断使其自增lowbit后，</p>
-<p>使树状数组的对应索引增加 temp 值即可。</p>
-<pre class="language-c++" data-language="c++"><code class="language-c++">void update(int index, int val)&#123;
-    for (int i &#x3D; index; i &lt;&#x3D; MAXN; i &#x3D; i + lowbit(i))&#123;
-        ft[i] +&#x3D; val;
-    &#125;
-&#125;</code></pre>
-<h2 id="区间查询"><a href="#区间查询" class="headerlink" title="区间查询"></a>区间查询</h2><p>假设现在我们要查询1~7的前缀和。</p>
-<pre class="language-c++" data-language="c++"><code class="language-c++">C[7] &#x3D; C[0111] &#x3D; A[7];
-C[6] &#x3D; C[0110] &#x3D; A[5] + A[6];
-C[4] &#x3D; C[0100] &#x3D; A[1] + A[2] + A[3] + A[4];</code></pre>
-<p>归纳可知，我们只需每次将索引减少i的lowbit，然后将对应的树状数组的值求和即可。</p>
-<pre class="language-c++" data-language="c++"><code class="language-c++">int getSum(int index)&#123;
-    int result &#x3D; 0;
-    for (int k &#x3D; index; k &gt; 0; k-&#x3D;lowbit(k))&#123;
-        result +&#x3D; ft[k];
-    &#125;
-    return result;
-&#125;</code></pre>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
-<li><a href="https://zh.wikipedia.org/wiki/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84">https://zh.wikipedia.org/wiki/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84</a>‘</li>
-<li><a href="https://bestsort.cn/2019/04/26/195/">https://bestsort.cn/2019/04/26/195/</a></li>
-</ul>
-]]></content>
-      <tags>
-        <tag>Data Structure</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>一些参数方程/极坐标图像</title>
-    <url>/2020/figure-of-some-curves/</url>
-    <content><![CDATA[<p>菜鸡没学过4-4，在微积分应用里面积面积和体积的时候有的草图画不出来…</p>
-<h2 id="星形线"><a href="#星形线" class="headerlink" title="星形线"></a>星形线</h2><script type="math/tex; mode=display">
-x^{\frac 2 3}+y^{\frac 2 3}=a^{\frac 2 3} \\
-\begin{cases}
-x=a\cos^3t\\
-y=a\sin^3t
-\end{cases}</script><p><img src="https://s3.ax1x.com/2020/12/26/r4AL8K.png" alt=""></p>
-<h2 id="摆线"><a href="#摆线" class="headerlink" title="摆线"></a>摆线</h2><script type="math/tex; mode=display">
-\begin {cases}
-x= a(t-\sin t)\\
-y=a(1-\cos t)
-\end {cases}</script><p><img src="https://s3.ax1x.com/2020/12/26/r4E12T.png" alt=""></p>
-<p>图为$-4\pi \le t \le 4\pi, a=1$的图像.</p>
-<p>周期为$2\pi$.</p>
-<h2 id="双纽线"><a href="#双纽线" class="headerlink" title="双纽线"></a>双纽线</h2><p><a href="https://imgchr.com/i/r4VeSK"><img src="https://s3.ax1x.com/2020/12/26/r4VeSK.png" alt="r4VeSK.png"></a></p>
-<h2 id="笛卡尔心形线"><a href="#笛卡尔心形线" class="headerlink" title="笛卡尔心形线"></a>笛卡尔心形线</h2><p><a href="https://imgchr.com/i/r4ZSht"><img src="https://s3.ax1x.com/2020/12/26/r4ZSht.png" alt="r4ZSht.png"></a></p>
-<h2 id="其它曲线"><a href="#其它曲线" class="headerlink" title="其它曲线"></a>其它曲线</h2><p><a href="https://imgchr.com/i/r4ZeNn"><img src="https://s3.ax1x.com/2020/12/26/r4ZeNn.png" alt="r4ZeNn.png"></a></p>
-<p><a href="https://imgchr.com/i/r4Zu90"><img src="https://s3.ax1x.com/2020/12/26/r4Zu90.png" alt="r4Zu90.png"></a></p>
-<p><a href="https://imgchr.com/i/r4ZK3V"><img src="https://s3.ax1x.com/2020/12/26/r4ZK3V.png" alt="r4ZK3V.png"></a></p>
-<p><a href="https://imgchr.com/i/r4ZMcT"><img src="https://s3.ax1x.com/2020/12/26/r4ZMcT.png" alt="r4ZMcT.png"></a></p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
-<li><a href="https://mm.edrawsoft.cn/template/65439">https://mm.edrawsoft.cn/template/65439</a></li>
-<li>部分图像采用 GeoGebra 绘制</li>
-</ul>
-]]></content>
   </entry>
   <entry>
     <title>数据结构-堆</title>
@@ -450,6 +421,48 @@ public:
       </tags>
   </entry>
   <entry>
+    <title>一些参数方程/极坐标图像</title>
+    <url>/2020/figure-of-some-curves/</url>
+    <content><![CDATA[<p>菜鸡没学过4-4，在微积分应用里面积面积和体积的时候有的草图画不出来…</p>
+<h2 id="星形线"><a href="#星形线" class="headerlink" title="星形线"></a>星形线</h2><script type="math/tex; mode=display">
+x^{\frac 2 3}+y^{\frac 2 3}=a^{\frac 2 3} \\
+\begin{cases}
+x=a\cos^3t\\
+y=a\sin^3t
+\end{cases}</script><p><img src="https://s3.ax1x.com/2020/12/26/r4AL8K.png" alt=""></p>
+<h2 id="摆线"><a href="#摆线" class="headerlink" title="摆线"></a>摆线</h2><script type="math/tex; mode=display">
+\begin {cases}
+x= a(t-\sin t)\\
+y=a(1-\cos t)
+\end {cases}</script><p><img src="https://s3.ax1x.com/2020/12/26/r4E12T.png" alt=""></p>
+<p>图为$-4\pi \le t \le 4\pi, a=1$的图像.</p>
+<p>周期为$2\pi$.</p>
+<h2 id="双纽线"><a href="#双纽线" class="headerlink" title="双纽线"></a>双纽线</h2><p><a href="https://imgchr.com/i/r4VeSK"><img src="https://s3.ax1x.com/2020/12/26/r4VeSK.png" alt="r4VeSK.png"></a></p>
+<h2 id="笛卡尔心形线"><a href="#笛卡尔心形线" class="headerlink" title="笛卡尔心形线"></a>笛卡尔心形线</h2><p><a href="https://imgchr.com/i/r4ZSht"><img src="https://s3.ax1x.com/2020/12/26/r4ZSht.png" alt="r4ZSht.png"></a></p>
+<h2 id="其它曲线"><a href="#其它曲线" class="headerlink" title="其它曲线"></a>其它曲线</h2><p><a href="https://imgchr.com/i/r4ZeNn"><img src="https://s3.ax1x.com/2020/12/26/r4ZeNn.png" alt="r4ZeNn.png"></a></p>
+<p><a href="https://imgchr.com/i/r4Zu90"><img src="https://s3.ax1x.com/2020/12/26/r4Zu90.png" alt="r4Zu90.png"></a></p>
+<p><a href="https://imgchr.com/i/r4ZK3V"><img src="https://s3.ax1x.com/2020/12/26/r4ZK3V.png" alt="r4ZK3V.png"></a></p>
+<p><a href="https://imgchr.com/i/r4ZMcT"><img src="https://s3.ax1x.com/2020/12/26/r4ZMcT.png" alt="r4ZMcT.png"></a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a href="https://mm.edrawsoft.cn/template/65439">https://mm.edrawsoft.cn/template/65439</a></li>
+<li>部分图像采用 GeoGebra 绘制</li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
+    <title>Hello, World.</title>
+    <url>/2020/hello-world/</url>
+    <content><![CDATA[<p>没钱结款只得把自己博客搬家的屑</p>
+<h2 id="c7w-的破站-ver-2-0"><a href="#c7w-的破站-ver-2-0" class="headerlink" title="c7w 的破站 ver 2.0"></a>c7w 的破站 ver 2.0</h2><p>​        之前用 WordPress 搭的小站快要到期了，现在也不好找免费的虚拟主机薅羊毛，遂借用 github.io + Hexo 搭建本“静态博客”，来记录今后的点滴。</p>
+<p><s>         azaz，我打点滴第一候选项是垫底，bksw</s></p>
+<p>​        然后强行安利了贵班的文艺委员也用上了这种方法建的博客，甚至还组建了班级的github organisation.</p>
+<p>​    等有空了就写博文，咕咕咕</p>
+]]></content>
+      <tags>
+        <tag>日志</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Hash Table（散列表）</title>
     <url>/2020/hash-table/</url>
     <content><![CDATA[<p>　　散列表的相关概念和内容　　</p>
@@ -481,19 +494,6 @@ public:
       <tags>
         <tag>Data Structure</tag>
         <tag>Hash Table</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hello, World.</title>
-    <url>/2020/hello-world/</url>
-    <content><![CDATA[<p>没钱结款只得把自己博客搬家的屑</p>
-<h2 id="c7w-的破站-ver-2-0"><a href="#c7w-的破站-ver-2-0" class="headerlink" title="c7w 的破站 ver 2.0"></a>c7w 的破站 ver 2.0</h2><p>​        之前用 WordPress 搭的小站快要到期了，现在也不好找免费的虚拟主机薅羊毛，遂借用 github.io + Hexo 搭建本“静态博客”，来记录今后的点滴。</p>
-<p><s>         azaz，我打点滴第一候选项是垫底，bksw</s></p>
-<p>​        然后强行安利了贵班的文艺委员也用上了这种方法建的博客，甚至还组建了班级的github organisation.</p>
-<p>​    等有空了就写博文，咕咕咕</p>
-]]></content>
-      <tags>
-        <tag>日志</tag>
       </tags>
   </entry>
   <entry>
@@ -1449,6 +1449,290 @@ int main() &#123;
       </tags>
   </entry>
   <entry>
+    <title>OOP 课程笔记 Week 09 虚函数</title>
+    <url>/2021/oop-09/</url>
+    <content><![CDATA[<h2 id="Week-09-虚函数"><a href="#Week-09-虚函数" class="headerlink" title="Week 09 虚函数"></a>Week 09 虚函数</h2><h3 id="9-0-Overview"><a href="#9-0-Overview" class="headerlink" title="9.0 Overview"></a>9.0 Overview</h3><ul>
+<li>向上类型转换</li>
+<li>对象切片</li>
+<li>函数调用捆绑</li>
+<li>虚函数和虚函数表</li>
+<li>虚函数和构造函数、析构函数</li>
+<li>重写覆盖，override和final</li>
+</ul>
+<h3 id="9-1-向上类型转换"><a href="#9-1-向上类型转换" class="headerlink" title="9.1 向上类型转换"></a>9.1 向上类型转换</h3><ul>
+<li><strong>派生类</strong>对象/引用/指针<strong>转换成基类</strong>对象/引用/指针，称为向上类型转换。只对<code>public</code>继承有效，在继承图上是上升的；对<code>private</code>、<code>protected</code>继承无效。</li>
+<li>向上类型转换（派生类到基类）可以由编译器自动完成，是一种隐式类型转换。</li>
+<li>凡是<strong>接受基类对象/引用/指针的地方</strong>（如函数参数），都可以<strong>使用派生类对象/引用/指针</strong>，编译器会自动将派生类对象转换为基类对象以便使用。</li>
+</ul>
+<h3 id="9-2-对象切片"><a href="#9-2-对象切片" class="headerlink" title="9.2 对象切片"></a>9.2 对象切片</h3><ul>
+<li><p>当<strong>派生类的对象</strong><code>(不是指针或引用)</code>被通过<strong>传参或赋值</strong>的方式转换为<strong>基类的对象</strong>时，派生类的对象被<strong>切片</strong>为对应基类的子对象。</p>
+<ul>
+<li><img src="https://i.loli.net/2021/04/19/2tVMgrhZ3GPT1cI.png" alt="image-20210419081125275"></li>
+<li>派生类的新数据和新方法丢失（图 9.2.1）</li>
+</ul>
+</li>
+<li><p>当派生类的<code>指针（引用）</code>被通过<strong>传参或赋值</strong>的方式转换为基类<code>指针（引用）</code>时，不会创建新的对象，但只保留基类的接口。</p>
+</li>
+</ul>
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 9.2.2 私有继承“照此实现”
+#include &lt;iostream&gt;
+using namespace std;
+class B &#123;
+   private:
+    int data&#123;0&#125;;
+   public:
+    int getData() &#123; return data; &#125;
+    void setData(int i) &#123; data &#x3D; i; &#125;
+&#125;;
+class D1 : private B &#123;
+   public:
+    using B::getData;
+&#125;;
+int main() &#123;
+    D1 d1;
+    cout &lt;&lt; d1.getData();  
+    &#x2F;&#x2F; d1.setData(10) &#x2F;&#x2F;隐藏了基类的setData函数，不可访问 
+    &#x2F;&#x2F; B&amp; b &#x3D; d1;     &#x2F;&#x2F;不允许私有继承的向上转换
+    &#x2F;&#x2F; b.setData(10); &#x2F;&#x2F;否则可以绕过D1，调用基类的setData函数
+&#125;</code></pre>
+<h3 id="9-3-函数调用捆绑"><a href="#9-3-函数调用捆绑" class="headerlink" title="9.3 函数调用捆绑"></a>9.3 函数调用捆绑</h3><pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 9.3.1
+#include &lt;iostream&gt;
+using namespace std;
+
+class Instrument &#123;
+public:
+  void play() &#123; cout &lt;&lt; &quot;Instrument::play&quot; &lt;&lt; endl; &#125;
+&#125;;
+
+class Wind : public Instrument &#123;
+public:
+  &#x2F;&#x2F; Redefine interface function:
+  void play() &#123; cout &lt;&lt; &quot;Wind::play&quot; &lt;&lt; endl; &#125;
+&#125;;
+
+void tune(Instrument&amp; i) &#123;
+  i.play();
+&#125;
+
+int main() &#123;
+  Wind flute;
+  tune(flute); &#x2F;&#x2F;引用的向上类型转换(传参)，编译器早绑定，无对象切片产生
+  Instrument &amp;inst &#x3D; flute;  &#x2F;&#x2F; 引用的向上类型转换(赋值)
+  inst.play();
+&#125;</code></pre>
+<ul>
+<li>把函数体与函数调用相联系称为<strong>捆绑</strong>(binding)。<ul>
+<li>即将函数体实现代码的入口地址，与调用的函数名绑定。执行到调用代码时进入函数体内部。</li>
+</ul>
+</li>
+<li>当捆绑在程序运行之前（由编译器和连接器）完成时，称为<strong>早捆绑</strong>(early binding)。<ul>
+<li>运行之前已经决定了函数调用代码到底进入哪个函数。</li>
+<li>上面程序中的问题是早捆绑引起的，编译器将tune中的函数调用i.play()与Instrument::play()绑定。</li>
+</ul>
+</li>
+<li>当捆绑根据对象的实际类型(上例中即子类Wind而非Instrument)，发生在程序运行时，称为<strong>晚捆绑</strong>(late binding)，又称动态捆绑或运行时捆绑。<ul>
+<li>要求在运行时能确定对象的实际类型，并绑定正确的函数。</li>
+<li>晚捆绑只对类中的虚函数起作用，使用 virtual 关键字声明虚函数。</li>
+</ul>
+</li>
+</ul>
+<h3 id="9-4-虚函数与虚函数表"><a href="#9-4-虚函数与虚函数表" class="headerlink" title="9.4 虚函数与虚函数表"></a>9.4 虚函数与虚函数表</h3><ul>
+<li>对于被派生类重新定义的成员函数，若它<strong>在基类中被声明为虚函数</strong>，则通过基类<strong><code>指针或引用</code></strong>调用该成员函数时，编译器将根据所指（或引用）对象的实际类型决定是调用基类中的函数，还是调用派生类重写的函数。</li>
+<li>若某成员函数在基类中声明为虚函数，当派生类重写覆盖(同名，同参数函数)它时，无论是否声明为虚函数，该成员函数都仍然是虚函数。</li>
+</ul>
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 9.4.1
+#include &lt;iostream&gt;
+using namespace std;
+
+class Instrument &#123;
+public:
+  virtual void play() &#123; cout &lt;&lt; &quot;Instrument::play&quot; &lt;&lt; endl; &#125;
+&#125;;
+
+class Wind : public Instrument &#123;
+public:
+  void play() &#123; cout &lt;&lt; &quot;Wind::play&quot; &lt;&lt; endl; &#125;
+     &#x2F;&#x2F;&#x2F; 重写覆盖(稍后：重写隐藏和重写覆盖的区别）
+&#125;;
+
+void tune(Instrument&amp; ins) &#123;
+  ins.play(); &#x2F;&#x2F;&#x2F; 由于 Instrument::play 是虚函数，编译时不再直接绑定，运行时根据 ins 的实际类型调用。
+&#125;
+
+int main() &#123;
+  Wind flute;
+  tune(flute); &#x2F;&#x2F;&#x2F; 向上类型转换
+&#125;
+</code></pre>
+<ul>
+<li><p>一般来说，派生类虚函数的返回类型应该和基类相同。</p>
+<ul>
+<li><p>或者，是协变(Covariant)的，例如</p>
+<ul>
+<li>基类和派生类的指针是协变的</li>
+<li>基类和派生类的引用是协变的</li>
+</ul>
+</li>
+<li><p>```c++<br>// Example 9.4.2</p>
+<h1 id="include"><a href="#include" class="headerlink" title="include "></a>include <iostream></h1><p>using namespace std;</p>
+<p>class Instrument {<br>public:<br>  virtual Instrument&amp; getObj() { return *this; }<br>};</p>
+<p>class Wind : public Instrument {<br>public:<br>  virtual Wind&amp; getObj() { return *this;}<br>  //Wind&amp;和Instrument&amp;协变<br>};</p>
+<pre class="language-none"><code class="language-none">
++ 虚函数表
+  + 对象自身要包含自己实际类型的信息：用虚函数表表示。运行时通过虚函数表确定对象的实际类型。
+  + **虚函数表**(VTABLE)：每个包含虚函数的类用于存储虚函数地址的表(虚函数表有唯一性，即使没有重写虚函数)。
+  + 每个**包含虚函数的类对象**中，编译器秘密地放一个**指针**，称为**虚函数指针**(vpointer&#x2F;VPTR)，指向这个类的VTABLE。
+  + 当通过基类指针做虚函数调用时，编译器静态地插入能取得这个VPTR并在VTABLE表中查找函数地址的代码，这样就能调用正确的函数并引起晚捆绑的发生。
+    + **编译**期间：**建立虚函数表VTABLE**，记录每个类或该类的基类中所有已声明的虚函数入口地址。
+    + **运行**期间：**建立虚函数指针VPTR**，在构造函数中发生，指向相应的VTABLE。
+
+&#96;&#96;&#96;c++
+&#x2F;&#x2F; Example 9.4.3
+#include &lt;iostream&gt;
+using namespace std;
+class B &#123;
+   public:
+    virtual void fun1() &#123; cout &lt;&lt; &quot;B::fun1()&quot; &lt;&lt; endl; &#125;
+    virtual void fun2() &#123; cout &lt;&lt; &quot;B::fun2()&quot; &lt;&lt; endl; &#125;
+
+   private:
+    int i;
+    float j;
+&#125;;
+class D : public B &#123;
+   public:
+    virtual void fun1() &#123;
+        cout &lt;&lt; &quot;D::fun1()&quot; &lt;&lt; endl;
+    &#125;  &#x2F;&#x2F;&#x2F;对fun1重写覆盖，对fun2没有，则fun2使用基类的虚函数地址
+    double k;
+&#125;;
+int main() &#123;
+    B b;
+    D d;
+    B* pB &#x3D; &amp;d;
+    pB-&gt;fun1();
+&#125;</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.loli.net/2021/04/19/LEmhf6Y7igcUnPT.png" alt="image-20210419083950089"></p>
+<p>（图 9.4.4）</p>
+<h3 id="9-5-虚函数与构造函数、析构函数"><a href="#9-5-虚函数与构造函数、析构函数" class="headerlink" title="9.5 虚函数与构造函数、析构函数"></a>9.5 虚函数与构造函数、析构函数</h3><ul>
+<li><p>虚函数与构造函数</p>
+<ul>
+<li>当创建一个包含有虚函数的对象时，必须初始化它的VPTR以指向相应的VTABLE。设置VPTR的工作由构造函数完成。编译器在构造函数的开头秘密的插入能初始化VPTR的代码。</li>
+<li>构造函数不能也不必是虚函数。<ul>
+<li>不能：如果构造函数是虚函数，则创建对象时需要先知道VPTR，而在构造函数调用前，VPTR未初始化。</li>
+<li>不必：构造函数的作用是提供类中成员初始化，调用时明确指定要创建对象的类型，没有必要是虚函数。</li>
+</ul>
+</li>
+<li>在构造函数中调用一个虚函数，被调用的只是这个函数的本地版本(即当前类的版本)，即虚机制在构造函数中不工作。</li>
+<li>初始化顺序：(与构造函数初始化列表顺序无关)<ul>
+<li>基类初始化</li>
+<li>对象成员初始化</li>
+<li>构造函数体</li>
+</ul>
+</li>
+<li>原因：基类的构造函数比派生类先执行，调用基类构造函数时派生类中的数据成员还没有初始化。如果允许调用实际对象的虚函数，则可能会用到未初始化的派生类成员。</li>
+</ul>
+</li>
+<li><p>虚函数与析构函数</p>
+<ul>
+<li>析构函数能是虚的，且常常是虚的。虚析构函数仍需定义函数体。</li>
+<li>虚析构函数的用途：当删除基类对象指针时，编译器将根据指针所指对象的实际类型，调用相应的析构函数。</li>
+<li>若基类析构不是虚函数，则删除基类指针所指派生类对象时，编译器仅自动调用基类的析构函数，而不会考虑实际对象是不是基类的对象。这可能会导致内存泄漏。</li>
+<li>在析构函数中调用一个虚函数，被调用的只是这个函数的本地版本，即虚机制在析构函数中不工作。 </li>
+</ul>
+</li>
+</ul>
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 9.5.1
+#include &lt;iostream&gt;
+using namespace std;
+
+class Base1 &#123;
+public:
+  ~Base1() &#123; cout &lt;&lt; &quot;~Base1()\n&quot;; &#125;
+&#125;;
+
+class Derived1 : public Base1 &#123;
+public:
+  ~Derived1() &#123; cout &lt;&lt; &quot;~Derived1()\n&quot;; &#125;
+&#125;;
+
+class Base2 &#123;
+public:
+  virtual ~Base2() &#123; cout &lt;&lt; &quot;~Base2()\n&quot;; &#125;
+&#125;;
+
+class Derived2 : public Base2 &#123;
+public:
+  ~Derived2() &#123; cout &lt;&lt; &quot;~Derived2()\n&quot;; &#125;
+&#125;;
+
+int main() &#123;
+  Base1* bp &#x3D; new Derived1;
+  delete bp; &#x2F;&#x2F;&#x2F; 只调用了基类的虚析构函数
+  Base2* b2p &#x3D; new Derived2;
+  delete b2p; &#x2F;&#x2F;&#x2F; 派生类虚析构函数调用完后调用基类的虚析构函数
+&#125;
+
+&#x2F;&#x2F; Output
+~Base1()
+~Derived2()
+~Base2()</code></pre>
+<ul>
+<li>重要原则：总是将基类的析构函数设置为虚析构函数</li>
+</ul>
+<h3 id="9-6-重载、重写覆盖与重写隐藏"><a href="#9-6-重载、重写覆盖与重写隐藏" class="headerlink" title="9.6 重载、重写覆盖与重写隐藏"></a>9.6 重载、重写覆盖与重写隐藏</h3><ul>
+<li><strong>重载(overload)：</strong><ul>
+<li>函数名必须相同，函数参数必须不同，作用域相同(同一个类)，返回值可以相同或不同。</li>
+</ul>
+</li>
+<li><strong>重写覆盖(override)：</strong><ul>
+<li>派生类重新定义基类中的<strong>虚函数</strong>，<strong>函数名必须相同</strong>，函数<strong>参数必须相同</strong>，<strong>返回值一般情况应相同</strong>。</li>
+<li>派生类的虚函数表中原基类的虚函数指针会被派生类中重新定义的虚函数指针覆盖掉。</li>
+</ul>
+</li>
+<li><strong>重写隐藏(redefining)：</strong><ul>
+<li>派生类重新定义基类中的函数，<strong>函数名相同</strong>，但是<strong>参数不同或者基类的函数不是虚函数</strong>。</li>
+<li>虚函数表不会发生覆盖。</li>
+</ul>
+</li>
+<li><p>重写覆盖和重写隐藏：</p>
+<ul>
+<li>相同点：<ul>
+<li>都要求派生类定义的函数与基类同名。</li>
+<li>都会屏蔽基类中的同名函数，即派生类的实例无法调用基类的同名函数。</li>
+</ul>
+</li>
+<li>不同点：<ul>
+<li>重写覆盖要求基类的函数是虚函数，且函数参数相同，返回值一般情况应相同；重写隐藏要求基类的函数不是虚函数或者函数参数不同。</li>
+<li>重写覆盖会使派生类虚函数表中基类的虚函数的指针被派生类的虚函数指针覆盖。重写隐藏不会。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>override与final关键字</p>
+<ul>
+<li>重写覆盖要满足的条件很多，很容易写错，可以使用override关键字辅助检查。</li>
+<li>override关键字明确地告诉编译器一个函数是对基类中一个虚函数的重写覆盖，编译器将对重写覆盖要满足的条件进行检查，正确的重写覆盖才能通过编译。</li>
+<li>如果没有override关键字，但是满足了重写覆盖的各项条件，也能实现重写覆盖。它只是编译器的一个检查，正确实现override时，对编译结果没有影响。</li>
+</ul>
+</li>
+<li><p>不想让使用者继承？-&gt; final关键字!</p>
+<ul>
+<li>在虚函数声明或定义中使用时，final确保函数为虚且不可被派生类重写。可在继承关系链的“中途”进行设定，禁止后续派生类对指定虚函数重写。</li>
+<li>在类定义中使用时，final指定此类不可被继承。</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>OOP</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>OOP 课程笔记 Week 10 多态与模板</title>
     <url>/2021/oop-10/</url>
     <content><![CDATA[<h2 id="Week-10-多态与模板"><a href="#Week-10-多态与模板" class="headerlink" title="Week 10 多态与模板"></a>Week 10 多态与模板</h2><h3 id="10-0-Overview"><a href="#10-0-Overview" class="headerlink" title="10.0 Overview"></a>10.0 Overview</h3><ul>
@@ -1832,290 +2116,6 @@ array&lt;char, 10&gt; array0;</code></pre>
 <li>存在函数调用</li>
 </ul>
 </li>
-</ul>
-</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>OOP</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>OOP 课程笔记 Week 09 虚函数</title>
-    <url>/2021/oop-09/</url>
-    <content><![CDATA[<h2 id="Week-09-虚函数"><a href="#Week-09-虚函数" class="headerlink" title="Week 09 虚函数"></a>Week 09 虚函数</h2><h3 id="9-0-Overview"><a href="#9-0-Overview" class="headerlink" title="9.0 Overview"></a>9.0 Overview</h3><ul>
-<li>向上类型转换</li>
-<li>对象切片</li>
-<li>函数调用捆绑</li>
-<li>虚函数和虚函数表</li>
-<li>虚函数和构造函数、析构函数</li>
-<li>重写覆盖，override和final</li>
-</ul>
-<h3 id="9-1-向上类型转换"><a href="#9-1-向上类型转换" class="headerlink" title="9.1 向上类型转换"></a>9.1 向上类型转换</h3><ul>
-<li><strong>派生类</strong>对象/引用/指针<strong>转换成基类</strong>对象/引用/指针，称为向上类型转换。只对<code>public</code>继承有效，在继承图上是上升的；对<code>private</code>、<code>protected</code>继承无效。</li>
-<li>向上类型转换（派生类到基类）可以由编译器自动完成，是一种隐式类型转换。</li>
-<li>凡是<strong>接受基类对象/引用/指针的地方</strong>（如函数参数），都可以<strong>使用派生类对象/引用/指针</strong>，编译器会自动将派生类对象转换为基类对象以便使用。</li>
-</ul>
-<h3 id="9-2-对象切片"><a href="#9-2-对象切片" class="headerlink" title="9.2 对象切片"></a>9.2 对象切片</h3><ul>
-<li><p>当<strong>派生类的对象</strong><code>(不是指针或引用)</code>被通过<strong>传参或赋值</strong>的方式转换为<strong>基类的对象</strong>时，派生类的对象被<strong>切片</strong>为对应基类的子对象。</p>
-<ul>
-<li><img src="https://i.loli.net/2021/04/19/2tVMgrhZ3GPT1cI.png" alt="image-20210419081125275"></li>
-<li>派生类的新数据和新方法丢失（图 9.2.1）</li>
-</ul>
-</li>
-<li><p>当派生类的<code>指针（引用）</code>被通过<strong>传参或赋值</strong>的方式转换为基类<code>指针（引用）</code>时，不会创建新的对象，但只保留基类的接口。</p>
-</li>
-</ul>
-<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 9.2.2 私有继承“照此实现”
-#include &lt;iostream&gt;
-using namespace std;
-class B &#123;
-   private:
-    int data&#123;0&#125;;
-   public:
-    int getData() &#123; return data; &#125;
-    void setData(int i) &#123; data &#x3D; i; &#125;
-&#125;;
-class D1 : private B &#123;
-   public:
-    using B::getData;
-&#125;;
-int main() &#123;
-    D1 d1;
-    cout &lt;&lt; d1.getData();  
-    &#x2F;&#x2F; d1.setData(10) &#x2F;&#x2F;隐藏了基类的setData函数，不可访问 
-    &#x2F;&#x2F; B&amp; b &#x3D; d1;     &#x2F;&#x2F;不允许私有继承的向上转换
-    &#x2F;&#x2F; b.setData(10); &#x2F;&#x2F;否则可以绕过D1，调用基类的setData函数
-&#125;</code></pre>
-<h3 id="9-3-函数调用捆绑"><a href="#9-3-函数调用捆绑" class="headerlink" title="9.3 函数调用捆绑"></a>9.3 函数调用捆绑</h3><pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 9.3.1
-#include &lt;iostream&gt;
-using namespace std;
-
-class Instrument &#123;
-public:
-  void play() &#123; cout &lt;&lt; &quot;Instrument::play&quot; &lt;&lt; endl; &#125;
-&#125;;
-
-class Wind : public Instrument &#123;
-public:
-  &#x2F;&#x2F; Redefine interface function:
-  void play() &#123; cout &lt;&lt; &quot;Wind::play&quot; &lt;&lt; endl; &#125;
-&#125;;
-
-void tune(Instrument&amp; i) &#123;
-  i.play();
-&#125;
-
-int main() &#123;
-  Wind flute;
-  tune(flute); &#x2F;&#x2F;引用的向上类型转换(传参)，编译器早绑定，无对象切片产生
-  Instrument &amp;inst &#x3D; flute;  &#x2F;&#x2F; 引用的向上类型转换(赋值)
-  inst.play();
-&#125;</code></pre>
-<ul>
-<li>把函数体与函数调用相联系称为<strong>捆绑</strong>(binding)。<ul>
-<li>即将函数体实现代码的入口地址，与调用的函数名绑定。执行到调用代码时进入函数体内部。</li>
-</ul>
-</li>
-<li>当捆绑在程序运行之前（由编译器和连接器）完成时，称为<strong>早捆绑</strong>(early binding)。<ul>
-<li>运行之前已经决定了函数调用代码到底进入哪个函数。</li>
-<li>上面程序中的问题是早捆绑引起的，编译器将tune中的函数调用i.play()与Instrument::play()绑定。</li>
-</ul>
-</li>
-<li>当捆绑根据对象的实际类型(上例中即子类Wind而非Instrument)，发生在程序运行时，称为<strong>晚捆绑</strong>(late binding)，又称动态捆绑或运行时捆绑。<ul>
-<li>要求在运行时能确定对象的实际类型，并绑定正确的函数。</li>
-<li>晚捆绑只对类中的虚函数起作用，使用 virtual 关键字声明虚函数。</li>
-</ul>
-</li>
-</ul>
-<h3 id="9-4-虚函数与虚函数表"><a href="#9-4-虚函数与虚函数表" class="headerlink" title="9.4 虚函数与虚函数表"></a>9.4 虚函数与虚函数表</h3><ul>
-<li>对于被派生类重新定义的成员函数，若它<strong>在基类中被声明为虚函数</strong>，则通过基类<strong><code>指针或引用</code></strong>调用该成员函数时，编译器将根据所指（或引用）对象的实际类型决定是调用基类中的函数，还是调用派生类重写的函数。</li>
-<li>若某成员函数在基类中声明为虚函数，当派生类重写覆盖(同名，同参数函数)它时，无论是否声明为虚函数，该成员函数都仍然是虚函数。</li>
-</ul>
-<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 9.4.1
-#include &lt;iostream&gt;
-using namespace std;
-
-class Instrument &#123;
-public:
-  virtual void play() &#123; cout &lt;&lt; &quot;Instrument::play&quot; &lt;&lt; endl; &#125;
-&#125;;
-
-class Wind : public Instrument &#123;
-public:
-  void play() &#123; cout &lt;&lt; &quot;Wind::play&quot; &lt;&lt; endl; &#125;
-     &#x2F;&#x2F;&#x2F; 重写覆盖(稍后：重写隐藏和重写覆盖的区别）
-&#125;;
-
-void tune(Instrument&amp; ins) &#123;
-  ins.play(); &#x2F;&#x2F;&#x2F; 由于 Instrument::play 是虚函数，编译时不再直接绑定，运行时根据 ins 的实际类型调用。
-&#125;
-
-int main() &#123;
-  Wind flute;
-  tune(flute); &#x2F;&#x2F;&#x2F; 向上类型转换
-&#125;
-</code></pre>
-<ul>
-<li><p>一般来说，派生类虚函数的返回类型应该和基类相同。</p>
-<ul>
-<li><p>或者，是协变(Covariant)的，例如</p>
-<ul>
-<li>基类和派生类的指针是协变的</li>
-<li>基类和派生类的引用是协变的</li>
-</ul>
-</li>
-<li><p>```c++<br>// Example 9.4.2</p>
-<h1 id="include"><a href="#include" class="headerlink" title="include "></a>include <iostream></h1><p>using namespace std;</p>
-<p>class Instrument {<br>public:<br>  virtual Instrument&amp; getObj() { return *this; }<br>};</p>
-<p>class Wind : public Instrument {<br>public:<br>  virtual Wind&amp; getObj() { return *this;}<br>  //Wind&amp;和Instrument&amp;协变<br>};</p>
-<pre class="language-none"><code class="language-none">
-+ 虚函数表
-  + 对象自身要包含自己实际类型的信息：用虚函数表表示。运行时通过虚函数表确定对象的实际类型。
-  + **虚函数表**(VTABLE)：每个包含虚函数的类用于存储虚函数地址的表(虚函数表有唯一性，即使没有重写虚函数)。
-  + 每个**包含虚函数的类对象**中，编译器秘密地放一个**指针**，称为**虚函数指针**(vpointer&#x2F;VPTR)，指向这个类的VTABLE。
-  + 当通过基类指针做虚函数调用时，编译器静态地插入能取得这个VPTR并在VTABLE表中查找函数地址的代码，这样就能调用正确的函数并引起晚捆绑的发生。
-    + **编译**期间：**建立虚函数表VTABLE**，记录每个类或该类的基类中所有已声明的虚函数入口地址。
-    + **运行**期间：**建立虚函数指针VPTR**，在构造函数中发生，指向相应的VTABLE。
-
-&#96;&#96;&#96;c++
-&#x2F;&#x2F; Example 9.4.3
-#include &lt;iostream&gt;
-using namespace std;
-class B &#123;
-   public:
-    virtual void fun1() &#123; cout &lt;&lt; &quot;B::fun1()&quot; &lt;&lt; endl; &#125;
-    virtual void fun2() &#123; cout &lt;&lt; &quot;B::fun2()&quot; &lt;&lt; endl; &#125;
-
-   private:
-    int i;
-    float j;
-&#125;;
-class D : public B &#123;
-   public:
-    virtual void fun1() &#123;
-        cout &lt;&lt; &quot;D::fun1()&quot; &lt;&lt; endl;
-    &#125;  &#x2F;&#x2F;&#x2F;对fun1重写覆盖，对fun2没有，则fun2使用基类的虚函数地址
-    double k;
-&#125;;
-int main() &#123;
-    B b;
-    D d;
-    B* pB &#x3D; &amp;d;
-    pB-&gt;fun1();
-&#125;</code></pre>
-</li>
-</ul>
-</li>
-</ul>
-<p><img src="https://i.loli.net/2021/04/19/LEmhf6Y7igcUnPT.png" alt="image-20210419083950089"></p>
-<p>（图 9.4.4）</p>
-<h3 id="9-5-虚函数与构造函数、析构函数"><a href="#9-5-虚函数与构造函数、析构函数" class="headerlink" title="9.5 虚函数与构造函数、析构函数"></a>9.5 虚函数与构造函数、析构函数</h3><ul>
-<li><p>虚函数与构造函数</p>
-<ul>
-<li>当创建一个包含有虚函数的对象时，必须初始化它的VPTR以指向相应的VTABLE。设置VPTR的工作由构造函数完成。编译器在构造函数的开头秘密的插入能初始化VPTR的代码。</li>
-<li>构造函数不能也不必是虚函数。<ul>
-<li>不能：如果构造函数是虚函数，则创建对象时需要先知道VPTR，而在构造函数调用前，VPTR未初始化。</li>
-<li>不必：构造函数的作用是提供类中成员初始化，调用时明确指定要创建对象的类型，没有必要是虚函数。</li>
-</ul>
-</li>
-<li>在构造函数中调用一个虚函数，被调用的只是这个函数的本地版本(即当前类的版本)，即虚机制在构造函数中不工作。</li>
-<li>初始化顺序：(与构造函数初始化列表顺序无关)<ul>
-<li>基类初始化</li>
-<li>对象成员初始化</li>
-<li>构造函数体</li>
-</ul>
-</li>
-<li>原因：基类的构造函数比派生类先执行，调用基类构造函数时派生类中的数据成员还没有初始化。如果允许调用实际对象的虚函数，则可能会用到未初始化的派生类成员。</li>
-</ul>
-</li>
-<li><p>虚函数与析构函数</p>
-<ul>
-<li>析构函数能是虚的，且常常是虚的。虚析构函数仍需定义函数体。</li>
-<li>虚析构函数的用途：当删除基类对象指针时，编译器将根据指针所指对象的实际类型，调用相应的析构函数。</li>
-<li>若基类析构不是虚函数，则删除基类指针所指派生类对象时，编译器仅自动调用基类的析构函数，而不会考虑实际对象是不是基类的对象。这可能会导致内存泄漏。</li>
-<li>在析构函数中调用一个虚函数，被调用的只是这个函数的本地版本，即虚机制在析构函数中不工作。 </li>
-</ul>
-</li>
-</ul>
-<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 9.5.1
-#include &lt;iostream&gt;
-using namespace std;
-
-class Base1 &#123;
-public:
-  ~Base1() &#123; cout &lt;&lt; &quot;~Base1()\n&quot;; &#125;
-&#125;;
-
-class Derived1 : public Base1 &#123;
-public:
-  ~Derived1() &#123; cout &lt;&lt; &quot;~Derived1()\n&quot;; &#125;
-&#125;;
-
-class Base2 &#123;
-public:
-  virtual ~Base2() &#123; cout &lt;&lt; &quot;~Base2()\n&quot;; &#125;
-&#125;;
-
-class Derived2 : public Base2 &#123;
-public:
-  ~Derived2() &#123; cout &lt;&lt; &quot;~Derived2()\n&quot;; &#125;
-&#125;;
-
-int main() &#123;
-  Base1* bp &#x3D; new Derived1;
-  delete bp; &#x2F;&#x2F;&#x2F; 只调用了基类的虚析构函数
-  Base2* b2p &#x3D; new Derived2;
-  delete b2p; &#x2F;&#x2F;&#x2F; 派生类虚析构函数调用完后调用基类的虚析构函数
-&#125;
-
-&#x2F;&#x2F; Output
-~Base1()
-~Derived2()
-~Base2()</code></pre>
-<ul>
-<li>重要原则：总是将基类的析构函数设置为虚析构函数</li>
-</ul>
-<h3 id="9-6-重载、重写覆盖与重写隐藏"><a href="#9-6-重载、重写覆盖与重写隐藏" class="headerlink" title="9.6 重载、重写覆盖与重写隐藏"></a>9.6 重载、重写覆盖与重写隐藏</h3><ul>
-<li><strong>重载(overload)：</strong><ul>
-<li>函数名必须相同，函数参数必须不同，作用域相同(同一个类)，返回值可以相同或不同。</li>
-</ul>
-</li>
-<li><strong>重写覆盖(override)：</strong><ul>
-<li>派生类重新定义基类中的<strong>虚函数</strong>，<strong>函数名必须相同</strong>，函数<strong>参数必须相同</strong>，<strong>返回值一般情况应相同</strong>。</li>
-<li>派生类的虚函数表中原基类的虚函数指针会被派生类中重新定义的虚函数指针覆盖掉。</li>
-</ul>
-</li>
-<li><strong>重写隐藏(redefining)：</strong><ul>
-<li>派生类重新定义基类中的函数，<strong>函数名相同</strong>，但是<strong>参数不同或者基类的函数不是虚函数</strong>。</li>
-<li>虚函数表不会发生覆盖。</li>
-</ul>
-</li>
-<li><p>重写覆盖和重写隐藏：</p>
-<ul>
-<li>相同点：<ul>
-<li>都要求派生类定义的函数与基类同名。</li>
-<li>都会屏蔽基类中的同名函数，即派生类的实例无法调用基类的同名函数。</li>
-</ul>
-</li>
-<li>不同点：<ul>
-<li>重写覆盖要求基类的函数是虚函数，且函数参数相同，返回值一般情况应相同；重写隐藏要求基类的函数不是虚函数或者函数参数不同。</li>
-<li>重写覆盖会使派生类虚函数表中基类的虚函数的指针被派生类的虚函数指针覆盖。重写隐藏不会。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>override与final关键字</p>
-<ul>
-<li>重写覆盖要满足的条件很多，很容易写错，可以使用override关键字辅助检查。</li>
-<li>override关键字明确地告诉编译器一个函数是对基类中一个虚函数的重写覆盖，编译器将对重写覆盖要满足的条件进行检查，正确的重写覆盖才能通过编译。</li>
-<li>如果没有override关键字，但是满足了重写覆盖的各项条件，也能实现重写覆盖。它只是编译器的一个检查，正确实现override时，对编译结果没有影响。</li>
-</ul>
-</li>
-<li><p>不想让使用者继承？-&gt; final关键字!</p>
-<ul>
-<li>在虚函数声明或定义中使用时，final确保函数为虚且不可被派生类重写。可在继承关系链的“中途”进行设定，禁止后续派生类对指定虚函数重写。</li>
-<li>在类定义中使用时，final指定此类不可被继承。</li>
 </ul>
 </li>
 </ul>
