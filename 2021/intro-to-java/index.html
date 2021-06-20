@@ -20,28 +20,44 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"cc7w.cf","root":"/","images":"/images","scheme":"Gemini","version":"8.5.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
-<meta name="description" content="Week 11 模板与STL初步11.0 Overview 类模板与函数模板特化 命名空间 STL初步——容器与迭代器  11.1 命名空间 为了避免在大规模程序的设计中，以及在程序员使用各种各样的C++库时，标识符的命名发生冲突，标准C++引入了关键字namespace（命名空间），可以更好地控制标识符的作用域。 标准C++库（不包括标准C库）中所包含的所有内容（包括常量、变量、结构、类和函数等">
+<meta name="description" content="Java 语言程序设计 Chap 12, 13 笔记§ 12 异常处理和文本I&#x2F;O异常处理Java 中的运行时错误会作为异常，这种对象被抛出，而如果抛出的异常没有被处理，程序会非正常终止。   异常的类型     异常处理模型 declaring -&gt; throwing -&gt; catching     finally 语句  自定义异常类    文件I&#x2F;O 文件类 File    写">
 <meta property="og:type" content="article">
-<meta property="og:title" content="OOP 课程笔记 Week 11 模板与STL初步">
-<meta property="og:url" content="https://cc7w.cf/2021/oop-11/index.html">
+<meta property="og:title" content="Java 语言程序设计 Chap 12, 13 笔记">
+<meta property="og:url" content="https://cc7w.cf/2021/intro-to-java/index.html">
 <meta property="og:site_name" content="c7w 的破站 v2.0">
-<meta property="og:description" content="Week 11 模板与STL初步11.0 Overview 类模板与函数模板特化 命名空间 STL初步——容器与迭代器  11.1 命名空间 为了避免在大规模程序的设计中，以及在程序员使用各种各样的C++库时，标识符的命名发生冲突，标准C++引入了关键字namespace（命名空间），可以更好地控制标识符的作用域。 标准C++库（不包括标准C库）中所包含的所有内容（包括常量、变量、结构、类和函数等">
+<meta property="og:description" content="Java 语言程序设计 Chap 12, 13 笔记§ 12 异常处理和文本I&#x2F;O异常处理Java 中的运行时错误会作为异常，这种对象被抛出，而如果抛出的异常没有被处理，程序会非正常终止。   异常的类型     异常处理模型 declaring -&gt; throwing -&gt; catching     finally 语句  自定义异常类    文件I&#x2F;O 文件类 File    写">
 <meta property="og:locale">
-<meta property="article:published_time" content="2021-05-05T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-06-18T07:09:57.272Z">
+<meta property="og:image" content="https://i.loli.net/2021/06/20/hn4zWvlPVmRAfjs.png">
+<meta property="og:image" content="https://i.loli.net/2021/06/20/XOrLyW3uFJ5Dwqm.png">
+<meta property="og:image" content="https://i.loli.net/2021/06/20/2Ga1goTf5FDRxEy.png">
+<meta property="og:image" content="https://i.loli.net/2021/06/20/RL2cOK8rluwJUG7.png">
+<meta property="og:image" content="https://i.loli.net/2021/06/20/T3lVvEK5xo9Wkuc.png">
+<meta property="og:image" content="https://i.loli.net/2021/06/20/CRFP5L1WHIYEBpx.png">
+<meta property="og:image" content="https://i.loli.net/2021/06/20/wPzZaL7VIYKWUNc.png">
+<meta property="og:image" content="https://i.loli.net/2021/06/20/B2MxU41hQq3kwFu.png">
+<meta property="og:image" content="https://i.loli.net/2021/06/20/4362nMRXLCJaqYx.png">
+<meta property="og:image" content="https://i.loli.net/2021/06/20/gzUiAfGE6v83WCx.png">
+<meta property="og:image" content="https://i.loli.net/2021/06/20/j3RAO1wqDsgG9ar.png">
+<meta property="og:image" content="https://i.loli.net/2021/06/20/JWalQBtCKkYA61m.png">
+<meta property="og:image" content="https://i.loli.net/2021/06/20/gLMbBeXJCQAaVzr.png">
+<meta property="og:image" content="https://i.loli.net/2021/06/20/dOLDjAVpaSyem8Z.png">
+<meta property="og:image" content="https://i.loli.net/2021/06/20/QVeTfHq9aBj4puS.png">
+<meta property="article:published_time" content="2021-06-19T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-06-20T08:58:36.169Z">
 <meta property="article:author" content="c7w">
-<meta property="article:tag" content="OOP">
+<meta property="article:tag" content="Java">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/06/20/hn4zWvlPVmRAfjs.png">
 
 
-<link rel="canonical" href="https://cc7w.cf/2021/oop-11/">
+<link rel="canonical" href="https://cc7w.cf/2021/intro-to-java/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh","comments":true,"permalink":"https://cc7w.cf/2021/oop-11/","path":"2021/oop-11/","title":"OOP 课程笔记 Week 11 模板与STL初步"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh","comments":true,"permalink":"https://cc7w.cf/2021/intro-to-java/","path":"2021/intro-to-java/","title":"Java 语言程序设计 Chap 12, 13 笔记"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>OOP 课程笔记 Week 11 模板与STL初步 | c7w 的破站 v2.0</title>
+<title>Java 语言程序设计 Chap 12, 13 笔记 | c7w 的破站 v2.0</title>
   
 
 
@@ -117,7 +133,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Week-11-%E6%A8%A1%E6%9D%BF%E4%B8%8ESTL%E5%88%9D%E6%AD%A5"><span class="nav-number">1.</span> <span class="nav-text">Week 11 模板与STL初步</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#11-0-Overview"><span class="nav-number">1.1.</span> <span class="nav-text">11.0 Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-1-%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4"><span class="nav-number">1.2.</span> <span class="nav-text">11.1 命名空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-2-STL%E5%88%9D%E6%AD%A5"><span class="nav-number">1.3.</span> <span class="nav-text">11.2 STL初步</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1-Chap-12-13-%E7%AC%94%E8%AE%B0"><span class="nav-number">1.</span> <span class="nav-text">Java 语言程序设计 Chap 12, 13 笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%C2%A7-12-%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%E5%92%8C%E6%96%87%E6%9C%ACI-O"><span class="nav-number">1.1.</span> <span class="nav-text">§ 12 异常处理和文本I&#x2F;O</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86"><span class="nav-number">1.1.1.</span> <span class="nav-text">异常处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%87%E4%BB%B6I-O"><span class="nav-number">1.1.2.</span> <span class="nav-text">文件I&#x2F;O</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%C2%A7-13-%E6%8A%BD%E8%B1%A1%E7%B1%BB%E5%92%8C%E6%8E%A5%E5%8F%A3"><span class="nav-number">1.2.</span> <span class="nav-text">§ 13 抽象类和接口</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -188,7 +204,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh">
-    <link itemprop="mainEntityOfPage" href="https://cc7w.cf/2021/oop-11/">
+    <link itemprop="mainEntityOfPage" href="https://cc7w.cf/2021/intro-to-java/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -201,7 +217,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          OOP 课程笔记 Week 11 模板与STL初步
+          Java 语言程序设计 Chap 12, 13 笔记
         </h1>
 
         <div class="post-meta-container">
@@ -211,16 +227,10 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
+      
 
-      <time title="Created: 2021-05-06 00:00:00" itemprop="dateCreated datePublished" datetime="2021-05-06T00:00:00+08:00">2021-05-06</time>
+      <time title="Created: 2021-06-20 00:00:00 / Modified: 16:58:36" itemprop="dateCreated datePublished" datetime="2021-06-20T00:00:00+08:00">2021-06-20</time>
     </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-06-18 15:09:57" itemprop="dateModified" datetime="2021-06-18T15:09:57+08:00">2021-06-18</time>
-      </span>
 
   
 </div>
@@ -232,109 +242,51 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2 id="Week-11-模板与STL初步"><a href="#Week-11-模板与STL初步" class="headerlink" title="Week 11 模板与STL初步"></a>Week 11 模板与STL初步</h2><h3 id="11-0-Overview"><a href="#11-0-Overview" class="headerlink" title="11.0 Overview"></a>11.0 Overview</h3><ul>
-<li><s>类模板与函数模板特化</s></li>
-<li>命名空间</li>
-<li>STL初步——容器与迭代器</li>
-</ul>
-<h3 id="11-1-命名空间"><a href="#11-1-命名空间" class="headerlink" title="11.1 命名空间"></a>11.1 命名空间</h3><ul>
-<li>为了避免在大规模程序的设计中，以及在程序员使用各种各样的C++库时，标识符的命名发生冲突，标准C++引入了关键字namespace（命名空间），可以更好地控制标识符的作用域。</li>
-<li>标准C++库（不包括标准C库）中所包含的所有内容（包括常量、变量、结构、类和函数等）都被定义在命名空间std（standard标准）中。</li>
-</ul>
-<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 11.1.1
-&#x2F;&#x2F; 定义命名空间
-namespace A &#123;
-	int x, y;
-&#125;
-&#x2F;&#x2F; 使用命名空间
-A::x &#x3D; 3;
-A::y &#x3D; 6;</code></pre>
+        <p><img src="https://i.loli.net/2021/06/20/hn4zWvlPVmRAfjs.png" alt="image-20210620145438112"></p>
+<h2 id="Java-语言程序设计-Chap-12-13-笔记"><a href="#Java-语言程序设计-Chap-12-13-笔记" class="headerlink" title="Java 语言程序设计 Chap 12, 13 笔记"></a>Java 语言程序设计 Chap 12, 13 笔记</h2><h3 id="§-12-异常处理和文本I-O"><a href="#§-12-异常处理和文本I-O" class="headerlink" title="§ 12 异常处理和文本I/O"></a>§ 12 异常处理和文本I/O</h3><h4 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h4><p>Java 中的<strong>运行时错误</strong>会作为<strong>异常</strong>，这种<strong>对象</strong>被抛出，而如果抛出的异常没有被处理，程序会非正常终止。</p>
+<p><img src="https://i.loli.net/2021/06/20/XOrLyW3uFJ5Dwqm.png" alt="image-20210620150112414"></p>
 <ul>
-<li>使用using声明简化命名空间使用</li>
-<li>使用整个命名空间：所有成员都直接可用<code>using namespace A;</code> <code>x = 3; y = 6;</code></li>
-<li>使用部分成员：所选成员可直接使用  <code>using A::x;</code> <code>x = 3; A::y = 6;</code></li>
-<li>任何情况下，都不应出现命名冲突</li>
+<li>异常的类型</li>
 </ul>
-<h3 id="11-2-STL初步"><a href="#11-2-STL初步" class="headerlink" title="11.2 STL初步"></a>11.2 STL初步</h3><ul>
-<li><p>标准模板库（英文：Standard Template Library，缩写：STL），是一个高效的C++软件库，它被容纳于C++ 标准程序库C++ Standard Library中。其中包含4个组件，分别为算法、容器、函数、迭代器。基于模板编写。关键理念：将“在数据上执行的操作”与“要执行操作的数据”分离。</p>
-</li>
-<li><p>简单容器</p>
+<p><img src="https://i.loli.net/2021/06/20/2Ga1goTf5FDRxEy.png" alt="image-20210620152135135"></p>
+<p><img src="https://i.loli.net/2021/06/20/RL2cOK8rluwJUG7.png" alt="image-20210620152415538"></p>
 <ul>
-<li>容器是包含、放置数据的工具。通常为数据结构。<ul>
-<li>简单容器（simple container）</li>
-<li>序列容器（sequence container）</li>
-<li>关系容器（associative container）</li>
+<li>异常处理模型 declaring -&gt; throwing -&gt; catching</li>
 </ul>
-</li>
-</ul>
-</li>
-<li><code>std::pair</code></li>
-<li><code>std::tuple</code></li>
-<li><p><code>std::vector</code></p>
+<p><img src="https://i.loli.net/2021/06/20/T3lVvEK5xo9Wkuc.png" alt="image-20210620152541858"></p>
+<p><img src="https://i.loli.net/2021/06/20/CRFP5L1WHIYEBpx.png" alt="image-20210620153031756"></p>
 <ul>
-<li>创建：<code>std::vector&lt;int&gt; x;</code></li>
-<li>当前数组长度： <code>x.size();</code></li>
-<li>清空： <code>x.clear();</code></li>
-<li>在末尾添加/删除：（高速）<code>x.push_back(1); x.pop_back();</code></li>
-<li>在中间添加/删除：（使用迭代器，低速）<code>x.insert(x.begin()+1, 5);</code> <code>x.erase(x.begin()+1);</code></li>
-</ul>
+<li><p>finally 语句</p>
 </li>
-<li><p>迭代器</p>
+<li><p>自定义异常类</p>
+</li>
+</ul>
+<p><img src="https://i.loli.net/2021/06/20/wPzZaL7VIYKWUNc.png" alt="image-20210620153455786"></p>
+<h4 id="文件I-O"><a href="#文件I-O" class="headerlink" title="文件I/O"></a>文件I/O</h4><ul>
+<li>文件类 File</li>
+</ul>
+<p><img src="https://i.loli.net/2021/06/20/B2MxU41hQq3kwFu.png" alt="image-20210620153648056"></p>
 <ul>
-<li>一种检查容器内元素并遍历元素的数据类型。</li>
-<li>提供一种方法顺序访问一个聚合对象中各个元素, 而又不需暴露该对象的内部表示。</li>
-<li>为遍历不同的聚合结构（需拥有相同的基类）提供一个统一的接口。</li>
-<li>使用上类似指针。</li>
+<li>写入数据 PrintWriter 类</li>
 </ul>
-</li>
-<li><p>迭代器：失效</p>
-</li>
-<li><p>当迭代器不再指向本应指向的元素时，称此迭代器失效。</p>
+<p><img src="https://i.loli.net/2021/06/20/4362nMRXLCJaqYx.png" alt="image-20210620155626076"></p>
 <ul>
-<li>vector中什么情况下会发生迭代器失效？</li>
-<li>看作纯粹的指针<ul>
-<li>调用insert/erase后，所修改位置之后的所有迭代器失效。（原先的内存空间存储的元素被改变）</li>
-<li>调用push_back等修改vector大小的方法时，可能会使所有迭代器失效（Push_back到了一定程度之后，可能会造成数组的整体移动，导致所有的内存地址发生改变。）</li>
+<li>读入数据 Scanner 类</li>
 </ul>
-</li>
+<p><img src="https://i.loli.net/2021/06/20/gzUiAfGE6v83WCx.png" alt="image-20210620160405882"></p>
+<h3 id="§-13-抽象类和接口"><a href="#§-13-抽象类和接口" class="headerlink" title="§ 13 抽象类和接口"></a>§ 13 抽象类和接口</h3><ul>
+<li>使用 <code>abstract</code> 关键字</li>
+<li>接口</li>
 </ul>
-</li>
-<li><p><code>std::list</code></p>
-</li>
-</ul>
-<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; 插入前端：
- l.push_front(1);
-&#x2F;&#x2F; 插入末端：
- l.push_back(2); 
-&#x2F;&#x2F; 查询：
- std::find(l.begin(), l.end(), 2); &#x2F;&#x2F;返回迭代器
-&#x2F;&#x2F; 插入指定位置：
- l.insert(it, 4); &#x2F;&#x2F;it为迭代器</code></pre>
+<p><img src="https://i.loli.net/2021/06/20/j3RAO1wqDsgG9ar.png" alt="image-20210620162928845"></p>
+<p><img src="https://i.loli.net/2021/06/20/JWalQBtCKkYA61m.png" alt="image-20210620163020435"></p>
+<p><img src="https://i.loli.net/2021/06/20/gLMbBeXJCQAaVzr.png" alt="image-20210620163038375"></p>
+<p><img src="https://i.loli.net/2021/06/20/dOLDjAVpaSyem8Z.png" alt="image-20210620163054898"></p>
+<p><img src="https://i.loli.net/2021/06/20/QVeTfHq9aBj4puS.png" alt="image-20210620163120256"></p>
 <ul>
-<li><p><code>std::list</code></p>
-<ul>
-<li>不支持下标等随机访问</li>
-<li>支持高速的在任意位置插入/删除数据</li>
-<li>其访问主要依赖迭代器</li>
-<li>操作不会导致迭代器失效（除指向被删除的元素的迭代器外）</li>
-</ul>
-</li>
-<li><p><code>std::set</code></p>
-</li>
-</ul>
-<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; 插入：
- s.insert(1);
-&#x2F;&#x2F; 查询：
- s.find(1);   &#x2F;&#x2F;返回迭代器
-&#x2F;&#x2F; 删除：
- s.erase(s.find(1));   &#x2F;&#x2F;导致被删除元素的迭代器失效
-&#x2F;&#x2F; 统计：
- s.count(1);   &#x2F;&#x2F;1的个数，总是0或1</code></pre>
-<ul>
-<li><code>std::map</code><ul>
-<li>其值类型为pair<Key, T>。</li>
-<li>map中的元素key互不相同，需要key存在比较器。</li>
-<li>可以通过下标访问（即使key不是整数）。下标访问时如果元素不存在，则创建对应元素。</li>
+<li>几种常用的接口<ul>
+<li>Comparable<E></li>
+<li>Cloneable</li>
 </ul>
 </li>
 </ul>
@@ -347,21 +299,18 @@ A::y &#x3D; 6;</code></pre>
 
     <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/OOP/" rel="tag"><i class="fa fa-tag"></i> OOP</a>
+              <a href="/tags/Java/" rel="tag"><i class="fa fa-tag"></i> Java</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2021/oop-10/" rel="prev" title="OOP 课程笔记 Week 10 多态与模板">
-                  <i class="fa fa-chevron-left"></i> OOP 课程笔记 Week 10 多态与模板
+                <a href="/2021/oop-11/" rel="prev" title="OOP 课程笔记 Week 11 模板与STL初步">
+                  <i class="fa fa-chevron-left"></i> OOP 课程笔记 Week 11 模板与STL初步
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2021/intro-to-java/" rel="next" title="Java 语言程序设计 Chap 12, 13 笔记">
-                  Java 语言程序设计 Chap 12, 13 笔记 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
