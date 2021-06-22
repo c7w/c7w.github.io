@@ -126,7 +126,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">20</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -172,6 +172,806 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://cc7w.cf/2021/oop-10/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="c7w">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="c7w 的破站 v2.0">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/oop-10/" class="post-title-link" itemprop="url">OOP 课程笔记 Week 10 多态与模板</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-04-26 00:00:00" itemprop="dateCreated datePublished" datetime="2021-04-26T00:00:00+08:00">2021-04-26</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-06-18 14:56:02" itemprop="dateModified" datetime="2021-06-18T14:56:02+08:00">2021-06-18</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="Week-10-多态与模板"><a href="#Week-10-多态与模板" class="headerlink" title="Week 10 多态与模板"></a>Week 10 多态与模板</h2><h3 id="10-0-Overview"><a href="#10-0-Overview" class="headerlink" title="10.0 Overview"></a>10.0 Overview</h3><ul>
+<li>纯虚函数与抽象类</li>
+<li>向下类型转换</li>
+<li>多重继承的虚函数表，多重继承的利弊</li>
+<li>多态</li>
+<li>函数模板与类模板</li>
+</ul>
+<h3 id="10-1-纯虚函数与抽象类"><a href="#10-1-纯虚函数与抽象类" class="headerlink" title="10.1 纯虚函数与抽象类"></a>10.1 纯虚函数与抽象类</h3><ul>
+<li><p>虚函数还可以进一步声明为纯虚函数，包含纯虚函数的类，通常被称为“抽象类”。</p>
+<ul>
+<li><code>virtual 返回类型 函数名(形式参数) = 0;</code></li>
+</ul>
+</li>
+<li><p>抽象类不允许定义对象，定义基类为抽象类的主要用途是为派生类规定共性“接口”</p>
+</li>
+</ul>
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 10.1.1
+class A &#123;
+   public:
+    virtual void f() &#x3D; 0; &#x2F;&#x2F;&#x2F; 可在类外定义函数体提供默认实现。派生类通过 A::f() 调用
+&#125;;
+A obj; &#x2F;&#x2F;&#x2F; 不准抽象类定义对象！编译不通过！</code></pre>
+<ul>
+<li><p>抽象类</p>
+<ul>
+<li>定义：含有至少一个纯虚函数。</li>
+<li>特点：<ul>
+<li>不允许定义对象。</li>
+<li>只能为派生类提供接口。</li>
+<li>能避免对象切片：保证只有指针和引用能被向上类型转换。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>基类纯虚函数被派生类重写覆盖之前仍是纯虚函数。因此当继承一个抽象类时，必须实现所有纯虚函数，否则继承出的类也是抽象类。</p>
+</li>
+<li><strong>纯虚析构函数除外</strong><ul>
+<li>对于纯虚析构函数而言，即便派生类中不显式实现，编译器也会自动合成默认析构函数。因此，即使派生类不覆盖纯虚析构函数，派生类可以不是抽象类，可以定义派生类对象。</li>
+<li>回顾：虚函数与析构函数<ul>
+<li>析构函数能是虚的，且常常是虚的。<strong>虚析构函数仍需定义函数体</strong>。</li>
+<li>虚析构函数的用途：当删除基类对象指针时，编译器将根据指针所指对象的实际类型，调用相应的析构函数。</li>
+</ul>
+</li>
+<li>析构函数也可以是纯虚函数<ul>
+<li>纯虚析构函数仍然需要函数体</li>
+<li>目的：使基类成为抽象类，不能创建基类的对象。如果有其他函数是纯虚函数，则析构函数不必是纯虚的。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 10.1.2
+class Base &#123;
+   public: 
+    virtual ~Base()&#x3D;0; 
+&#125;;
+Base::~Base() &#123;&#125; &#x2F;&#x2F;&#x2F; 必须有函数体
+class Derive : public Base &#123;&#125;;
+int main() &#123;
+    Base b; &#x2F;&#x2F;&#x2F; 编译错误，基类是抽象类
+    Derive d1;
+    return 0;
+&#125;</code></pre>
+<h3 id="10-2-向下类型转换"><a href="#10-2-向下类型转换" class="headerlink" title="10.2 向下类型转换"></a>10.2 向下类型转换</h3><ul>
+<li>基类指针/引用转换成派生类指针/引用，则称为向下类型转换。（类层次中向下移动）</li>
+<li>如何确保转换的正确性？<ul>
+<li>如何保证基类指针指向的对象也可以被要转换的派生类的指针指向？—— 借助虚函数表进行动态类型检查！</li>
+</ul>
+</li>
+<li>C++提供了一个特殊的显式类型转换，称为<code>dynamic_cast</code>，是一种安全类型向下类型转换。<ul>
+<li>使用dynamic_cast的对象必须有虚函数，因为它使用了存储在虚函数表中的信息判断实际的类型。使用方法：<ul>
+<li>obj_p，obj_r分别是T1类型的指针和引用<ul>
+<li><code>T2* pObj = dynamic_cast&lt;T2*&gt;(obj_p);</code>//转换为T2指针，运行时失败返回 <code>nullptr</code></li>
+<li><code>T2&amp; refObj = dynamic_cast&lt;T2&amp;&gt;(obj_r);</code> //转换为T2引用，运行时失败抛出 <code>bad_cast</code> 异常</li>
+</ul>
+</li>
+<li>T1必须是多态类型（声明或继承了至少一个虚函数的类），否则不过编译；T2不必。T1,T2没有继承关系也能通过编译，只不过运行时会转换失败。</li>
+</ul>
+</li>
+<li>如果我们知道正在处理的是哪些类型，可以使用static_cast来避免这种开销。<ul>
+<li>static_cast在编译时静态浏览类层次，只检查继承关系。没有继承关系的类之间，必须具有转换途径才能进行转换（要么自定义，要么是语言语法支持），否则不过编译。运行时无法确认是否正确转换。</li>
+<li>static_cast使用方法：<ul>
+<li>obj_p，obj_r分别是T1类型的指针和引用</li>
+<li><code>T2* pObj = static_cast&lt;T2*&gt;(obj_p);</code>   //转换为T2指针</li>
+<li><code>T2&amp; refObj = static_cast&lt;T2&amp;&gt;(obj_r);</code>   //转换为T2引用</li>
+<li>不安全：不保证转换后的目标是T2类型的，可能导致非法内存访问。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 10.2.1
+#include &lt;iostream&gt;
+using namespace std;
+class B &#123;
+   public:
+    virtual void f()&#123;&#125;;
+&#125;;
+class D : public B &#123;
+   public:
+    int i&#123;2018&#125;;
+&#125;;
+int main() &#123;
+    D d;
+    B b;
+    &#x2F;&#x2F;    D d1 &#x3D; static_cast&lt;D&gt;(b); &#x2F;&#x2F;&#x2F;未定义类型转换方式
+    &#x2F;&#x2F;    D d2 &#x3D; dynamic_cast&lt;D&gt;(b); &#x2F;&#x2F;&#x2F;只允许指针和引用转换
+
+    D* pd1 &#x3D; static_cast&lt;D*&gt;(&amp;b);  &#x2F;&#x2F;&#x2F; 有继承关系，允许转换
+    if (pd1 !&#x3D; nullptr) &#123;
+        cout &lt;&lt; &quot;static_cast, B*(B) --&gt; D*: OK&quot; &lt;&lt; endl;
+        cout &lt;&lt; &quot;D::i&#x3D;&quot; &lt;&lt; pd1-&gt;i &lt;&lt; endl;
+    &#125;
+    &#x2F;&#x2F;&#x2F; 但是不安全：对D中成员i可能非法访问
+
+    D* pd2 &#x3D; dynamic_cast&lt;D*&gt;(&amp;b);
+    if (pd2 &#x3D;&#x3D; nullptr)  &#x2F;&#x2F;&#x2F; 不允许不安全的转换
+        cout &lt;&lt; &quot;dynamic_cast, B*(B) --&gt; D*: FAILED&quot; &lt;&lt; endl;
+&#125;
+
+&gt;&gt;&gt; static_cast, B*(B) --&gt; D*:OK
+&gt;&gt;&gt; D::i&#x3D;124455624
+&gt;&gt;&gt; dynamic_cast, B*(B) --&gt; D*: FAILED</code></pre>
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 10.2.2
+#include &lt;iostream&gt;
+using namespace std;
+class B &#123;
+   public:
+    virtual void f()&#123;&#125;;
+&#125;;
+class D : public B &#123;
+   public:
+    int i&#123;2018&#125;;
+&#125;;
+int main() &#123;
+    D d;
+    B b;
+    &#x2F;&#x2F;    D d1 &#x3D; static_cast&lt;D&gt;(b); &#x2F;&#x2F;&#x2F;未定义类型转换
+    &#x2F;&#x2F;    D d2 &#x3D; dynamic_cast&lt;D&gt;(b); &#x2F;&#x2F;&#x2F;只允许指针和引用转换
+    B* pb &#x3D; &amp;d;
+    D* pd3 &#x3D; static_cast&lt;D*&gt;(pb);
+    if (pd3 !&#x3D; nullptr) &#123;
+        cout &lt;&lt; &quot;static_cast, B*(D) --&gt; D*: OK&quot; &lt;&lt; endl;
+        cout &lt;&lt; &quot;D::i&#x3D;&quot; &lt;&lt; pd3-&gt;i &lt;&lt; endl;
+    &#125;
+    D* pd4 &#x3D; dynamic_cast&lt;D*&gt;(pb);
+    if (pd4 !&#x3D; nullptr) &#123;
+        cout &lt;&lt; &quot;dynamic_cast, B*(D) --&gt; D*: OK&quot; &lt;&lt; endl;
+        cout &lt;&lt; &quot;D::i&#x3D;&quot; &lt;&lt; pd4-&gt;i &lt;&lt; endl;
+    &#125;
+    return 0;
+&#125;
+
+&gt;&gt;&gt; static_cast, B*(D) --&gt; D*: OK
+&gt;&gt;&gt; D::i&#x3D;2018
+&gt;&gt;&gt; dynamic_cast, B*(D) --&gt; D*: OK
+&gt;&gt;&gt; D::i&#x3D;2018</code></pre>
+<ul>
+<li><p>重要原则(清楚指针所指向的真正对象)：<br>1）指针或引用的向上转换总是安全的；<br>2）向下转换时用dynamic_cast，安全检查；<br>3）避免对象之间的转换。</p>
+</li>
+<li><p>对于基类中有虚函数的情况：</p>
+<ul>
+<li>向上类型转换：<ul>
+<li>转换为基类指针或引用，则对应虚函数表仍为派生类的虚函数表（晚绑定）。</li>
+<li>转换为基类对象，则对应虚函数表是基类的虚函数表（早绑定）。</li>
+</ul>
+</li>
+<li>向下类型转换：<br>dynamic_cast通过虚函数表来判断是否能进行向下类型转换。</li>
+</ul>
+</li>
+</ul>
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 10.2.3
+#include &lt;iostream&gt;
+using namespace std;
+
+class Pet &#123;
+   public:
+    virtual ~Pet() &#123;&#125;
+&#125;;
+class Dog : public Pet &#123;
+   public:
+    void run() &#123; cout &lt;&lt; &quot;dog run&quot; &lt;&lt; endl; &#125;
+&#125;;
+class Bird : public Pet &#123;
+   public:
+    void fly() &#123; cout &lt;&lt; &quot;bird fly&quot; &lt;&lt; endl; &#125;
+&#125;;
+
+void action(Pet* p) &#123;
+    auto d &#x3D; dynamic_cast&lt;Dog*&gt;(p);   &#x2F;&#x2F;&#x2F; 向下类型转换
+    auto b &#x3D; dynamic_cast&lt;Bird*&gt;(p);  &#x2F;&#x2F;&#x2F; 向下类型转换
+    if (d)  &#x2F;&#x2F;&#x2F; 运行时根据实际类型表现特性
+        d-&gt;run();
+    else if (b)
+        b-&gt;fly();
+&#125;
+
+int main() &#123;
+    Pet* p[2];
+    p[0] &#x3D; new Dog;   &#x2F;&#x2F;&#x2F; 向上类型转换
+    p[1] &#x3D; new Bird;  &#x2F;&#x2F;&#x2F; 向上类型转换
+    for (int i &#x3D; 0; i &lt; 2; ++i) &#123;
+        action(p[i]);
+    &#125;
+    return 0;
+&#125;</code></pre>
+<h3 id="10-3-多重继承的虚函数表与利弊"><a href="#10-3-多重继承的虚函数表与利弊" class="headerlink" title="10.3 多重继承的虚函数表与利弊"></a>10.3 多重继承的虚函数表与利弊</h3><ul>
+<li>多重继承中的虚函数<ul>
+<li>最多继承一个非抽象类 <strong>避免</strong> 多重继承的二义性</li>
+<li>可以集成多个抽象类 <strong>利用</strong> 一个对象可以实现多个接口</li>
+</ul>
+</li>
+</ul>
+<h3 id="10-4-多态"><a href="#10-4-多态" class="headerlink" title="10.4 多态"></a>10.4 多态</h3><ul>
+<li><p>按照基类的接口定义，调用指针或引用所指对象的接口函数，函数执行过程因对象实际所属派生类的不同而呈现不同的效果（表现），这个现象被称为“多态”。</p>
+<ul>
+<li>当利用基类指针/引用调用函数时<ul>
+<li>虚函数在运行时确定执行哪个版本，取决于引用或指针对象的真实类型</li>
+<li>非虚函数在编译时绑定</li>
+</ul>
+</li>
+<li>当利用类的对象直接调用函数时<ul>
+<li>无论什么函数，均在编译时绑定</li>
+</ul>
+</li>
+<li>产生多态效果的条件：继承 &amp;&amp; 虚函数 &amp;&amp; (引用 || 指针)</li>
+</ul>
+</li>
+<li><p>应用：TEMPLATE METHOD设计模式</p>
+<ul>
+<li>在接口的一个方法中定义算法的骨架</li>
+<li>将一些步骤的实现延迟到子类中</li>
+<li>使得子类可以在不改变算法结构的情况下，重新定义算法中的某些步骤。</li>
+</ul>
+</li>
+<li>模板方法是一种源代码重用的基本技术，在类库的设计实现中应用十分广泛，因为这个设计模式能有效地解决 “类库提供公共行为”与“用户定制特殊细节”之间的折中平衡。</li>
+</ul>
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 10.4.1
+#include &lt;iostream&gt;
+using namespace std;
+
+class Base &#123;
+   public:
+    void action() &#123;
+        step1();
+        step2();
+        step3();
+    &#125;
+    virtual void step1() &#123; cout &lt;&lt; &quot;Base::step1&quot; &lt;&lt; endl; &#125;
+    virtual void step2() &#123; cout &lt;&lt; &quot;Base::step2&quot; &lt;&lt; endl; &#125;
+    virtual void step3() &#123; cout &lt;&lt; &quot;Base::step3&quot; &lt;&lt; endl; &#125;
+&#125;;
+
+class Derived1 : public Base &#123;
+    void step1() &#123; cout &lt;&lt; &quot;Derived1::step1&quot; &lt;&lt; endl; &#125;
+&#125;;
+class Derived2 : public Base &#123;
+    void step2() &#123; cout &lt;&lt; &quot;Derived2::step2&quot; &lt;&lt; endl; &#125;
+&#125;;
+
+int main() &#123;
+    Base* ba[] &#x3D; &#123;new Base, new Derived1, new Derived2&#125;;
+    for (int i &#x3D; 0; i &lt; 3; ++i) &#123;
+        ba[i]-&gt;action();
+        cout &lt;&lt; &quot;&#x3D;&#x3D;&#x3D;&quot; &lt;&lt; endl;
+    &#125;
+    return 0;
+&#125;
+
+&gt;&gt;&gt;
+Base::step1
+Base::step2
+Base::step3
+&#x3D;&#x3D;&#x3D;
+Derived1::step1
+Base::step2
+Base::step3
+&#x3D;&#x3D;&#x3D;
+Base::step1
+Derived2::step2
+Base::step3
+&#x3D;&#x3D;&#x3D;</code></pre>
+<h3 id="10-5-函数模板与类模板"><a href="#10-5-函数模板与类模板" class="headerlink" title="10.5 函数模板与类模板"></a>10.5 函数模板与类模板</h3><ol>
+<li>函数模板</li>
+</ol>
+<ul>
+<li>有些算法实现与类型无关，所以可以将函数的参数类型也定义为一种特殊的“参数”，这样就得到了“函数模板”。</li>
+<li>定义函数模板的方法<ul>
+<li><code>template &lt;typename T&gt; ReturnType Func(Args)；</code></li>
+<li>如：任意类型两个变量相加的“函数模板”</li>
+<li><code>template &lt;typename T&gt;  T sum(T a, T b) &#123; return a + b; &#125;</code></li>
+<li>注：typename也可换为class</li>
+</ul>
+</li>
+<li>函数模板在调用时，编译器能自动推导出实际参数的类型（这个过程叫做实例化）。<ul>
+<li>所以，形式上调用一个函数模板与普通函数没有区别。</li>
+<li>当多个参数的类型不一致时，无法推导：<ul>
+<li><code>cout &lt;&lt; sum(9, 2.1);</code> //编译错误</li>
+<li>手工指定调用类型：<code>sum&lt;int&gt;(9, 2.1);</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>类模板</li>
+</ol>
+<ul>
+<li>在定义类时也可以将一些类型信息抽取出来，用模板参数来替换，从而使类更具通用性。这种类被称为“类模板”。</li>
+</ul>
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 10.5.1
+#include &lt;iostream&gt;
+using namespace std;
+
+template &lt;typename T&gt;
+class A &#123;
+    T data;
+
+   public:
+    void print() &#123; cout &lt;&lt; data &lt;&lt; endl; &#125;
+&#125;;
+int main() &#123;
+    A&lt;int&gt; a;
+    a.print();
+&#125;</code></pre>
+<ul>
+<li>类模板中成员函数的类外定义</li>
+</ul>
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 10.5.2
+#include &lt;iostream&gt;
+using namespace std;
+
+template &lt;typename T&gt;
+class A &#123;
+    T data;
+
+   public:
+    void print();
+&#125;;
+
+template &lt;typename T&gt;
+void A&lt;T&gt;::print() &#123;
+    cout &lt;&lt; data &lt;&lt; endl;
+&#125;
+
+int main() &#123;
+    A&lt;int&gt; a;
+    a.print();
+&#125;</code></pre>
+<ul>
+<li>类模板的“模板参数”<ul>
+<li>类型参数：使用typename或class标记</li>
+<li>非类型参数：整数，枚举，指针（指向对象或函数），引用（引用对象或引用函数）。整数型比较常用。</li>
+</ul>
+</li>
+</ul>
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 10.5.3
+template &lt;typename T, unsigned size&gt;
+class array &#123;
+    T elems[size];
+    ...
+&#125;;
+
+array&lt;char, 10&gt; array0;</code></pre>
+<ul>
+<li>模板与多态<ul>
+<li>模板使用泛型标记，使用同一段代码，来关联不同但相似的特定行为，最后可以获得不同的结果。模板也是多态的一种体现。</li>
+<li>但模板的关联是在编译期处理，称为静多态。<ul>
+<li>往往和函数重载同时使用</li>
+<li>高效，省去函数调用</li>
+<li>编译后代码增多</li>
+</ul>
+</li>
+<li>基于继承和虚函数的多态在运行期处理，称为动多态<ul>
+<li>运行时，灵活方便</li>
+<li>侵入式，必须继承</li>
+<li>存在函数调用</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://cc7w.cf/2021/oop-09/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="c7w">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="c7w 的破站 v2.0">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/oop-09/" class="post-title-link" itemprop="url">OOP 课程笔记 Week 09 虚函数</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-04-19 00:00:00" itemprop="dateCreated datePublished" datetime="2021-04-19T00:00:00+08:00">2021-04-19</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-06-18 14:55:34" itemprop="dateModified" datetime="2021-06-18T14:55:34+08:00">2021-06-18</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="Week-09-虚函数"><a href="#Week-09-虚函数" class="headerlink" title="Week 09 虚函数"></a>Week 09 虚函数</h2><h3 id="9-0-Overview"><a href="#9-0-Overview" class="headerlink" title="9.0 Overview"></a>9.0 Overview</h3><ul>
+<li>向上类型转换</li>
+<li>对象切片</li>
+<li>函数调用捆绑</li>
+<li>虚函数和虚函数表</li>
+<li>虚函数和构造函数、析构函数</li>
+<li>重写覆盖，override和final</li>
+</ul>
+<h3 id="9-1-向上类型转换"><a href="#9-1-向上类型转换" class="headerlink" title="9.1 向上类型转换"></a>9.1 向上类型转换</h3><ul>
+<li><strong>派生类</strong>对象/引用/指针<strong>转换成基类</strong>对象/引用/指针，称为向上类型转换。只对<code>public</code>继承有效，在继承图上是上升的；对<code>private</code>、<code>protected</code>继承无效。</li>
+<li>向上类型转换（派生类到基类）可以由编译器自动完成，是一种隐式类型转换。</li>
+<li>凡是<strong>接受基类对象/引用/指针的地方</strong>（如函数参数），都可以<strong>使用派生类对象/引用/指针</strong>，编译器会自动将派生类对象转换为基类对象以便使用。</li>
+</ul>
+<h3 id="9-2-对象切片"><a href="#9-2-对象切片" class="headerlink" title="9.2 对象切片"></a>9.2 对象切片</h3><ul>
+<li><p>当<strong>派生类的对象</strong><code>(不是指针或引用)</code>被通过<strong>传参或赋值</strong>的方式转换为<strong>基类的对象</strong>时，派生类的对象被<strong>切片</strong>为对应基类的子对象。</p>
+<ul>
+<li><img src="https://i.loli.net/2021/04/19/2tVMgrhZ3GPT1cI.png" alt="image-20210419081125275"></li>
+<li>派生类的新数据和新方法丢失（图 9.2.1）</li>
+</ul>
+</li>
+<li><p>当派生类的<code>指针（引用）</code>被通过<strong>传参或赋值</strong>的方式转换为基类<code>指针（引用）</code>时，不会创建新的对象，但只保留基类的接口。</p>
+</li>
+</ul>
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 9.2.2 私有继承“照此实现”
+#include &lt;iostream&gt;
+using namespace std;
+class B &#123;
+   private:
+    int data&#123;0&#125;;
+   public:
+    int getData() &#123; return data; &#125;
+    void setData(int i) &#123; data &#x3D; i; &#125;
+&#125;;
+class D1 : private B &#123;
+   public:
+    using B::getData;
+&#125;;
+int main() &#123;
+    D1 d1;
+    cout &lt;&lt; d1.getData();  
+    &#x2F;&#x2F; d1.setData(10) &#x2F;&#x2F;隐藏了基类的setData函数，不可访问 
+    &#x2F;&#x2F; B&amp; b &#x3D; d1;     &#x2F;&#x2F;不允许私有继承的向上转换
+    &#x2F;&#x2F; b.setData(10); &#x2F;&#x2F;否则可以绕过D1，调用基类的setData函数
+&#125;</code></pre>
+<h3 id="9-3-函数调用捆绑"><a href="#9-3-函数调用捆绑" class="headerlink" title="9.3 函数调用捆绑"></a>9.3 函数调用捆绑</h3><pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 9.3.1
+#include &lt;iostream&gt;
+using namespace std;
+
+class Instrument &#123;
+public:
+  void play() &#123; cout &lt;&lt; &quot;Instrument::play&quot; &lt;&lt; endl; &#125;
+&#125;;
+
+class Wind : public Instrument &#123;
+public:
+  &#x2F;&#x2F; Redefine interface function:
+  void play() &#123; cout &lt;&lt; &quot;Wind::play&quot; &lt;&lt; endl; &#125;
+&#125;;
+
+void tune(Instrument&amp; i) &#123;
+  i.play();
+&#125;
+
+int main() &#123;
+  Wind flute;
+  tune(flute); &#x2F;&#x2F;引用的向上类型转换(传参)，编译器早绑定，无对象切片产生
+  Instrument &amp;inst &#x3D; flute;  &#x2F;&#x2F; 引用的向上类型转换(赋值)
+  inst.play();
+&#125;</code></pre>
+<ul>
+<li>把函数体与函数调用相联系称为<strong>捆绑</strong>(binding)。<ul>
+<li>即将函数体实现代码的入口地址，与调用的函数名绑定。执行到调用代码时进入函数体内部。</li>
+</ul>
+</li>
+<li>当捆绑在程序运行之前（由编译器和连接器）完成时，称为<strong>早捆绑</strong>(early binding)。<ul>
+<li>运行之前已经决定了函数调用代码到底进入哪个函数。</li>
+<li>上面程序中的问题是早捆绑引起的，编译器将tune中的函数调用i.play()与Instrument::play()绑定。</li>
+</ul>
+</li>
+<li>当捆绑根据对象的实际类型(上例中即子类Wind而非Instrument)，发生在程序运行时，称为<strong>晚捆绑</strong>(late binding)，又称动态捆绑或运行时捆绑。<ul>
+<li>要求在运行时能确定对象的实际类型，并绑定正确的函数。</li>
+<li>晚捆绑只对类中的虚函数起作用，使用 virtual 关键字声明虚函数。</li>
+</ul>
+</li>
+</ul>
+<h3 id="9-4-虚函数与虚函数表"><a href="#9-4-虚函数与虚函数表" class="headerlink" title="9.4 虚函数与虚函数表"></a>9.4 虚函数与虚函数表</h3><ul>
+<li>对于被派生类重新定义的成员函数，若它<strong>在基类中被声明为虚函数</strong>，则通过基类<strong><code>指针或引用</code></strong>调用该成员函数时，编译器将根据所指（或引用）对象的实际类型决定是调用基类中的函数，还是调用派生类重写的函数。</li>
+<li>若某成员函数在基类中声明为虚函数，当派生类重写覆盖(同名，同参数函数)它时，无论是否声明为虚函数，该成员函数都仍然是虚函数。</li>
+</ul>
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 9.4.1
+#include &lt;iostream&gt;
+using namespace std;
+
+class Instrument &#123;
+public:
+  virtual void play() &#123; cout &lt;&lt; &quot;Instrument::play&quot; &lt;&lt; endl; &#125;
+&#125;;
+
+class Wind : public Instrument &#123;
+public:
+  void play() &#123; cout &lt;&lt; &quot;Wind::play&quot; &lt;&lt; endl; &#125;
+     &#x2F;&#x2F;&#x2F; 重写覆盖(稍后：重写隐藏和重写覆盖的区别）
+&#125;;
+
+void tune(Instrument&amp; ins) &#123;
+  ins.play(); &#x2F;&#x2F;&#x2F; 由于 Instrument::play 是虚函数，编译时不再直接绑定，运行时根据 ins 的实际类型调用。
+&#125;
+
+int main() &#123;
+  Wind flute;
+  tune(flute); &#x2F;&#x2F;&#x2F; 向上类型转换
+&#125;
+</code></pre>
+<ul>
+<li><p>一般来说，派生类虚函数的返回类型应该和基类相同。</p>
+<ul>
+<li><p>或者，是协变(Covariant)的，例如</p>
+<ul>
+<li>基类和派生类的指针是协变的</li>
+<li>基类和派生类的引用是协变的</li>
+</ul>
+</li>
+<li><p>```c++<br>// Example 9.4.2</p>
+<h1 id="include"><a href="#include" class="headerlink" title="include "></a>include <iostream></h1><p>using namespace std;</p>
+<p>class Instrument {<br>public:<br>  virtual Instrument&amp; getObj() { return *this; }<br>};</p>
+<p>class Wind : public Instrument {<br>public:<br>  virtual Wind&amp; getObj() { return *this;}<br>  //Wind&amp;和Instrument&amp;协变<br>};</p>
+<pre class="language-none"><code class="language-none">
++ 虚函数表
+  + 对象自身要包含自己实际类型的信息：用虚函数表表示。运行时通过虚函数表确定对象的实际类型。
+  + **虚函数表**(VTABLE)：每个包含虚函数的类用于存储虚函数地址的表(虚函数表有唯一性，即使没有重写虚函数)。
+  + 每个**包含虚函数的类对象**中，编译器秘密地放一个**指针**，称为**虚函数指针**(vpointer&#x2F;VPTR)，指向这个类的VTABLE。
+  + 当通过基类指针做虚函数调用时，编译器静态地插入能取得这个VPTR并在VTABLE表中查找函数地址的代码，这样就能调用正确的函数并引起晚捆绑的发生。
+    + **编译**期间：**建立虚函数表VTABLE**，记录每个类或该类的基类中所有已声明的虚函数入口地址。
+    + **运行**期间：**建立虚函数指针VPTR**，在构造函数中发生，指向相应的VTABLE。
+
+&#96;&#96;&#96;c++
+&#x2F;&#x2F; Example 9.4.3
+#include &lt;iostream&gt;
+using namespace std;
+class B &#123;
+   public:
+    virtual void fun1() &#123; cout &lt;&lt; &quot;B::fun1()&quot; &lt;&lt; endl; &#125;
+    virtual void fun2() &#123; cout &lt;&lt; &quot;B::fun2()&quot; &lt;&lt; endl; &#125;
+
+   private:
+    int i;
+    float j;
+&#125;;
+class D : public B &#123;
+   public:
+    virtual void fun1() &#123;
+        cout &lt;&lt; &quot;D::fun1()&quot; &lt;&lt; endl;
+    &#125;  &#x2F;&#x2F;&#x2F;对fun1重写覆盖，对fun2没有，则fun2使用基类的虚函数地址
+    double k;
+&#125;;
+int main() &#123;
+    B b;
+    D d;
+    B* pB &#x3D; &amp;d;
+    pB-&gt;fun1();
+&#125;</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://i.loli.net/2021/04/19/LEmhf6Y7igcUnPT.png" alt="image-20210419083950089"></p>
+<p>（图 9.4.4）</p>
+<h3 id="9-5-虚函数与构造函数、析构函数"><a href="#9-5-虚函数与构造函数、析构函数" class="headerlink" title="9.5 虚函数与构造函数、析构函数"></a>9.5 虚函数与构造函数、析构函数</h3><ul>
+<li><p>虚函数与构造函数</p>
+<ul>
+<li>当创建一个包含有虚函数的对象时，必须初始化它的VPTR以指向相应的VTABLE。设置VPTR的工作由构造函数完成。编译器在构造函数的开头秘密的插入能初始化VPTR的代码。</li>
+<li>构造函数不能也不必是虚函数。<ul>
+<li>不能：如果构造函数是虚函数，则创建对象时需要先知道VPTR，而在构造函数调用前，VPTR未初始化。</li>
+<li>不必：构造函数的作用是提供类中成员初始化，调用时明确指定要创建对象的类型，没有必要是虚函数。</li>
+</ul>
+</li>
+<li>在构造函数中调用一个虚函数，被调用的只是这个函数的本地版本(即当前类的版本)，即虚机制在构造函数中不工作。</li>
+<li>初始化顺序：(与构造函数初始化列表顺序无关)<ul>
+<li>基类初始化</li>
+<li>对象成员初始化</li>
+<li>构造函数体</li>
+</ul>
+</li>
+<li>原因：基类的构造函数比派生类先执行，调用基类构造函数时派生类中的数据成员还没有初始化。如果允许调用实际对象的虚函数，则可能会用到未初始化的派生类成员。</li>
+</ul>
+</li>
+<li><p>虚函数与析构函数</p>
+<ul>
+<li>析构函数能是虚的，且常常是虚的。虚析构函数仍需定义函数体。</li>
+<li>虚析构函数的用途：当删除基类对象指针时，编译器将根据指针所指对象的实际类型，调用相应的析构函数。</li>
+<li>若基类析构不是虚函数，则删除基类指针所指派生类对象时，编译器仅自动调用基类的析构函数，而不会考虑实际对象是不是基类的对象。这可能会导致内存泄漏。</li>
+<li>在析构函数中调用一个虚函数，被调用的只是这个函数的本地版本，即虚机制在析构函数中不工作。 </li>
+</ul>
+</li>
+</ul>
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 9.5.1
+#include &lt;iostream&gt;
+using namespace std;
+
+class Base1 &#123;
+public:
+  ~Base1() &#123; cout &lt;&lt; &quot;~Base1()\n&quot;; &#125;
+&#125;;
+
+class Derived1 : public Base1 &#123;
+public:
+  ~Derived1() &#123; cout &lt;&lt; &quot;~Derived1()\n&quot;; &#125;
+&#125;;
+
+class Base2 &#123;
+public:
+  virtual ~Base2() &#123; cout &lt;&lt; &quot;~Base2()\n&quot;; &#125;
+&#125;;
+
+class Derived2 : public Base2 &#123;
+public:
+  ~Derived2() &#123; cout &lt;&lt; &quot;~Derived2()\n&quot;; &#125;
+&#125;;
+
+int main() &#123;
+  Base1* bp &#x3D; new Derived1;
+  delete bp; &#x2F;&#x2F;&#x2F; 只调用了基类的虚析构函数
+  Base2* b2p &#x3D; new Derived2;
+  delete b2p; &#x2F;&#x2F;&#x2F; 派生类虚析构函数调用完后调用基类的虚析构函数
+&#125;
+
+&#x2F;&#x2F; Output
+~Base1()
+~Derived2()
+~Base2()</code></pre>
+<ul>
+<li>重要原则：总是将基类的析构函数设置为虚析构函数</li>
+</ul>
+<h3 id="9-6-重载、重写覆盖与重写隐藏"><a href="#9-6-重载、重写覆盖与重写隐藏" class="headerlink" title="9.6 重载、重写覆盖与重写隐藏"></a>9.6 重载、重写覆盖与重写隐藏</h3><ul>
+<li><strong>重载(overload)：</strong><ul>
+<li>函数名必须相同，函数参数必须不同，作用域相同(同一个类)，返回值可以相同或不同。</li>
+</ul>
+</li>
+<li><strong>重写覆盖(override)：</strong><ul>
+<li>派生类重新定义基类中的<strong>虚函数</strong>，<strong>函数名必须相同</strong>，函数<strong>参数必须相同</strong>，<strong>返回值一般情况应相同</strong>。</li>
+<li>派生类的虚函数表中原基类的虚函数指针会被派生类中重新定义的虚函数指针覆盖掉。</li>
+</ul>
+</li>
+<li><strong>重写隐藏(redefining)：</strong><ul>
+<li>派生类重新定义基类中的函数，<strong>函数名相同</strong>，但是<strong>参数不同或者基类的函数不是虚函数</strong>。</li>
+<li>虚函数表不会发生覆盖。</li>
+</ul>
+</li>
+<li><p>重写覆盖和重写隐藏：</p>
+<ul>
+<li>相同点：<ul>
+<li>都要求派生类定义的函数与基类同名。</li>
+<li>都会屏蔽基类中的同名函数，即派生类的实例无法调用基类的同名函数。</li>
+</ul>
+</li>
+<li>不同点：<ul>
+<li>重写覆盖要求基类的函数是虚函数，且函数参数相同，返回值一般情况应相同；重写隐藏要求基类的函数不是虚函数或者函数参数不同。</li>
+<li>重写覆盖会使派生类虚函数表中基类的虚函数的指针被派生类的虚函数指针覆盖。重写隐藏不会。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>override与final关键字</p>
+<ul>
+<li>重写覆盖要满足的条件很多，很容易写错，可以使用override关键字辅助检查。</li>
+<li>override关键字明确地告诉编译器一个函数是对基类中一个虚函数的重写覆盖，编译器将对重写覆盖要满足的条件进行检查，正确的重写覆盖才能通过编译。</li>
+<li>如果没有override关键字，但是满足了重写覆盖的各项条件，也能实现重写覆盖。它只是编译器的一个检查，正确实现override时，对编译结果没有影响。</li>
+</ul>
+</li>
+<li><p>不想让使用者继承？-&gt; final关键字!</p>
+<ul>
+<li>在虚函数声明或定义中使用时，final确保函数为虚且不可被派生类重写。可在继承关系链的“中途”进行设定，禁止后续派生类对指定虚函数重写。</li>
+<li>在类定义中使用时，final指定此类不可被继承。</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -837,287 +1637,6 @@ public:
 <li>如果用 <code>explicit</code> 修饰类型转换运算符或类型转换构造函数，则相应的类型转换必须显式地进行</li>
 </ul>
 </li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://cc7w.cf/2021/oop-05/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="c7w">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="c7w 的破站 v2.0">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/oop-05/" class="post-title-link" itemprop="url">OOP 课程笔记 Week 05 创建和销毁</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-03-22 00:00:00" itemprop="dateCreated datePublished" datetime="2021-03-22T00:00:00+08:00">2021-03-22</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-06-07 21:00:45" itemprop="dateModified" datetime="2021-06-07T21:00:45+08:00">2021-06-07</time>
-      </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="Week-05-创建和销毁"><a href="#Week-05-创建和销毁" class="headerlink" title="Week 05 创建和销毁"></a>Week 05 创建和销毁</h2><h3 id="5-0-Overview"><a href="#5-0-Overview" class="headerlink" title="5.0 Overview"></a>5.0 Overview</h3><ul>
-<li>5.1 友元</li>
-<li>5.2 静态成员与常量成员</li>
-<li>5.3 常量/静态/参数对象的构造与析构时机</li>
-<li>5.4 对象的new和delete</li>
-</ul>
-<h3 id="5-1-友元"><a href="#5-1-友元" class="headerlink" title="5.1 友元"></a>5.1 友元</h3><ul>
-<li><p>友元</p>
-<ul>
-<li>被声明为友元的函数或类，具有对出现友元声明的类的private及protected成员的访问权限，即可以访问该类的一切成员。</li>
-<li>友元的声明只能在类内进行。</li>
-</ul>
-</li>
-<li><p>可以声明别的类的成员函数，包括构造和析构函数，为当前类的友元。</p>
-</li>
-<li>友元的声明与当前所在域是否为private或public无关。</li>
-</ul>
-<h3 id="5-2-静态成员与常量成员"><a href="#5-2-静态成员与常量成员" class="headerlink" title="5.2 静态成员与常量成员"></a>5.2 静态成员与常量成员</h3><h4 id="5-2-1-static"><a href="#5-2-1-static" class="headerlink" title="5.2.1 static"></a>5.2.1 static</h4><ol>
-<li>静态变量与静态函数</li>
-</ol>
-<ul>
-<li>静态变量：使用static修饰的变量<ul>
-<li>初始化：初次定义时需要初始化，且只能初始化一次。</li>
-<li>静态局部变量存储在静态存储区，生命周期将持续到整个程序结束</li>
-<li>静态全局变量是<strong>内部可链接</strong>的，作用域仅限其声明的文件，不能被其他文件所用，可以避免和其他文件中的同名变量冲突</li>
-</ul>
-</li>
-<li>静态函数：使用static修饰的函数<ul>
-<li>静态函数是<strong>内部可链接</strong>的，作用域仅限其声明的文件，不能被其他文件所用，可以避免和其他文件中的同名函数冲突</li>
-</ul>
-</li>
-</ul>
-<ol>
-<li>静态数据成员与静态成员函数</li>
-</ol>
-<ul>
-<li><p>静态数据成员：使用static修饰的数据成员，是隶属于类的，称为类的静态数据成员，也称“类变量”</p>
-<ul>
-<li>静态数据成员被该类的所有对象共享（即所有对象中的这个数据域处在同一内存位置）</li>
-<li>类的静态成员（数据、函数）既可以通过对象来访问，也可以通过类名来访问，如<code>ClassName::static_var</code>或者<code>a.static_var</code>（a为ClassName类的对象）</li>
-<li>类的静态数据成员要在实现文件中赋初值，格式为：<code>Type ClassName::static_var = Value;</code></li>
-<li>和全局变量一样，类的静态数据成员在程序开始前初始化</li>
-</ul>
-</li>
-<li><p>静态成员函数：在返回值前面添加static修饰的成员函数，称为类的静态成员函数</p>
-<ul>
-<li>和静态数据成员类似，类的静态成员函数既可以通过对象来访问，也可以通过类名来访问，如<code>ClassName::static_function</code>或者<code>a.static_function</code>(a为ClassName类的对象）</li>
-</ul>
-</li>
-<li><p><strong>静态成员函数不能访问非静态成员</strong>。（原因：分配时序）</p>
-</li>
-</ul>
-<h4 id="5-2-2-const"><a href="#5-2-2-const" class="headerlink" title="5.2.2 const"></a>5.2.2 const</h4><ol>
-<li>常量</li>
-</ol>
-<ul>
-<li>修饰变量时（如<code>const int n = 1;</code>），必须就地初始化，该变量的值在其生命周期内都不会发生变化</li>
-<li>修饰引用/指针时（如<code>int a=1; const int&amp; b=a;</code>），不能通过该引用/指针修改相应变量的值，常用于函数参数以保证函数体中无法修改参数的值</li>
-<li>修饰函数返回值时（如<code>const int* func() &#123;…&#125;</code>），函数返回值的内容（或其指向的内容）不能被修改</li>
-</ul>
-<ol>
-<li>常量数据成员和常量成员函数</li>
-</ol>
-<ul>
-<li><p>常量数据成员：使用const修饰的数据成员，称为类的常量数据成员，在对象的整个生命周期里不可更改</p>
-<ul>
-<li>常量数据成员可以在<ul>
-<li>构造函数的初始化列表中被初始化</li>
-<li>就地初始化</li>
-<li><strong>不允许</strong>在构造函数的函数体中通过赋值来设置</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>常量成员函数</p>
-<ul>
-<li>成员函数也能用const来修饰，称为常量成员函数。</li>
-<li>常量成员函数的访问权限：实现语句不能修改类的数据成员，即不能改变对象状态（内容）<br><code>ReturnType Func(…) const &#123;…&#125;</code></li>
-<li>注意区别：<code>const ReturnType Func(…) &#123;…&#125;</code></li>
-<li>若对象被定义为常量(<code>const ClassName a;</code>)，则它只能调用以const修饰的成员函数<ul>
-<li>常量对象：对象中的“数据”不能变</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<ol>
-<li>常量静态变量</li>
-</ol>
-<ul>
-<li>当然，我们可以定义既是常量也是静态的变量<ul>
-<li>作为类的常量变量</li>
-</ul>
-</li>
-<li>常量静态变量需要在类外进行定义，但有两个例外：int和enum类型可以就地初始化</li>
-<li>常量静态变量和静态变量一样，满足访问权限的任意函数均可访问，但都不能修改</li>
-</ul>
-<pre class="language-c++" data-language="c++"><code class="language-c++">class foo &#123;
-	static const char* cs; &#x2F;&#x2F; 不可就地初始化
-static const int i &#x3D; 3; &#x2F;&#x2F; 可以就地初始化
-static const int j; &#x2F;&#x2F; 也可以在类外定义
-&#125;;
-
-const char* foo::cs &#x3D; &quot;foo C string&quot;;
-const int foo::j &#x3D; 4;</code></pre>
-<h3 id="5-3-常量-静态-参数对象的构造与析构时机"><a href="#5-3-常量-静态-参数对象的构造与析构时机" class="headerlink" title="5.3 常量/静态/参数对象的构造与析构时机"></a>5.3 常量/静态/参数对象的构造与析构时机</h3><h4 id="5-3-1-常量对象的构造与析构"><a href="#5-3-1-常量对象的构造与析构" class="headerlink" title="5.3.1 常量对象的构造与析构"></a>5.3.1 常量对象的构造与析构</h4><ul>
-<li><strong>常量全局/局部对象</strong>的构造与析构时机和<strong>普通全局/局部对象</strong>相同</li>
-<li>常量全局对象：在main()函数调用之前进行初始化，在main()函数执行完return，程序结束时，对象被析构<br>常量局部对象：在程序执行到该局部对象的代码时被初始化。在局部对象生命周期结束、即所在作用域结束后被析构</li>
-</ul>
-<h4 id="5-3-2-静态对象的构造与析构"><a href="#5-3-2-静态对象的构造与析构" class="headerlink" title="5.3.2 静态对象的构造与析构"></a>5.3.2 静态对象的构造与析构</h4><ol>
-<li>静态全局对象</li>
-</ol>
-<ul>
-<li>静态全局对象的构造与析构时机和普通全局对象相同</li>
-</ul>
-<ol>
-<li>函数中静态对象</li>
-</ol>
-<ul>
-<li><p>函数内部定义的静态局部对象</p>
-</li>
-<li><p>在程序执行到该静态局部对象的代码时被初始化，离开作用域不析构。</p>
-</li>
-<li>第二次执行到该对象代码时，不再初始化，直接使用上一次的对象。</li>
-<li>在main()函数结束后被析构。</li>
-</ul>
-<ol>
-<li>类静态对象</li>
-</ol>
-<ul>
-<li>类A的对象a作为类B的静态变量</li>
-<li>a的构造与析构表现和全局对象类似，即在main()函数调用之前进行初始化，在main()函数执行完return，程序结束时，对象被析构</li>
-<li>和B是否实例化无关</li>
-</ul>
-<h4 id="5-3-3-参数对象的构造和析构"><a href="#5-3-3-参数对象的构造和析构" class="headerlink" title="5.3.3 参数对象的构造和析构"></a>5.3.3 参数对象的构造和析构</h4><h3 id="5-4-对象的new和delete"><a href="#5-4-对象的new和delete" class="headerlink" title="5.4 对象的new和delete"></a>5.4 对象的new和delete</h3>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://cc7w.cf/2020/data-discreatization/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="c7w">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="c7w 的破站 v2.0">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/data-discreatization/" class="post-title-link" itemprop="url">数据的离散化</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2020-12-31 14:50:14 / Modified: 14:51:29" itemprop="dateCreated datePublished" datetime="2020-12-31T14:50:14+08:00">2020-12-31</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="数据的离散化处理"><a href="#数据的离散化处理" class="headerlink" title="数据的离散化处理"></a>数据的离散化处理</h2><p>什么是<strong>离散化</strong>？</p>
-<p>离散化，把无限空间中有限的个体映射到有限的空间中去，以此提高算法的时空效率。</p>
-<p>通俗的说，离散化是在不改变数据相对大小的条件下，对数据进行相应的缩小。例如：</p>
-<ul>
-<li><p>原数据：1,999,100000,15；处理后：1,3,4,2；</p>
-</li>
-<li><p>原数据：{100,200}，{20,50000}，{1,400}；处理后：{3,4}，{2,6}，{1,5}；</p>
-</li>
-</ul>
-<p>例子：洛谷P1908，树状数组求逆序对时的应用</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1908">https://www.luogu.com.cn/problem/P1908</a></li>
 </ul>
 
       

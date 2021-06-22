@@ -126,7 +126,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">20</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -172,6 +172,332 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://cc7w.cf/2020/hash-table/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="c7w">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="c7w 的破站 v2.0">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/hash-table/" class="post-title-link" itemprop="url">Hash Table（散列表）</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2020-11-25 08:58:50 / Modified: 16:11:48" itemprop="dateCreated datePublished" datetime="2020-11-25T08:58:50+08:00">2020-11-25</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>　　散列表的相关概念和内容　　</p>
+<p>​        <strong>散列表</strong>（<strong>Hash table</strong>，也叫<strong>哈希表</strong>），是根据键（Key）而直接访问在内存储存位置的数据结构。</p>
+<p>​        也就是说，它通过计算一个关于键值的函数，将所需查询的数据映射到表中一个位置来访问记录，这加快了查找速度。</p>
+<p>​        这个映射函数称做<strong>散列函数</strong>，存放记录的数组称做<strong>散列表</strong>。</p>
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><ul>
+<li>关键字为$k$的值存储在$f(k)$的存储位置中，称映射$f$为散列函数，按照这个思想建立的表称为<strong>散列表</strong>。</li>
+<li>对不同的关键字可能得到同一散列地址，即$k_1 \neq k_2$，而$f(k_1) = f(k_2)$，这种现象称为<strong>冲突</strong>（Collision）。具有相同函数值的关键字对该散列函数来说称做<strong>同义词</strong>。</li>
+<li>若对于关键字集合中的任一个关键字，经散列函数映象到地址集合中任何一个地址的概率是相等的，则称此类散列函数为<strong>均匀散列函数</strong>，这就使关键字经过散列函数得到一个“随机的地址”，从而减少冲突。</li>
+</ul>
+<h2 id="构造散列函数的方法"><a href="#构造散列函数的方法" class="headerlink" title="构造散列函数的方法"></a>构造散列函数的方法</h2><p>​        若采用求余的方法，采用质数可以在一定程度上解决冲突问题。</p>
+<h2 id="处理冲突的方法"><a href="#处理冲突的方法" class="headerlink" title="处理冲突的方法"></a>处理冲突的方法</h2><ul>
+<li>开放定址法</li>
+<li>避免聚集：<ul>
+<li>单独链表法</li>
+<li>再散列</li>
+</ul>
+</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><p><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%93%88%E5%B8%8C%E8%A1%A8">https://zh.wikipedia.org/wiki/%E5%93%88%E5%B8%8C%E8%A1%A8</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/zmxiangde_88/article/details/8025541">https://blog.csdn.net/zmxiangde_88/article/details/8025541</a></p>
+</li>
+<li>Computer Science: An Overview, § 9.5 Traditional File Structures.</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://cc7w.cf/2020/ds-heap/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="c7w">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="c7w 的破站 v2.0">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/ds-heap/" class="post-title-link" itemprop="url">数据结构-堆</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-11-24 23:28:21" itemprop="dateCreated datePublished" datetime="2020-11-24T23:28:21+08:00">2020-11-24</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2020-12-09 22:26:54" itemprop="dateModified" datetime="2020-12-09T22:26:54+08:00">2020-12-09</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>　　　数据结构中的堆结构　　　</p>
+<h2 id="Knowledge-Base"><a href="#Knowledge-Base" class="headerlink" title="Knowledge Base"></a>Knowledge Base</h2><ul>
+<li>完全二叉树：</li>
+</ul>
+<p>​        如果一棵深度为 $k$ 的二叉树，$1$ 至$ k-1$ 层的结点都是满的，即满足 $2^i-1$，只有最下面的一层的结点数小于$2^i-1$，并且最下面一层的结点都集中在该层最左边的若干位置，则此二叉树称为完全二叉树。</p>
+<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>​        堆结构是一种数组对象，它可以被视为一棵完全二叉树。树中每个结点与数组中存放该结点中值的那个元素相对应，如下图：</p>
+<p><a target="_blank" rel="noopener" href="https://imgchr.com/i/Da1oSH"><img src="https://s3.ax1x.com/2020/11/25/Da1oSH.png" alt="Da1oSH.png"></a></p>
+<h2 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h2><ul>
+<li><p>下标：</p>
+<p>​    第$i$个结点的父结点（parent(i)）、左结点(left(i))、右结点(right(i))的下标分别为：$\frac {i}{2}$、$2i$、$2i+1$；</p>
+</li>
+<li><p>大小：</p>
+<p>堆可以分为<strong>最大堆(max-heap)</strong>和<strong>最小堆(min-heap)</strong>两种，分别满足对于任意的$i$, $A[parent(i)] &gt;(&lt;)A[i]$.</p>
+</li>
+</ul>
+<h2 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h2><ul>
+<li><a target="_blank" rel="noopener" href="http://www.cplusplus.com/reference/algorithm/make_heap/">make_heap</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.cplusplus.com/reference/algorithm/push_heap/">push_heap</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.cplusplus.com/reference/algorithm/pop_heap/">pop_heap</a></li>
+</ul>
+<h2 id="src"><a href="#src" class="headerlink" title="src"></a>src</h2><pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F;最小堆
+class smallHeap &#123;
+public:
+	int size, maxSize, * head &#x3D; NULL;
+
+	void init(int depth) &#123;
+        int p &#x3D; qpow(2, depth, 19260817);
+        head &#x3D; new int[p-1];
+        maxSize &#x3D; p - 1;
+	&#125;
+
+	smallHeap(int depth) &#123;
+		init(depth);
+	&#125;
+
+	int getSize() &#123;
+		return size;
+	&#125;
+
+	bool put(int val) &#123;
+		if (size &#x3D;&#x3D; maxSize) return false;
+		size++;
+		int currentNode &#x3D; size; head[currentNode] &#x3D; val;
+		while (currentNode !&#x3D; 1) &#123;
+			int parentNode &#x3D; currentNode &#x2F; 2;
+			if (head[parentNode] &gt; head[currentNode]) &#123;
+				int temp &#x3D; head[parentNode];
+				head[parentNode] &#x3D; head[currentNode];
+				head[currentNode] &#x3D; temp;
+				currentNode &#x3D; parentNode;
+			&#125;
+			else &#123;
+				break;
+			&#125;
+		&#125;
+		return true;
+	&#125;
+
+	int get() &#123;
+		int currentNode &#x3D; 1;
+		int tempValue &#x3D; head[currentNode];
+		head[currentNode] &#x3D; head[size];
+		size--;
+		int parentNode &#x3D; 1;
+		while (1) &#123;
+			if (parentNode * 2 &gt; size) break;
+			currentNode &#x3D; (head[parentNode * 2] &lt; head[parentNode * 2 + 1]) ? (parentNode * 2) : (parentNode * 2 + 1);
+			if (head[parentNode] &gt; head[currentNode]) &#123;
+				int temp &#x3D; head[parentNode];
+				head[parentNode] &#x3D; head[currentNode];
+				head[currentNode] &#x3D; temp;
+				parentNode &#x3D; currentNode;
+			&#125;
+			else &#123;
+				break;
+			&#125;
+		&#125;
+
+		return tempValue;
+	&#125;
+    
+    int top() &#123; return head[1]; &#125;
+
+	void show() &#123;
+		for (int i &#x3D; 1; i &lt;&#x3D; size; i++) &#123;
+			cout &lt;&lt; head[i] &lt;&lt; &quot; &quot;;
+		&#125;
+	&#125;
+&#125;;
+
+&#x2F;&#x2F;最大堆
+class bigHeap &#123;
+public:
+	int size, maxSize, * head &#x3D; NULL;
+
+	void init(int depth) &#123;
+        int p &#x3D; qpow(2, depth, 19260817);
+        head &#x3D; new int[p-1];
+        maxSize &#x3D; p - 1;
+	&#125;
+
+	bigHeap(int depth) &#123;
+		init(depth);
+	&#125;
+
+	int getSize() &#123;
+		return size;
+	&#125;
+
+	bool put(int val) &#123;
+		if (size &#x3D;&#x3D; maxSize) return false;
+		size++;
+		int currentNode &#x3D; size; head[currentNode] &#x3D; val;
+		while (currentNode !&#x3D; 1) &#123;
+			int parentNode &#x3D; currentNode &#x2F; 2;
+			if (head[parentNode] &lt; head[currentNode]) &#123;
+				int temp &#x3D; head[parentNode];
+				head[parentNode] &#x3D; head[currentNode];
+				head[currentNode] &#x3D; temp;
+				currentNode &#x3D; parentNode;
+			&#125;
+			else &#123;
+				break;
+			&#125;
+		&#125;
+		return true;
+	&#125;
+
+	int get() &#123;
+		int currentNode &#x3D; 1;
+		int tempValue &#x3D; head[currentNode];
+		head[currentNode] &#x3D; head[size];
+		size--;
+		int parentNode &#x3D; 1;
+		while (1) &#123;
+			if (parentNode * 2 &gt; size) break;
+			currentNode &#x3D; (head[parentNode * 2] &gt; head[parentNode * 2 + 1]) ? (parentNode * 2) : (parentNode * 2 + 1);
+			if (head[parentNode] &lt; head[currentNode]) &#123;
+				int temp &#x3D; head[parentNode];
+				head[parentNode] &#x3D; head[currentNode];
+				head[currentNode] &#x3D; temp;
+				parentNode &#x3D; currentNode;
+			&#125;
+			else &#123;
+				break;
+			&#125;
+		&#125;
+
+		return tempValue;
+	&#125;
+    
+    int top() &#123; return head[1]; &#125;
+
+	void show() &#123;
+		for (int i &#x3D; 1; i &lt;&#x3D; size; i++) &#123;
+			cout &lt;&lt; head[i] &lt;&lt; &quot; &quot;;
+		&#125;
+	&#125;
+&#125;;</code></pre>
+<h2 id="Practice"><a href="#Practice" class="headerlink" title="Practice"></a>Practice</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1090">https://www.luogu.com.cn/problem/P1090</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1168">https://www.luogu.com.cn/problem/P1168</a></li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/raywenderlich/swift-algorithm-club/tree/master/Heap">https://github.com/raywenderlich/swift-algorithm-club/tree/master/Heap</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.cplusplus.com/reference/algorithm/">http://www.cplusplus.com/reference/algorithm/</a></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
