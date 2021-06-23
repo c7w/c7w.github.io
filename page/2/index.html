@@ -126,12 +126,12 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-count">21</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>
@@ -172,6 +172,182 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://cc7w.cf/2021/oop-11/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="c7w">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="c7w 的破站 v2.0">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/oop-11/" class="post-title-link" itemprop="url">OOP 课程笔记 Week 11 模板与STL初步</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-05-06 00:00:00" itemprop="dateCreated datePublished" datetime="2021-05-06T00:00:00+08:00">2021-05-06</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-06-18 15:09:57" itemprop="dateModified" datetime="2021-06-18T15:09:57+08:00">2021-06-18</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="Week-11-模板与STL初步"><a href="#Week-11-模板与STL初步" class="headerlink" title="Week 11 模板与STL初步"></a>Week 11 模板与STL初步</h2><h3 id="11-0-Overview"><a href="#11-0-Overview" class="headerlink" title="11.0 Overview"></a>11.0 Overview</h3><ul>
+<li><s>类模板与函数模板特化</s></li>
+<li>命名空间</li>
+<li>STL初步——容器与迭代器</li>
+</ul>
+<h3 id="11-1-命名空间"><a href="#11-1-命名空间" class="headerlink" title="11.1 命名空间"></a>11.1 命名空间</h3><ul>
+<li>为了避免在大规模程序的设计中，以及在程序员使用各种各样的C++库时，标识符的命名发生冲突，标准C++引入了关键字namespace（命名空间），可以更好地控制标识符的作用域。</li>
+<li>标准C++库（不包括标准C库）中所包含的所有内容（包括常量、变量、结构、类和函数等）都被定义在命名空间std（standard标准）中。</li>
+</ul>
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 11.1.1
+&#x2F;&#x2F; 定义命名空间
+namespace A &#123;
+	int x, y;
+&#125;
+&#x2F;&#x2F; 使用命名空间
+A::x &#x3D; 3;
+A::y &#x3D; 6;</code></pre>
+<ul>
+<li>使用using声明简化命名空间使用</li>
+<li>使用整个命名空间：所有成员都直接可用<code>using namespace A;</code> <code>x = 3; y = 6;</code></li>
+<li>使用部分成员：所选成员可直接使用  <code>using A::x;</code> <code>x = 3; A::y = 6;</code></li>
+<li>任何情况下，都不应出现命名冲突</li>
+</ul>
+<h3 id="11-2-STL初步"><a href="#11-2-STL初步" class="headerlink" title="11.2 STL初步"></a>11.2 STL初步</h3><ul>
+<li><p>标准模板库（英文：Standard Template Library，缩写：STL），是一个高效的C++软件库，它被容纳于C++ 标准程序库C++ Standard Library中。其中包含4个组件，分别为算法、容器、函数、迭代器。基于模板编写。关键理念：将“在数据上执行的操作”与“要执行操作的数据”分离。</p>
+</li>
+<li><p>简单容器</p>
+<ul>
+<li>容器是包含、放置数据的工具。通常为数据结构。<ul>
+<li>简单容器（simple container）</li>
+<li>序列容器（sequence container）</li>
+<li>关系容器（associative container）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>std::pair</code></li>
+<li><code>std::tuple</code></li>
+<li><p><code>std::vector</code></p>
+<ul>
+<li>创建：<code>std::vector&lt;int&gt; x;</code></li>
+<li>当前数组长度： <code>x.size();</code></li>
+<li>清空： <code>x.clear();</code></li>
+<li>在末尾添加/删除：（高速）<code>x.push_back(1); x.pop_back();</code></li>
+<li>在中间添加/删除：（使用迭代器，低速）<code>x.insert(x.begin()+1, 5);</code> <code>x.erase(x.begin()+1);</code></li>
+</ul>
+</li>
+<li><p>迭代器</p>
+<ul>
+<li>一种检查容器内元素并遍历元素的数据类型。</li>
+<li>提供一种方法顺序访问一个聚合对象中各个元素, 而又不需暴露该对象的内部表示。</li>
+<li>为遍历不同的聚合结构（需拥有相同的基类）提供一个统一的接口。</li>
+<li>使用上类似指针。</li>
+</ul>
+</li>
+<li><p>迭代器：失效</p>
+</li>
+<li><p>当迭代器不再指向本应指向的元素时，称此迭代器失效。</p>
+<ul>
+<li>vector中什么情况下会发生迭代器失效？</li>
+<li>看作纯粹的指针<ul>
+<li>调用insert/erase后，所修改位置之后的所有迭代器失效。（原先的内存空间存储的元素被改变）</li>
+<li>调用push_back等修改vector大小的方法时，可能会使所有迭代器失效（Push_back到了一定程度之后，可能会造成数组的整体移动，导致所有的内存地址发生改变。）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><code>std::list</code></p>
+</li>
+</ul>
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; 插入前端：
+ l.push_front(1);
+&#x2F;&#x2F; 插入末端：
+ l.push_back(2); 
+&#x2F;&#x2F; 查询：
+ std::find(l.begin(), l.end(), 2); &#x2F;&#x2F;返回迭代器
+&#x2F;&#x2F; 插入指定位置：
+ l.insert(it, 4); &#x2F;&#x2F;it为迭代器</code></pre>
+<ul>
+<li><p><code>std::list</code></p>
+<ul>
+<li>不支持下标等随机访问</li>
+<li>支持高速的在任意位置插入/删除数据</li>
+<li>其访问主要依赖迭代器</li>
+<li>操作不会导致迭代器失效（除指向被删除的元素的迭代器外）</li>
+</ul>
+</li>
+<li><p><code>std::set</code></p>
+</li>
+</ul>
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; 插入：
+ s.insert(1);
+&#x2F;&#x2F; 查询：
+ s.find(1);   &#x2F;&#x2F;返回迭代器
+&#x2F;&#x2F; 删除：
+ s.erase(s.find(1));   &#x2F;&#x2F;导致被删除元素的迭代器失效
+&#x2F;&#x2F; 统计：
+ s.count(1);   &#x2F;&#x2F;1的个数，总是0或1</code></pre>
+<ul>
+<li><code>std::map</code><ul>
+<li>其值类型为pair<Key, T>。</li>
+<li>map中的元素key互不相同，需要key存在比较器。</li>
+<li>可以通过下标访问（即使key不是整数）。下标访问时如果元素不存在，则创建对应元素。</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1352,312 +1528,8 @@ int main() &#123;
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://cc7w.cf/2021/oop-06/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="c7w">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="c7w 的破站 v2.0">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/oop-06/" class="post-title-link" itemprop="url">OOP 课程笔记 Week 06 引用与复制</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-03-29 00:00:00" itemprop="dateCreated datePublished" datetime="2021-03-29T00:00:00+08:00">2021-03-29</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-06-18 14:52:11" itemprop="dateModified" datetime="2021-06-18T14:52:11+08:00">2021-06-18</time>
-      </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="§-6-引用与复制"><a href="#§-6-引用与复制" class="headerlink" title="§ 6 引用与复制"></a>§ 6 引用与复制</h2><h3 id="§-6-0-Overview"><a href="#§-6-0-Overview" class="headerlink" title="§ 6.0 Overview"></a>§ 6.0 Overview</h3><ul>
-<li>6.1 常量引用</li>
-<li>6.2 拷贝构造函数</li>
-<li>6.3 右值引用</li>
-<li>6.4 移动构造函数</li>
-<li>6.5 赋值运算符</li>
-<li>6.6 类型转换</li>
-</ul>
-<h3 id="§-6-1-常量引用"><a href="#§-6-1-常量引用" class="headerlink" title="§ 6.1 常量引用"></a>§ 6.1 常量引用</h3><ul>
-<li>最小特权原则：给函数足够的权限去完成相应的任务，但不要给予他多余的权限。<ul>
-<li>例如函数<code>void add(int&amp; a, int&amp; b)</code>，如果将参数类型定义为<code>int&amp;</code>，则给予该函数在函数体内修改a和b的值的权限</li>
-<li>如果我们不想给予函数修改权限，则可以在参数中使用常量/常量引用</li>
-<li><code>void add(const int&amp; a, const int&amp; b)</code></li>
-<li>此时函数中仅能读取a和b的值，无法对a, b进行任何修改操作。</li>
-</ul>
-</li>
-</ul>
-<h3 id="§-6-2-拷贝构造函数"><a href="#§-6-2-拷贝构造函数" class="headerlink" title="§ 6.2 拷贝构造函数"></a>§ 6.2 拷贝构造函数</h3><ul>
-<li>拷贝构造函数是一种特殊的构造函数，它的参数是语言规定的，是同类对象的常量引用</li>
-<li><code>MyClass(const MyClass&amp;) &#123;&#125;</code></li>
-<li>拷贝构造函数被调用的三种常见情况<ul>
-<li>用一个类对象定义另一个新的类对象</li>
-<li>函数调用时以类的对象为形参</li>
-<li>函数返回类对象</li>
-</ul>
-</li>
-</ul>
-<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 6.2.1
-
-&#x2F;&#x2F; a
-Test a; &#x2F;&#x2F; NO
-Test b(a); &#x2F;&#x2F;YES
-Test c &#x3D; a; &#x2F;&#x2F;YES
-
-&#x2F;&#x2F; b
-Func(Test a)
-
-&#x2F;&#x2F; c
-return a;</code></pre>
-<ul>
-<li>如果<strong>调用拷贝构造函数</strong>且当前<strong>没有</strong>给类<strong>显式定义</strong>拷贝构造函数，编译器将自动合成“<strong>隐式定义</strong>的拷贝构造函数”，其功能是<strong>调用所有数据成员的拷贝构造函数或拷贝赋值运算符</strong>。</li>
-<li>隐式定义拷贝构造函数在遇到<strong>指针类型</strong>成员时可能会出错,导致多个指针类型的变量指向同一个地址。</li>
-<li>拷贝构造函数的频繁调用会降低程序运行的效率，解决方法：<ul>
-<li>使用引用/常量引用来传参或返回对象</li>
-<li>将拷贝构造函数声明为 <code>private</code> ，或使用 <code>delete</code> 取消拷贝构造函数的隐式合成</li>
-</ul>
-</li>
-</ul>
-<h3 id="§-6-3-右值引用"><a href="#§-6-3-右值引用" class="headerlink" title="§ 6.3 右值引用"></a>§ 6.3 右值引用</h3><ul>
-<li>左值和右值<ul>
-<li>左值：可以取地址、有名字的值。</li>
-<li>右值：不能取地址、没有名字的值; 常见于常值、函数返回值、表达式</li>
-</ul>
-</li>
-</ul>
-<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 6.3.1
-int a &#x3D; 1;
-int b &#x3D; func();
-int c &#x3D; a + b;
-&#x2F;&#x2F; 其中a、b、c为左值，1、func函数返回值、a+b的结果为右值。</code></pre>
-<ul>
-<li>右值引用<ul>
-<li>虽然右值无法取地址，但可以被&amp;&amp;引用(右值引用)<ul>
-<li><code>int &amp;&amp;e = a+b;</code></li>
-</ul>
-</li>
-<li>右值引用无法绑定左值<ul>
-<li><code>int &amp;&amp;e = a; //Compile Error</code></li>
-</ul>
-</li>
-<li>例外：常量左值引用能也绑定右值<ul>
-<li><code>const int &amp;e = 3;</code></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="§-6-4-移动构造函数"><a href="#§-6-4-移动构造函数" class="headerlink" title="§ 6.4 移动构造函数"></a>§ 6.4 移动构造函数</h3><ul>
-<li>移动构造函数<ul>
-<li>右值引用可以延续即将销毁变量的生命周期，用于构造函数可以<strong>提升处理效率</strong>，在此过程中尽可能少地进行拷贝。</li>
-<li>使用右值引用作为参数的构造函数叫做移动构造函数。</li>
-</ul>
-</li>
-</ul>
-<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 6.4.1
-
-&#x2F;&#x2F; 拷贝构造函数
-ClassName(const ClassName&amp; VariableName);
-&#x2F;&#x2F; 移动构造函数
-ClassName(ClassName&amp;&amp; VariableName);</code></pre>
-<ul>
-<li>移动构造函数与拷贝构造函数最主要的差别就是类中堆内存是重新开辟并拷贝，还是直接将指针指向那块地址。</li>
-<li>对于一些即将析构的临时类，移动构造函数直接利用了原来临时对象中的堆内存，新的对象无需开辟内存，临时对象无需释放内存，从而大大提高计算效率。</li>
-</ul>
-<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 6.4.2
-
-class Test &#123;
-public:
-	int * buf; &#x2F;&#x2F;&#x2F;&#x2F; only for demo.
-	Test() &#123;
-		buf &#x3D; new int[10]; &#x2F;&#x2F;申请一块内存
-		cout &lt;&lt; &quot;Test(): this-&gt;buf @ &quot; &lt;&lt; hex &lt;&lt; buf &lt;&lt; endl;
-	&#125;
-	~Test() &#123;
-		cout &lt;&lt; &quot;~Test(): this-&gt;buf @ &quot; &lt;&lt; hex &lt;&lt; buf &lt;&lt; endl;
-		if (buf) delete[] buf;
-	&#125;
-	Test(const Test&amp; t) : buf(new int[10]) &#123;
-		for(int i&#x3D;0; i&lt;10; i++) 
-			buf[i] &#x3D; t.buf[i]; &#x2F;&#x2F;拷贝数据
-		cout &lt;&lt; &quot;Test(const Test&amp;) called. this-&gt;buf @ &quot;
-			&lt;&lt; hex &lt;&lt; buf &lt;&lt; endl;
-	&#125;
-	Test(Test&amp;&amp; t) : buf(t.buf) &#123; &#x2F;&#x2F;直接复制地址，避免拷贝
-		cout &lt;&lt; &quot;Test(Test&amp;&amp;) called. this-&gt;buf @ &quot;
-			&lt;&lt; hex &lt;&lt; buf &lt;&lt; endl;
-		t.buf &#x3D; nullptr; &#x2F;&#x2F;将t.buf改为nullptr，使其不再指向原来内存区域
-	&#125;
-&#125;;
-
-Test GetTemp() &#123;
-	Test tmp;
-	cout &lt;&lt; &quot;GetTemp(): tmp.buf @ &quot;
-		&lt;&lt; hex &lt;&lt; tmp.buf &lt;&lt; endl;
-	return tmp;
-&#125;
-
-void fun(Test t) &#123;
-	cout &lt;&lt; &quot;fun(Test t): t.buf @ &quot;
-		&lt;&lt; hex &lt;&lt; t.buf &lt;&lt; endl;
-&#125;
-
-int main() &#123;
-	Test a &#x3D; GetTemp();
-	cout &lt;&lt; &quot;main() : a.buf @ &quot; &lt;&lt; hex &lt;&lt; a.buf &lt;&lt; endl;
-	fun(a);
-	return 0;
-&#125;
-
-&#x2F;&#x2F; g++ test.cpp --std&#x3D;c++11 -fno-elide-constructors -o test</code></pre>
-<ul>
-<li>移动语义<ul>
-<li><code>std::move</code> 函数<ul>
-<li>输入：左值（包括变量等，该左值一般不再使用）</li>
-<li>返回值：该左值对应的右值</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="§-6-5-赋值运算符"><a href="#§-6-5-赋值运算符" class="headerlink" title="§ 6.5 赋值运算符"></a>§ 6.5 赋值运算符</h3><ul>
-<li>拷贝复制运算符</li>
-</ul>
-<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 6.5.1
-
-&#x2F;&#x2F; 区分
-ClassName a;
-ClassName b;
-a &#x3D; b;
-
-ClassName a &#x3D; b;
-
-&#x2F;&#x2F; 前者调用
-ClassName&amp; operator&#x3D; (const ClassName&amp; right) &#123;
-   if (this !&#x3D; &amp;right) &#123;&#x2F;&#x2F; 避免自己赋值给自己
-		&#x2F;&#x2F; 将right对象中的内容拷贝到当前对象中...
-	&#125;
-   return *this;
-&#125;</code></pre>
-<ul>
-<li>移动赋值运算符</li>
-</ul>
-<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 6.5.2
-Test&amp; operator&#x3D; (Test&amp;&amp; right) &#123;
-	if (this &#x3D;&#x3D; &amp;right)  cout &lt;&lt; &quot;same obj!\n&quot;;
-	else &#123;	
-		this-&gt;buf &#x3D; right.buf;  &#x2F;&#x2F;直接赋值地址
-		right.buf &#x3D; nullptr;
-	cout &lt;&lt; &quot;operator&#x3D;(Test&amp;&amp;) called.\n&quot;;
-&#125;
-	return *this;
-&#125;</code></pre>
-<h3 id="§-6-6-类型转换"><a href="#§-6-6-类型转换" class="headerlink" title="§ 6.6 类型转换"></a>§ 6.6 类型转换</h3><ol>
-<li>在源类中定义<strong>目标类型转换运算符</strong></li>
-</ol>
-<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 6.6.1
-#include &lt;iostream&gt;
-using namespace std;
-
-
-class Dst &#123; &#x2F;&#x2F;目标类Destination
-public:
-  Dst() &#123; cout &lt;&lt; &quot;Dst::Dst()&quot; &lt;&lt; endl; &#125;
-&#125;;
-
-
-
-class Src &#123; &#x2F;&#x2F;源类Source
-public:
-  Src() &#123; cout &lt;&lt; &quot;Src::Src()&quot; &lt;&lt; endl; &#125;
-  operator Dst() const &#123; 
-	cout &lt;&lt; &quot;Src::operator Dst() called&quot; &lt;&lt; endl;
-	return Dst(); 
-  &#125;
-&#125;;</code></pre>
-<ol>
-<li>在目标类中定义“源类对象作参数的构造函数”</li>
-</ol>
-<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 6.6.2
-#include &lt;iostream&gt;
-using namespace std;
-
-class Src;	&#x2F;&#x2F; 前置类型声明，因为在Dst中要用到Src类
-class Dst &#123;
-public:
-  Dst() &#123; cout &lt;&lt; &quot;Dst::Dst()&quot; &lt;&lt; endl; &#125;
-  Dst(const Src&amp; s) &#123; 
-	cout &lt;&lt; &quot;Dst::Dst(const Src&amp;)&quot; &lt;&lt; endl; 
-  &#125;
-&#125;;
-
-class Src &#123;
-public:
-  Src() &#123; cout &lt;&lt; &quot;Src::Src()&quot; &lt;&lt; endl; &#125;
-&#125;;</code></pre>
-<ul>
-<li><p>注意：两种自动类型转换的方法不能同时使用，使用时请任选其中一种。</p>
-</li>
-<li><p>禁止自动类型转换</p>
-<ul>
-<li>如果用 <code>explicit</code> 修饰类型转换运算符或类型转换构造函数，则相应的类型转换必须显式地进行</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 </div>

@@ -1,116 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>树状数组-入门</title>
-    <url>/2020/ds-fenwick-tree-basic/</url>
-    <content><![CDATA[<h2 id="Basic-Concept"><a href="#Basic-Concept" class="headerlink" title="Basic Concept"></a>Basic Concept</h2><p>树状数组可以用于高效计算数列的前缀和，区间和等等。</p>
-<p>它可以支持在$O(logn)$的时间内得到任意前缀和，以及在$O(logn)$时间内支持对区间单点值的修改。空间复杂度为$O(n)$。</p>
-<h3 id="数组存储方式"><a href="#数组存储方式" class="headerlink" title="数组存储方式"></a>数组存储方式</h3><p><img src="https://s3.ax1x.com/2020/12/22/rD8IfS.png" alt="rD8IfS.png"></p>
-<p>如图所示。</p>
-<p>$A[i]$代表原数组的元素，$C[i]$代表树状数组中的元素。</p>
-<pre class="language-c++" data-language="c++"><code class="language-c++">C[1]&#x3D;A[1];
-C[2]&#x3D;A[1]+A[2];
-C[3]&#x3D;A[3];
-C[4]&#x3D;A[1]+A[2]+A[3]+A[4];
-C[5]&#x3D;A[5];
-C[6]&#x3D;A[5]+A[6];
-C[7]&#x3D;A[7];
-C[8]&#x3D;A[1]+A[2]+A[3]+A[4]+A[5]+A[6]+A[7]+A[8];</code></pre>
-<p>而其索引的二进制表示如下：</p>
-<pre class="language-c++" data-language="c++"><code class="language-c++">C[1] &#x3D; C[0001] &#x3D; A[1];
-C[2] &#x3D; C[0010] &#x3D; A[1]+A[2];
-C[3] &#x3D; C[0011] &#x3D; A[3];
-C[4] &#x3D; C[0100] &#x3D; A[1]+A[2]+A[3]+A[4];
-C[5] &#x3D; C[0101] &#x3D; A[5];
-C[6] &#x3D; C[0110] &#x3D; A[5]+A[6];
-C[7] &#x3D; C[0111] &#x3D; A[7];
-C[8] &#x3D; C[1000] &#x3D; A[1]+A[2]+A[3]+A[4]+A[5]+A[6]+A[7]+A[8];</code></pre>
-<p>我们可以找出规律，</p>
-<script type="math/tex; mode=display">
-C[i] =\sum_{k=把i二进制表示的最低位1置为0后，将新的值+1}^i A[k]</script><p>也就是说，问题在于如何找出$i$的最低位$1$所代表的数值。</p>
-<h3 id="lowbit"><a href="#lowbit" class="headerlink" title="lowbit"></a>lowbit</h3><p>这里我们可以引入<code>lowbit</code>函数。</p>
-<pre class="language-c++" data-language="c++"><code class="language-c++">int lowbit (int x)
-&#123;
-	return x &amp; (-x);
-&#125;</code></pre>
-<p>我们已经知道，对于整数表示，有</p>
-<ul>
-<li><p>正数的补码是其本身；</p>
-</li>
-<li><p>负数的补码是在反码的基础上$+1$；</p>
-</li>
-</ul>
-<p>因此<code>x &amp; (-x)</code>就可以满足我们对于查找最低位$1$的需求。</p>
-<p>举个例子：</p>
-<ul>
-<li>二进制数 $11010$ (1) </li>
-<li><p>其反码为 $00101$ (2)</p>
-</li>
-<li><p>加 $1$ 后为 $00110$ (3)</p>
-</li>
-<li>将(1)(3)两者相与便得到最低位的 $1$ 所表示的数值</li>
-</ul>
-<h2 id="树状数组的建立"><a href="#树状数组的建立" class="headerlink" title="树状数组的建立"></a>树状数组的建立</h2><p>上面准备工作都做好了，码就行了:(</p>
-<pre class="language-c++" data-language="c++"><code class="language-c++">#include &lt;iostream&gt;
-#define MAXN 12
-using namespace std;
-
-int ft[MAXN+1] &#x3D; &#123;0&#125;;
-int a[MAXN + 1] &#x3D; &#123;0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12&#125;;
-
-int lowbit(int x)&#123;
-    return x &amp; (-x);
-&#125;
-
-void generateTree()&#123;
-    for (int i &#x3D; 1; i &lt;&#x3D; MAXN; i++)&#123;
-        for (int k &#x3D; i - lowbit(i) + 1; k &lt;&#x3D; i; k++)
-            ft[i] +&#x3D; a[k];
-    &#125;
-&#125;
-
-int main()&#123;
-    generateTree();
-    return 0;
-&#125;</code></pre>
-<h2 id="单点更新"><a href="#单点更新" class="headerlink" title="单点更新"></a>单点更新</h2><p>再把这张图拿过来：</p>
-<p><img src="https://s3.ax1x.com/2020/12/22/rD8IfS.png" alt="rD8IfS.png"></p>
-<p>如果我们要更改$A[3]$的值，那么我们知道，$C[3], C[4], C[8]$ 的值都会受到影响。</p>
-<ul>
-<li>$3(011)$ =&gt; <code>C[3] += temp;</code></li>
-<li>$lowbit(3) = 001$, $3 + lowbit(3)= 100 = 4(100)$ =&gt; <code>C[4] += temp;</code></li>
-<li>$lowbit(4) = 100$, $4+lowbit(4)=1000=8(1000)$ =&gt; <code>C[8] += temp;</code></li>
-<li>……</li>
-</ul>
-<p>因此，我们只需要对所要更新的数据不断使其自增lowbit后，</p>
-<p>使树状数组的对应索引增加 temp 值即可。</p>
-<pre class="language-c++" data-language="c++"><code class="language-c++">void update(int index, int val)&#123;
-    for (int i &#x3D; index; i &lt;&#x3D; MAXN; i &#x3D; i + lowbit(i))&#123;
-        ft[i] +&#x3D; val;
-    &#125;
-&#125;</code></pre>
-<h2 id="区间查询"><a href="#区间查询" class="headerlink" title="区间查询"></a>区间查询</h2><p>假设现在我们要查询1~7的前缀和。</p>
-<pre class="language-c++" data-language="c++"><code class="language-c++">C[7] &#x3D; C[0111] &#x3D; A[7];
-C[6] &#x3D; C[0110] &#x3D; A[5] + A[6];
-C[4] &#x3D; C[0100] &#x3D; A[1] + A[2] + A[3] + A[4];</code></pre>
-<p>归纳可知，我们只需每次将索引减少i的lowbit，然后将对应的树状数组的值求和即可。</p>
-<pre class="language-c++" data-language="c++"><code class="language-c++">int getSum(int index)&#123;
-    int result &#x3D; 0;
-    for (int k &#x3D; index; k &gt; 0; k-&#x3D;lowbit(k))&#123;
-        result +&#x3D; ft[k];
-    &#125;
-    return result;
-&#125;</code></pre>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
-<li><a href="https://zh.wikipedia.org/wiki/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84">https://zh.wikipedia.org/wiki/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84</a>‘</li>
-<li><a href="https://bestsort.cn/2019/04/26/195/">https://bestsort.cn/2019/04/26/195/</a></li>
-</ul>
-]]></content>
-      <tags>
-        <tag>Data Structure</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>数据的离散化</title>
     <url>/2020/data-discreatization/</url>
     <content><![CDATA[<h2 id="数据的离散化处理"><a href="#数据的离散化处理" class="headerlink" title="数据的离散化处理"></a>数据的离散化处理</h2><p>什么是<strong>离散化</strong>？</p>
@@ -245,33 +135,114 @@ int main()&#123;
       </tags>
   </entry>
   <entry>
-    <title>一些参数方程/极坐标图像</title>
-    <url>/2020/figure-of-some-curves/</url>
-    <content><![CDATA[<p>菜鸡没学过4-4，在微积分应用里面积面积和体积的时候有的草图画不出来…</p>
-<h2 id="星形线"><a href="#星形线" class="headerlink" title="星形线"></a>星形线</h2><script type="math/tex; mode=display">
-x^{\frac 2 3}+y^{\frac 2 3}=a^{\frac 2 3} \\
-\begin{cases}
-x=a\cos^3t\\
-y=a\sin^3t
-\end{cases}</script><p><img src="https://s3.ax1x.com/2020/12/26/r4AL8K.png" alt=""></p>
-<h2 id="摆线"><a href="#摆线" class="headerlink" title="摆线"></a>摆线</h2><script type="math/tex; mode=display">
-\begin {cases}
-x= a(t-\sin t)\\
-y=a(1-\cos t)
-\end {cases}</script><p><img src="https://s3.ax1x.com/2020/12/26/r4E12T.png" alt=""></p>
-<p>图为$-4\pi \le t \le 4\pi, a=1$的图像.</p>
-<p>周期为$2\pi$.</p>
-<h2 id="双纽线"><a href="#双纽线" class="headerlink" title="双纽线"></a>双纽线</h2><p><a href="https://imgchr.com/i/r4VeSK"><img src="https://s3.ax1x.com/2020/12/26/r4VeSK.png" alt="r4VeSK.png"></a></p>
-<h2 id="笛卡尔心形线"><a href="#笛卡尔心形线" class="headerlink" title="笛卡尔心形线"></a>笛卡尔心形线</h2><p><a href="https://imgchr.com/i/r4ZSht"><img src="https://s3.ax1x.com/2020/12/26/r4ZSht.png" alt="r4ZSht.png"></a></p>
-<h2 id="其它曲线"><a href="#其它曲线" class="headerlink" title="其它曲线"></a>其它曲线</h2><p><a href="https://imgchr.com/i/r4ZeNn"><img src="https://s3.ax1x.com/2020/12/26/r4ZeNn.png" alt="r4ZeNn.png"></a></p>
-<p><a href="https://imgchr.com/i/r4Zu90"><img src="https://s3.ax1x.com/2020/12/26/r4Zu90.png" alt="r4Zu90.png"></a></p>
-<p><a href="https://imgchr.com/i/r4ZK3V"><img src="https://s3.ax1x.com/2020/12/26/r4ZK3V.png" alt="r4ZK3V.png"></a></p>
-<p><a href="https://imgchr.com/i/r4ZMcT"><img src="https://s3.ax1x.com/2020/12/26/r4ZMcT.png" alt="r4ZMcT.png"></a></p>
+    <title>树状数组-入门</title>
+    <url>/2020/ds-fenwick-tree-basic/</url>
+    <content><![CDATA[<h2 id="Basic-Concept"><a href="#Basic-Concept" class="headerlink" title="Basic Concept"></a>Basic Concept</h2><p>树状数组可以用于高效计算数列的前缀和，区间和等等。</p>
+<p>它可以支持在$O(logn)$的时间内得到任意前缀和，以及在$O(logn)$时间内支持对区间单点值的修改。空间复杂度为$O(n)$。</p>
+<h3 id="数组存储方式"><a href="#数组存储方式" class="headerlink" title="数组存储方式"></a>数组存储方式</h3><p><img src="https://s3.ax1x.com/2020/12/22/rD8IfS.png" alt="rD8IfS.png"></p>
+<p>如图所示。</p>
+<p>$A[i]$代表原数组的元素，$C[i]$代表树状数组中的元素。</p>
+<pre class="language-c++" data-language="c++"><code class="language-c++">C[1]&#x3D;A[1];
+C[2]&#x3D;A[1]+A[2];
+C[3]&#x3D;A[3];
+C[4]&#x3D;A[1]+A[2]+A[3]+A[4];
+C[5]&#x3D;A[5];
+C[6]&#x3D;A[5]+A[6];
+C[7]&#x3D;A[7];
+C[8]&#x3D;A[1]+A[2]+A[3]+A[4]+A[5]+A[6]+A[7]+A[8];</code></pre>
+<p>而其索引的二进制表示如下：</p>
+<pre class="language-c++" data-language="c++"><code class="language-c++">C[1] &#x3D; C[0001] &#x3D; A[1];
+C[2] &#x3D; C[0010] &#x3D; A[1]+A[2];
+C[3] &#x3D; C[0011] &#x3D; A[3];
+C[4] &#x3D; C[0100] &#x3D; A[1]+A[2]+A[3]+A[4];
+C[5] &#x3D; C[0101] &#x3D; A[5];
+C[6] &#x3D; C[0110] &#x3D; A[5]+A[6];
+C[7] &#x3D; C[0111] &#x3D; A[7];
+C[8] &#x3D; C[1000] &#x3D; A[1]+A[2]+A[3]+A[4]+A[5]+A[6]+A[7]+A[8];</code></pre>
+<p>我们可以找出规律，</p>
+<script type="math/tex; mode=display">
+C[i] =\sum_{k=把i二进制表示的最低位1置为0后，将新的值+1}^i A[k]</script><p>也就是说，问题在于如何找出$i$的最低位$1$所代表的数值。</p>
+<h3 id="lowbit"><a href="#lowbit" class="headerlink" title="lowbit"></a>lowbit</h3><p>这里我们可以引入<code>lowbit</code>函数。</p>
+<pre class="language-c++" data-language="c++"><code class="language-c++">int lowbit (int x)
+&#123;
+	return x &amp; (-x);
+&#125;</code></pre>
+<p>我们已经知道，对于整数表示，有</p>
+<ul>
+<li><p>正数的补码是其本身；</p>
+</li>
+<li><p>负数的补码是在反码的基础上$+1$；</p>
+</li>
+</ul>
+<p>因此<code>x &amp; (-x)</code>就可以满足我们对于查找最低位$1$的需求。</p>
+<p>举个例子：</p>
+<ul>
+<li>二进制数 $11010$ (1) </li>
+<li><p>其反码为 $00101$ (2)</p>
+</li>
+<li><p>加 $1$ 后为 $00110$ (3)</p>
+</li>
+<li>将(1)(3)两者相与便得到最低位的 $1$ 所表示的数值</li>
+</ul>
+<h2 id="树状数组的建立"><a href="#树状数组的建立" class="headerlink" title="树状数组的建立"></a>树状数组的建立</h2><p>上面准备工作都做好了，码就行了:(</p>
+<pre class="language-c++" data-language="c++"><code class="language-c++">#include &lt;iostream&gt;
+#define MAXN 12
+using namespace std;
+
+int ft[MAXN+1] &#x3D; &#123;0&#125;;
+int a[MAXN + 1] &#x3D; &#123;0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12&#125;;
+
+int lowbit(int x)&#123;
+    return x &amp; (-x);
+&#125;
+
+void generateTree()&#123;
+    for (int i &#x3D; 1; i &lt;&#x3D; MAXN; i++)&#123;
+        for (int k &#x3D; i - lowbit(i) + 1; k &lt;&#x3D; i; k++)
+            ft[i] +&#x3D; a[k];
+    &#125;
+&#125;
+
+int main()&#123;
+    generateTree();
+    return 0;
+&#125;</code></pre>
+<h2 id="单点更新"><a href="#单点更新" class="headerlink" title="单点更新"></a>单点更新</h2><p>再把这张图拿过来：</p>
+<p><img src="https://s3.ax1x.com/2020/12/22/rD8IfS.png" alt="rD8IfS.png"></p>
+<p>如果我们要更改$A[3]$的值，那么我们知道，$C[3], C[4], C[8]$ 的值都会受到影响。</p>
+<ul>
+<li>$3(011)$ =&gt; <code>C[3] += temp;</code></li>
+<li>$lowbit(3) = 001$, $3 + lowbit(3)= 100 = 4(100)$ =&gt; <code>C[4] += temp;</code></li>
+<li>$lowbit(4) = 100$, $4+lowbit(4)=1000=8(1000)$ =&gt; <code>C[8] += temp;</code></li>
+<li>……</li>
+</ul>
+<p>因此，我们只需要对所要更新的数据不断使其自增lowbit后，</p>
+<p>使树状数组的对应索引增加 temp 值即可。</p>
+<pre class="language-c++" data-language="c++"><code class="language-c++">void update(int index, int val)&#123;
+    for (int i &#x3D; index; i &lt;&#x3D; MAXN; i &#x3D; i + lowbit(i))&#123;
+        ft[i] +&#x3D; val;
+    &#125;
+&#125;</code></pre>
+<h2 id="区间查询"><a href="#区间查询" class="headerlink" title="区间查询"></a>区间查询</h2><p>假设现在我们要查询1~7的前缀和。</p>
+<pre class="language-c++" data-language="c++"><code class="language-c++">C[7] &#x3D; C[0111] &#x3D; A[7];
+C[6] &#x3D; C[0110] &#x3D; A[5] + A[6];
+C[4] &#x3D; C[0100] &#x3D; A[1] + A[2] + A[3] + A[4];</code></pre>
+<p>归纳可知，我们只需每次将索引减少i的lowbit，然后将对应的树状数组的值求和即可。</p>
+<pre class="language-c++" data-language="c++"><code class="language-c++">int getSum(int index)&#123;
+    int result &#x3D; 0;
+    for (int k &#x3D; index; k &gt; 0; k-&#x3D;lowbit(k))&#123;
+        result +&#x3D; ft[k];
+    &#125;
+    return result;
+&#125;</code></pre>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
-<li><a href="https://mm.edrawsoft.cn/template/65439">https://mm.edrawsoft.cn/template/65439</a></li>
-<li>部分图像采用 GeoGebra 绘制</li>
+<li><a href="https://zh.wikipedia.org/wiki/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84">https://zh.wikipedia.org/wiki/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84</a>‘</li>
+<li><a href="https://bestsort.cn/2019/04/26/195/">https://bestsort.cn/2019/04/26/195/</a></li>
 </ul>
 ]]></content>
+      <tags>
+        <tag>Data Structure</tag>
+      </tags>
   </entry>
   <entry>
     <title>数据结构-堆</title>
@@ -450,6 +421,35 @@ public:
       </tags>
   </entry>
   <entry>
+    <title>一些参数方程/极坐标图像</title>
+    <url>/2020/figure-of-some-curves/</url>
+    <content><![CDATA[<p>菜鸡没学过4-4，在微积分应用里面积面积和体积的时候有的草图画不出来…</p>
+<h2 id="星形线"><a href="#星形线" class="headerlink" title="星形线"></a>星形线</h2><script type="math/tex; mode=display">
+x^{\frac 2 3}+y^{\frac 2 3}=a^{\frac 2 3} \\
+\begin{cases}
+x=a\cos^3t\\
+y=a\sin^3t
+\end{cases}</script><p><img src="https://s3.ax1x.com/2020/12/26/r4AL8K.png" alt=""></p>
+<h2 id="摆线"><a href="#摆线" class="headerlink" title="摆线"></a>摆线</h2><script type="math/tex; mode=display">
+\begin {cases}
+x= a(t-\sin t)\\
+y=a(1-\cos t)
+\end {cases}</script><p><img src="https://s3.ax1x.com/2020/12/26/r4E12T.png" alt=""></p>
+<p>图为$-4\pi \le t \le 4\pi, a=1$的图像.</p>
+<p>周期为$2\pi$.</p>
+<h2 id="双纽线"><a href="#双纽线" class="headerlink" title="双纽线"></a>双纽线</h2><p><a href="https://imgchr.com/i/r4VeSK"><img src="https://s3.ax1x.com/2020/12/26/r4VeSK.png" alt="r4VeSK.png"></a></p>
+<h2 id="笛卡尔心形线"><a href="#笛卡尔心形线" class="headerlink" title="笛卡尔心形线"></a>笛卡尔心形线</h2><p><a href="https://imgchr.com/i/r4ZSht"><img src="https://s3.ax1x.com/2020/12/26/r4ZSht.png" alt="r4ZSht.png"></a></p>
+<h2 id="其它曲线"><a href="#其它曲线" class="headerlink" title="其它曲线"></a>其它曲线</h2><p><a href="https://imgchr.com/i/r4ZeNn"><img src="https://s3.ax1x.com/2020/12/26/r4ZeNn.png" alt="r4ZeNn.png"></a></p>
+<p><a href="https://imgchr.com/i/r4Zu90"><img src="https://s3.ax1x.com/2020/12/26/r4Zu90.png" alt="r4Zu90.png"></a></p>
+<p><a href="https://imgchr.com/i/r4ZK3V"><img src="https://s3.ax1x.com/2020/12/26/r4ZK3V.png" alt="r4ZK3V.png"></a></p>
+<p><a href="https://imgchr.com/i/r4ZMcT"><img src="https://s3.ax1x.com/2020/12/26/r4ZMcT.png" alt="r4ZMcT.png"></a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul>
+<li><a href="https://mm.edrawsoft.cn/template/65439">https://mm.edrawsoft.cn/template/65439</a></li>
+<li>部分图像采用 GeoGebra 绘制</li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
     <title>Hash Table（散列表）</title>
     <url>/2020/hash-table/</url>
     <content><![CDATA[<p>　　散列表的相关概念和内容　　</p>
@@ -481,6 +481,19 @@ public:
       <tags>
         <tag>Data Structure</tag>
         <tag>Hash Table</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello, World.</title>
+    <url>/2020/hello-world/</url>
+    <content><![CDATA[<p>没钱结款只得把自己博客搬家的屑</p>
+<h2 id="c7w-的破站-ver-2-0"><a href="#c7w-的破站-ver-2-0" class="headerlink" title="c7w 的破站 ver 2.0"></a>c7w 的破站 ver 2.0</h2><p>​        之前用 WordPress 搭的小站快要到期了，现在也不好找免费的虚拟主机薅羊毛，遂借用 github.io + Hexo 搭建本“静态博客”，来记录今后的点滴。</p>
+<p><s>         azaz，我打点滴第一候选项是垫底，bksw</s></p>
+<p>​        然后强行安利了贵班的文艺委员也用上了这种方法建的博客，甚至还组建了班级的github organisation.</p>
+<p>​    等有空了就写博文，咕咕咕</p>
+]]></content>
+      <tags>
+        <tag>日志</tag>
       </tags>
   </entry>
   <entry>
@@ -537,19 +550,6 @@ public:
 ]]></content>
       <tags>
         <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hello, World.</title>
-    <url>/2020/hello-world/</url>
-    <content><![CDATA[<p>没钱结款只得把自己博客搬家的屑</p>
-<h2 id="c7w-的破站-ver-2-0"><a href="#c7w-的破站-ver-2-0" class="headerlink" title="c7w 的破站 ver 2.0"></a>c7w 的破站 ver 2.0</h2><p>​        之前用 WordPress 搭的小站快要到期了，现在也不好找免费的虚拟主机薅羊毛，遂借用 github.io + Hexo 搭建本“静态博客”，来记录今后的点滴。</p>
-<p><s>         azaz，我打点滴第一候选项是垫底，bksw</s></p>
-<p>​        然后强行安利了贵班的文艺委员也用上了这种方法建的博客，甚至还组建了班级的github organisation.</p>
-<p>​    等有空了就写博文，咕咕咕</p>
-]]></content>
-      <tags>
-        <tag>日志</tag>
       </tags>
   </entry>
   <entry>
@@ -804,6 +804,69 @@ A=C^{-1}BC</script><h3 id="性质-1"><a href="#性质-1" class="headerlink" titl
 ]]></content>
   </entry>
   <entry>
+    <title>Java 中的多线程</title>
+    <url>/2021/multi-thread-java/</url>
+    <content><![CDATA[<p><img src="https://i.loli.net/2021/06/22/x74o9FEeajuzrpk.png" alt="image-20210622084907577"></p>
+<h2 id="Chapter-8-多线程"><a href="#Chapter-8-多线程" class="headerlink" title="Chapter 8 多线程"></a>Chapter 8 多线程</h2><h3 id="如何创建多线程"><a href="#如何创建多线程" class="headerlink" title="如何创建多线程"></a>如何创建多线程</h3><h4 id="继承-Thread-类"><a href="#继承-Thread-类" class="headerlink" title="继承 Thread 类"></a>继承 Thread 类</h4> <pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>math<span class="token punctuation">.</span></span><span class="token class-name">BigDecimal</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>math<span class="token punctuation">.</span></span><span class="token class-name">BigInteger</span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ThreadTest</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Start of the main Thread."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">AnotherThread</span> th1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AnotherThread</span><span class="token punctuation">(</span><span class="token number">2000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">AnotherThread</span> th2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AnotherThread</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        th1<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        th2<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"End of the main thread."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">class</span> <span class="token class-name">AnotherThread</span> <span class="token keyword">extends</span> <span class="token class-name">Thread</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> num<span class="token punctuation">;</span>
+    
+    <span class="token keyword">public</span> <span class="token class-name">AnotherThread</span><span class="token punctuation">(</span><span class="token keyword">int</span> num<span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span> <span class="token keyword">this</span><span class="token punctuation">.</span>num <span class="token operator">=</span> num<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+    
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token class-name">BigInteger</span> i <span class="token operator">=</span> <span class="token class-name">BigInteger</span><span class="token punctuation">.</span><span class="token function">valueOf</span><span class="token punctuation">(</span>num<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">BigInteger</span> result <span class="token operator">=</span> <span class="token class-name">BigInteger</span><span class="token punctuation">.</span><span class="token function">valueOf</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"A new thread has been created with number "</span> <span class="token operator">+</span> num<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">while</span> <span class="token punctuation">(</span>i<span class="token punctuation">.</span><span class="token function">compareTo</span><span class="token punctuation">(</span><span class="token class-name">BigInteger</span><span class="token punctuation">.</span><span class="token function">valueOf</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span>
+        <span class="token punctuation">&#123;</span>
+            result <span class="token operator">=</span> result<span class="token punctuation">.</span><span class="token function">multiply</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            i <span class="token operator">=</span> i<span class="token punctuation">.</span><span class="token function">subtract</span><span class="token punctuation">(</span><span class="token class-name">BigInteger</span><span class="token punctuation">.</span><span class="token function">valueOf</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Calc Ans: "</span> <span class="token operator">+</span> result <span class="token operator">+</span> <span class="token string">" with number "</span> <span class="token operator">+</span> num<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Thread has ended with number"</span> <span class="token operator">+</span> num<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+<span class="token punctuation">&#125;</span></code></pre>
+<h4 id="Runnable-接口"><a href="#Runnable-接口" class="headerlink" title="Runnable 接口"></a>Runnable 接口</h4><p><img src="https://i.loli.net/2021/06/22/xq2eEdBO1LhCUNp.png" alt="image-20210622134139451"></p>
+<p><img src="https://i.loli.net/2021/06/22/E7C4eYTcBwIvtRp.png" alt="image-20210622134156347"></p>
+<h3 id="线程间的资源共享"><a href="#线程间的资源共享" class="headerlink" title="线程间的资源共享"></a>线程间的资源共享</h3><p>当多个线程的执行代码来自于同一个类的run方法时，则称它们共享相同的代码；而当它们访问相同的对象时，则称它们共享相同的数据。</p>
+<p>线程间数据共享的实现方法：<strong>用一个 Runnable 类型的对象创建多个线程</strong></p>
+<p><img src="https://i.loli.net/2021/06/22/UiedvSbgnKCX4Va.png" alt="image-20210622134610122"></p>
+<h3 id="多线程间的同步控制"><a href="#多线程间的同步控制" class="headerlink" title="多线程间的同步控制"></a>多线程间的同步控制</h3><p><img src="https://i.loli.net/2021/06/22/86GhI5Kabnr4ilV.png" alt="image-20210622151938199"></p>
+<p><img src="https://i.loli.net/2021/06/22/xDBimG3KEbYJhsr.png" alt="image-20210622152001891"></p>
+<p><img src="https://i.loli.net/2021/06/22/grM9S8DeBVbzhFW.png" alt="image-20210622152340500"></p>
+<p><img src="https://i.loli.net/2021/06/22/SAXKpEbT6Pr3lF7.png" alt="image-20210622152550427"></p>
+<p><img src="https://i.loli.net/2021/06/22/F3lYMpQ46ijmgtP.png" alt="image-20210622152613819"></p>
+<p>改进后的代码：</p>
+<p><img src="https://i.loli.net/2021/06/22/8Eha4etDxWRVHmL.png" alt="image-20210622153052026"></p>
+<p><img src="https://i.loli.net/2021/06/22/a9hEeXUrMOlo7cs.png" alt="image-20210622153137260"></p>
+<p><img src="https://i.loli.net/2021/06/22/Q5NBhT8gdAeLJ9v.png" alt="image-20210622153143586"></p>
+<h3 id="线程之间的通信、后台进程"><a href="#线程之间的通信、后台进程" class="headerlink" title="线程之间的通信、后台进程"></a>线程之间的通信、后台进程</h3>]]></content>
+      <tags>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>OOP 课程笔记 Week 05 创建和销毁</title>
     <url>/2021/oop-05/</url>
     <content><![CDATA[<h2 id="Week-05-创建和销毁"><a href="#Week-05-创建和销毁" class="headerlink" title="Week 05 创建和销毁"></a>Week 05 创建和销毁</h2><h3 id="5-0-Overview"><a href="#5-0-Overview" class="headerlink" title="5.0 Overview"></a>5.0 Overview</h3><ul>
@@ -941,6 +1004,248 @@ const int foo::j &#x3D; 4;</code></pre>
 <li>和B是否实例化无关</li>
 </ul>
 <h4 id="5-3-3-参数对象的构造和析构"><a href="#5-3-3-参数对象的构造和析构" class="headerlink" title="5.3.3 参数对象的构造和析构"></a>5.3.3 参数对象的构造和析构</h4><h3 id="5-4-对象的new和delete"><a href="#5-4-对象的new和delete" class="headerlink" title="5.4 对象的new和delete"></a>5.4 对象的new和delete</h3>]]></content>
+      <tags>
+        <tag>OOP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>OOP 课程笔记 Week 06 引用与复制</title>
+    <url>/2021/oop-06/</url>
+    <content><![CDATA[<h2 id="§-6-引用与复制"><a href="#§-6-引用与复制" class="headerlink" title="§ 6 引用与复制"></a>§ 6 引用与复制</h2><h3 id="§-6-0-Overview"><a href="#§-6-0-Overview" class="headerlink" title="§ 6.0 Overview"></a>§ 6.0 Overview</h3><ul>
+<li>6.1 常量引用</li>
+<li>6.2 拷贝构造函数</li>
+<li>6.3 右值引用</li>
+<li>6.4 移动构造函数</li>
+<li>6.5 赋值运算符</li>
+<li>6.6 类型转换</li>
+</ul>
+<h3 id="§-6-1-常量引用"><a href="#§-6-1-常量引用" class="headerlink" title="§ 6.1 常量引用"></a>§ 6.1 常量引用</h3><ul>
+<li>最小特权原则：给函数足够的权限去完成相应的任务，但不要给予他多余的权限。<ul>
+<li>例如函数<code>void add(int&amp; a, int&amp; b)</code>，如果将参数类型定义为<code>int&amp;</code>，则给予该函数在函数体内修改a和b的值的权限</li>
+<li>如果我们不想给予函数修改权限，则可以在参数中使用常量/常量引用</li>
+<li><code>void add(const int&amp; a, const int&amp; b)</code></li>
+<li>此时函数中仅能读取a和b的值，无法对a, b进行任何修改操作。</li>
+</ul>
+</li>
+</ul>
+<h3 id="§-6-2-拷贝构造函数"><a href="#§-6-2-拷贝构造函数" class="headerlink" title="§ 6.2 拷贝构造函数"></a>§ 6.2 拷贝构造函数</h3><ul>
+<li>拷贝构造函数是一种特殊的构造函数，它的参数是语言规定的，是同类对象的常量引用</li>
+<li><code>MyClass(const MyClass&amp;) &#123;&#125;</code></li>
+<li>拷贝构造函数被调用的三种常见情况<ul>
+<li>用一个类对象定义另一个新的类对象</li>
+<li>函数调用时以类的对象为形参</li>
+<li>函数返回类对象</li>
+</ul>
+</li>
+</ul>
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 6.2.1
+
+&#x2F;&#x2F; a
+Test a; &#x2F;&#x2F; NO
+Test b(a); &#x2F;&#x2F;YES
+Test c &#x3D; a; &#x2F;&#x2F;YES
+
+&#x2F;&#x2F; b
+Func(Test a)
+
+&#x2F;&#x2F; c
+return a;</code></pre>
+<ul>
+<li>如果<strong>调用拷贝构造函数</strong>且当前<strong>没有</strong>给类<strong>显式定义</strong>拷贝构造函数，编译器将自动合成“<strong>隐式定义</strong>的拷贝构造函数”，其功能是<strong>调用所有数据成员的拷贝构造函数或拷贝赋值运算符</strong>。</li>
+<li>隐式定义拷贝构造函数在遇到<strong>指针类型</strong>成员时可能会出错,导致多个指针类型的变量指向同一个地址。</li>
+<li>拷贝构造函数的频繁调用会降低程序运行的效率，解决方法：<ul>
+<li>使用引用/常量引用来传参或返回对象</li>
+<li>将拷贝构造函数声明为 <code>private</code> ，或使用 <code>delete</code> 取消拷贝构造函数的隐式合成</li>
+</ul>
+</li>
+</ul>
+<h3 id="§-6-3-右值引用"><a href="#§-6-3-右值引用" class="headerlink" title="§ 6.3 右值引用"></a>§ 6.3 右值引用</h3><ul>
+<li>左值和右值<ul>
+<li>左值：可以取地址、有名字的值。</li>
+<li>右值：不能取地址、没有名字的值; 常见于常值、函数返回值、表达式</li>
+</ul>
+</li>
+</ul>
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 6.3.1
+int a &#x3D; 1;
+int b &#x3D; func();
+int c &#x3D; a + b;
+&#x2F;&#x2F; 其中a、b、c为左值，1、func函数返回值、a+b的结果为右值。</code></pre>
+<ul>
+<li>右值引用<ul>
+<li>虽然右值无法取地址，但可以被&amp;&amp;引用(右值引用)<ul>
+<li><code>int &amp;&amp;e = a+b;</code></li>
+</ul>
+</li>
+<li>右值引用无法绑定左值<ul>
+<li><code>int &amp;&amp;e = a; //Compile Error</code></li>
+</ul>
+</li>
+<li>例外：常量左值引用能也绑定右值<ul>
+<li><code>const int &amp;e = 3;</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="§-6-4-移动构造函数"><a href="#§-6-4-移动构造函数" class="headerlink" title="§ 6.4 移动构造函数"></a>§ 6.4 移动构造函数</h3><ul>
+<li>移动构造函数<ul>
+<li>右值引用可以延续即将销毁变量的生命周期，用于构造函数可以<strong>提升处理效率</strong>，在此过程中尽可能少地进行拷贝。</li>
+<li>使用右值引用作为参数的构造函数叫做移动构造函数。</li>
+</ul>
+</li>
+</ul>
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 6.4.1
+
+&#x2F;&#x2F; 拷贝构造函数
+ClassName(const ClassName&amp; VariableName);
+&#x2F;&#x2F; 移动构造函数
+ClassName(ClassName&amp;&amp; VariableName);</code></pre>
+<ul>
+<li>移动构造函数与拷贝构造函数最主要的差别就是类中堆内存是重新开辟并拷贝，还是直接将指针指向那块地址。</li>
+<li>对于一些即将析构的临时类，移动构造函数直接利用了原来临时对象中的堆内存，新的对象无需开辟内存，临时对象无需释放内存，从而大大提高计算效率。</li>
+</ul>
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 6.4.2
+
+class Test &#123;
+public:
+	int * buf; &#x2F;&#x2F;&#x2F;&#x2F; only for demo.
+	Test() &#123;
+		buf &#x3D; new int[10]; &#x2F;&#x2F;申请一块内存
+		cout &lt;&lt; &quot;Test(): this-&gt;buf @ &quot; &lt;&lt; hex &lt;&lt; buf &lt;&lt; endl;
+	&#125;
+	~Test() &#123;
+		cout &lt;&lt; &quot;~Test(): this-&gt;buf @ &quot; &lt;&lt; hex &lt;&lt; buf &lt;&lt; endl;
+		if (buf) delete[] buf;
+	&#125;
+	Test(const Test&amp; t) : buf(new int[10]) &#123;
+		for(int i&#x3D;0; i&lt;10; i++) 
+			buf[i] &#x3D; t.buf[i]; &#x2F;&#x2F;拷贝数据
+		cout &lt;&lt; &quot;Test(const Test&amp;) called. this-&gt;buf @ &quot;
+			&lt;&lt; hex &lt;&lt; buf &lt;&lt; endl;
+	&#125;
+	Test(Test&amp;&amp; t) : buf(t.buf) &#123; &#x2F;&#x2F;直接复制地址，避免拷贝
+		cout &lt;&lt; &quot;Test(Test&amp;&amp;) called. this-&gt;buf @ &quot;
+			&lt;&lt; hex &lt;&lt; buf &lt;&lt; endl;
+		t.buf &#x3D; nullptr; &#x2F;&#x2F;将t.buf改为nullptr，使其不再指向原来内存区域
+	&#125;
+&#125;;
+
+Test GetTemp() &#123;
+	Test tmp;
+	cout &lt;&lt; &quot;GetTemp(): tmp.buf @ &quot;
+		&lt;&lt; hex &lt;&lt; tmp.buf &lt;&lt; endl;
+	return tmp;
+&#125;
+
+void fun(Test t) &#123;
+	cout &lt;&lt; &quot;fun(Test t): t.buf @ &quot;
+		&lt;&lt; hex &lt;&lt; t.buf &lt;&lt; endl;
+&#125;
+
+int main() &#123;
+	Test a &#x3D; GetTemp();
+	cout &lt;&lt; &quot;main() : a.buf @ &quot; &lt;&lt; hex &lt;&lt; a.buf &lt;&lt; endl;
+	fun(a);
+	return 0;
+&#125;
+
+&#x2F;&#x2F; g++ test.cpp --std&#x3D;c++11 -fno-elide-constructors -o test</code></pre>
+<ul>
+<li>移动语义<ul>
+<li><code>std::move</code> 函数<ul>
+<li>输入：左值（包括变量等，该左值一般不再使用）</li>
+<li>返回值：该左值对应的右值</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="§-6-5-赋值运算符"><a href="#§-6-5-赋值运算符" class="headerlink" title="§ 6.5 赋值运算符"></a>§ 6.5 赋值运算符</h3><ul>
+<li>拷贝复制运算符</li>
+</ul>
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 6.5.1
+
+&#x2F;&#x2F; 区分
+ClassName a;
+ClassName b;
+a &#x3D; b;
+
+ClassName a &#x3D; b;
+
+&#x2F;&#x2F; 前者调用
+ClassName&amp; operator&#x3D; (const ClassName&amp; right) &#123;
+   if (this !&#x3D; &amp;right) &#123;&#x2F;&#x2F; 避免自己赋值给自己
+		&#x2F;&#x2F; 将right对象中的内容拷贝到当前对象中...
+	&#125;
+   return *this;
+&#125;</code></pre>
+<ul>
+<li>移动赋值运算符</li>
+</ul>
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 6.5.2
+Test&amp; operator&#x3D; (Test&amp;&amp; right) &#123;
+	if (this &#x3D;&#x3D; &amp;right)  cout &lt;&lt; &quot;same obj!\n&quot;;
+	else &#123;	
+		this-&gt;buf &#x3D; right.buf;  &#x2F;&#x2F;直接赋值地址
+		right.buf &#x3D; nullptr;
+	cout &lt;&lt; &quot;operator&#x3D;(Test&amp;&amp;) called.\n&quot;;
+&#125;
+	return *this;
+&#125;</code></pre>
+<h3 id="§-6-6-类型转换"><a href="#§-6-6-类型转换" class="headerlink" title="§ 6.6 类型转换"></a>§ 6.6 类型转换</h3><ol>
+<li>在源类中定义<strong>目标类型转换运算符</strong></li>
+</ol>
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 6.6.1
+#include &lt;iostream&gt;
+using namespace std;
+
+
+class Dst &#123; &#x2F;&#x2F;目标类Destination
+public:
+  Dst() &#123; cout &lt;&lt; &quot;Dst::Dst()&quot; &lt;&lt; endl; &#125;
+&#125;;
+
+
+
+class Src &#123; &#x2F;&#x2F;源类Source
+public:
+  Src() &#123; cout &lt;&lt; &quot;Src::Src()&quot; &lt;&lt; endl; &#125;
+  operator Dst() const &#123; 
+	cout &lt;&lt; &quot;Src::operator Dst() called&quot; &lt;&lt; endl;
+	return Dst(); 
+  &#125;
+&#125;;</code></pre>
+<ol>
+<li>在目标类中定义“源类对象作参数的构造函数”</li>
+</ol>
+<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 6.6.2
+#include &lt;iostream&gt;
+using namespace std;
+
+class Src;	&#x2F;&#x2F; 前置类型声明，因为在Dst中要用到Src类
+class Dst &#123;
+public:
+  Dst() &#123; cout &lt;&lt; &quot;Dst::Dst()&quot; &lt;&lt; endl; &#125;
+  Dst(const Src&amp; s) &#123; 
+	cout &lt;&lt; &quot;Dst::Dst(const Src&amp;)&quot; &lt;&lt; endl; 
+  &#125;
+&#125;;
+
+class Src &#123;
+public:
+  Src() &#123; cout &lt;&lt; &quot;Src::Src()&quot; &lt;&lt; endl; &#125;
+&#125;;</code></pre>
+<ul>
+<li><p>注意：两种自动类型转换的方法不能同时使用，使用时请任选其中一种。</p>
+</li>
+<li><p>禁止自动类型转换</p>
+<ul>
+<li>如果用 <code>explicit</code> 修饰类型转换运算符或类型转换构造函数，则相应的类型转换必须显式地进行</li>
+</ul>
+</li>
+</ul>
+]]></content>
       <tags>
         <tag>OOP</tag>
       </tags>
@@ -1257,311 +1562,6 @@ int main() &#123;
   d.bar(); 		&#x2F;&#x2F;&#x2F; 编译错误，A和B都有成员函数bar
   return 0;
 &#125;</code></pre>
-]]></content>
-      <tags>
-        <tag>OOP</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java 中的多线程</title>
-    <url>/2021/multi-thread-java/</url>
-    <content><![CDATA[<p><img src="https://i.loli.net/2021/06/22/x74o9FEeajuzrpk.png" alt="image-20210622084907577"></p>
-<h2 id="Chapter-8-多线程"><a href="#Chapter-8-多线程" class="headerlink" title="Chapter 8 多线程"></a>Chapter 8 多线程</h2><h3 id="如何创建多线程"><a href="#如何创建多线程" class="headerlink" title="如何创建多线程"></a>如何创建多线程</h3><h4 id="继承-Thread-类"><a href="#继承-Thread-类" class="headerlink" title="继承 Thread 类"></a>继承 Thread 类</h4> <pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>math<span class="token punctuation">.</span></span><span class="token class-name">BigDecimal</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>math<span class="token punctuation">.</span></span><span class="token class-name">BigInteger</span><span class="token punctuation">;</span>
-
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ThreadTest</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span>
-    <span class="token punctuation">&#123;</span>
-        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Start of the main Thread."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token class-name">AnotherThread</span> th1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AnotherThread</span><span class="token punctuation">(</span><span class="token number">2000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token class-name">AnotherThread</span> th2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AnotherThread</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        th1<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        th2<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"End of the main thread."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
-
-<span class="token keyword">class</span> <span class="token class-name">AnotherThread</span> <span class="token keyword">extends</span> <span class="token class-name">Thread</span>
-<span class="token punctuation">&#123;</span>
-    <span class="token keyword">private</span> <span class="token keyword">int</span> num<span class="token punctuation">;</span>
-    
-    <span class="token keyword">public</span> <span class="token class-name">AnotherThread</span><span class="token punctuation">(</span><span class="token keyword">int</span> num<span class="token punctuation">)</span>
-    <span class="token punctuation">&#123;</span> <span class="token keyword">this</span><span class="token punctuation">.</span>num <span class="token operator">=</span> num<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
-    
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-    <span class="token punctuation">&#123;</span>
-        <span class="token class-name">BigInteger</span> i <span class="token operator">=</span> <span class="token class-name">BigInteger</span><span class="token punctuation">.</span><span class="token function">valueOf</span><span class="token punctuation">(</span>num<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token class-name">BigInteger</span> result <span class="token operator">=</span> <span class="token class-name">BigInteger</span><span class="token punctuation">.</span><span class="token function">valueOf</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"A new thread has been created with number "</span> <span class="token operator">+</span> num<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">while</span> <span class="token punctuation">(</span>i<span class="token punctuation">.</span><span class="token function">compareTo</span><span class="token punctuation">(</span><span class="token class-name">BigInteger</span><span class="token punctuation">.</span><span class="token function">valueOf</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span>
-        <span class="token punctuation">&#123;</span>
-            result <span class="token operator">=</span> result<span class="token punctuation">.</span><span class="token function">multiply</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            i <span class="token operator">=</span> i<span class="token punctuation">.</span><span class="token function">subtract</span><span class="token punctuation">(</span><span class="token class-name">BigInteger</span><span class="token punctuation">.</span><span class="token function">valueOf</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
-
-        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Calc Ans: "</span> <span class="token operator">+</span> result <span class="token operator">+</span> <span class="token string">" with number "</span> <span class="token operator">+</span> num<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Thread has ended with number"</span> <span class="token operator">+</span> num<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-
-<span class="token punctuation">&#125;</span></code></pre>
-<h4 id="Runnable-接口"><a href="#Runnable-接口" class="headerlink" title="Runnable 接口"></a>Runnable 接口</h4><p><img src="https://i.loli.net/2021/06/22/xq2eEdBO1LhCUNp.png" alt="image-20210622134139451"></p>
-<p><img src="https://i.loli.net/2021/06/22/E7C4eYTcBwIvtRp.png" alt="image-20210622134156347"></p>
-<h3 id="线程间的资源共享"><a href="#线程间的资源共享" class="headerlink" title="线程间的资源共享"></a>线程间的资源共享</h3><p>当多个线程的执行代码来自于同一个类的run方法时，则称它们共享相同的代码；而当它们访问相同的对象时，则称它们共享相同的数据。</p>
-<p>线程间数据共享的实现方法：<strong>用一个 Runnable 类型的对象创建多个线程</strong></p>
-<p><img src="https://i.loli.net/2021/06/22/UiedvSbgnKCX4Va.png" alt="image-20210622134610122"></p>
-<h3 id="多线程间的同步控制"><a href="#多线程间的同步控制" class="headerlink" title="多线程间的同步控制"></a>多线程间的同步控制</h3><p><img src="https://i.loli.net/2021/06/22/86GhI5Kabnr4ilV.png" alt="image-20210622151938199"></p>
-<p><img src="https://i.loli.net/2021/06/22/xDBimG3KEbYJhsr.png" alt="image-20210622152001891"></p>
-<p><img src="https://i.loli.net/2021/06/22/grM9S8DeBVbzhFW.png" alt="image-20210622152340500"></p>
-<p><img src="https://i.loli.net/2021/06/22/SAXKpEbT6Pr3lF7.png" alt="image-20210622152550427"></p>
-<p><img src="https://i.loli.net/2021/06/22/F3lYMpQ46ijmgtP.png" alt="image-20210622152613819"></p>
-<p>改进后的代码：</p>
-<p><img src="https://i.loli.net/2021/06/22/8Eha4etDxWRVHmL.png" alt="image-20210622153052026"></p>
-<p><img src="https://i.loli.net/2021/06/22/a9hEeXUrMOlo7cs.png" alt="image-20210622153137260"></p>
-<p><img src="https://i.loli.net/2021/06/22/Q5NBhT8gdAeLJ9v.png" alt="image-20210622153143586"></p>
-<h3 id="线程之间的通信、后台进程"><a href="#线程之间的通信、后台进程" class="headerlink" title="线程之间的通信、后台进程"></a>线程之间的通信、后台进程</h3>]]></content>
-      <tags>
-        <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>OOP 课程笔记 Week 06 引用与复制</title>
-    <url>/2021/oop-06/</url>
-    <content><![CDATA[<h2 id="§-6-引用与复制"><a href="#§-6-引用与复制" class="headerlink" title="§ 6 引用与复制"></a>§ 6 引用与复制</h2><h3 id="§-6-0-Overview"><a href="#§-6-0-Overview" class="headerlink" title="§ 6.0 Overview"></a>§ 6.0 Overview</h3><ul>
-<li>6.1 常量引用</li>
-<li>6.2 拷贝构造函数</li>
-<li>6.3 右值引用</li>
-<li>6.4 移动构造函数</li>
-<li>6.5 赋值运算符</li>
-<li>6.6 类型转换</li>
-</ul>
-<h3 id="§-6-1-常量引用"><a href="#§-6-1-常量引用" class="headerlink" title="§ 6.1 常量引用"></a>§ 6.1 常量引用</h3><ul>
-<li>最小特权原则：给函数足够的权限去完成相应的任务，但不要给予他多余的权限。<ul>
-<li>例如函数<code>void add(int&amp; a, int&amp; b)</code>，如果将参数类型定义为<code>int&amp;</code>，则给予该函数在函数体内修改a和b的值的权限</li>
-<li>如果我们不想给予函数修改权限，则可以在参数中使用常量/常量引用</li>
-<li><code>void add(const int&amp; a, const int&amp; b)</code></li>
-<li>此时函数中仅能读取a和b的值，无法对a, b进行任何修改操作。</li>
-</ul>
-</li>
-</ul>
-<h3 id="§-6-2-拷贝构造函数"><a href="#§-6-2-拷贝构造函数" class="headerlink" title="§ 6.2 拷贝构造函数"></a>§ 6.2 拷贝构造函数</h3><ul>
-<li>拷贝构造函数是一种特殊的构造函数，它的参数是语言规定的，是同类对象的常量引用</li>
-<li><code>MyClass(const MyClass&amp;) &#123;&#125;</code></li>
-<li>拷贝构造函数被调用的三种常见情况<ul>
-<li>用一个类对象定义另一个新的类对象</li>
-<li>函数调用时以类的对象为形参</li>
-<li>函数返回类对象</li>
-</ul>
-</li>
-</ul>
-<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 6.2.1
-
-&#x2F;&#x2F; a
-Test a; &#x2F;&#x2F; NO
-Test b(a); &#x2F;&#x2F;YES
-Test c &#x3D; a; &#x2F;&#x2F;YES
-
-&#x2F;&#x2F; b
-Func(Test a)
-
-&#x2F;&#x2F; c
-return a;</code></pre>
-<ul>
-<li>如果<strong>调用拷贝构造函数</strong>且当前<strong>没有</strong>给类<strong>显式定义</strong>拷贝构造函数，编译器将自动合成“<strong>隐式定义</strong>的拷贝构造函数”，其功能是<strong>调用所有数据成员的拷贝构造函数或拷贝赋值运算符</strong>。</li>
-<li>隐式定义拷贝构造函数在遇到<strong>指针类型</strong>成员时可能会出错,导致多个指针类型的变量指向同一个地址。</li>
-<li>拷贝构造函数的频繁调用会降低程序运行的效率，解决方法：<ul>
-<li>使用引用/常量引用来传参或返回对象</li>
-<li>将拷贝构造函数声明为 <code>private</code> ，或使用 <code>delete</code> 取消拷贝构造函数的隐式合成</li>
-</ul>
-</li>
-</ul>
-<h3 id="§-6-3-右值引用"><a href="#§-6-3-右值引用" class="headerlink" title="§ 6.3 右值引用"></a>§ 6.3 右值引用</h3><ul>
-<li>左值和右值<ul>
-<li>左值：可以取地址、有名字的值。</li>
-<li>右值：不能取地址、没有名字的值; 常见于常值、函数返回值、表达式</li>
-</ul>
-</li>
-</ul>
-<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 6.3.1
-int a &#x3D; 1;
-int b &#x3D; func();
-int c &#x3D; a + b;
-&#x2F;&#x2F; 其中a、b、c为左值，1、func函数返回值、a+b的结果为右值。</code></pre>
-<ul>
-<li>右值引用<ul>
-<li>虽然右值无法取地址，但可以被&amp;&amp;引用(右值引用)<ul>
-<li><code>int &amp;&amp;e = a+b;</code></li>
-</ul>
-</li>
-<li>右值引用无法绑定左值<ul>
-<li><code>int &amp;&amp;e = a; //Compile Error</code></li>
-</ul>
-</li>
-<li>例外：常量左值引用能也绑定右值<ul>
-<li><code>const int &amp;e = 3;</code></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="§-6-4-移动构造函数"><a href="#§-6-4-移动构造函数" class="headerlink" title="§ 6.4 移动构造函数"></a>§ 6.4 移动构造函数</h3><ul>
-<li>移动构造函数<ul>
-<li>右值引用可以延续即将销毁变量的生命周期，用于构造函数可以<strong>提升处理效率</strong>，在此过程中尽可能少地进行拷贝。</li>
-<li>使用右值引用作为参数的构造函数叫做移动构造函数。</li>
-</ul>
-</li>
-</ul>
-<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 6.4.1
-
-&#x2F;&#x2F; 拷贝构造函数
-ClassName(const ClassName&amp; VariableName);
-&#x2F;&#x2F; 移动构造函数
-ClassName(ClassName&amp;&amp; VariableName);</code></pre>
-<ul>
-<li>移动构造函数与拷贝构造函数最主要的差别就是类中堆内存是重新开辟并拷贝，还是直接将指针指向那块地址。</li>
-<li>对于一些即将析构的临时类，移动构造函数直接利用了原来临时对象中的堆内存，新的对象无需开辟内存，临时对象无需释放内存，从而大大提高计算效率。</li>
-</ul>
-<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 6.4.2
-
-class Test &#123;
-public:
-	int * buf; &#x2F;&#x2F;&#x2F;&#x2F; only for demo.
-	Test() &#123;
-		buf &#x3D; new int[10]; &#x2F;&#x2F;申请一块内存
-		cout &lt;&lt; &quot;Test(): this-&gt;buf @ &quot; &lt;&lt; hex &lt;&lt; buf &lt;&lt; endl;
-	&#125;
-	~Test() &#123;
-		cout &lt;&lt; &quot;~Test(): this-&gt;buf @ &quot; &lt;&lt; hex &lt;&lt; buf &lt;&lt; endl;
-		if (buf) delete[] buf;
-	&#125;
-	Test(const Test&amp; t) : buf(new int[10]) &#123;
-		for(int i&#x3D;0; i&lt;10; i++) 
-			buf[i] &#x3D; t.buf[i]; &#x2F;&#x2F;拷贝数据
-		cout &lt;&lt; &quot;Test(const Test&amp;) called. this-&gt;buf @ &quot;
-			&lt;&lt; hex &lt;&lt; buf &lt;&lt; endl;
-	&#125;
-	Test(Test&amp;&amp; t) : buf(t.buf) &#123; &#x2F;&#x2F;直接复制地址，避免拷贝
-		cout &lt;&lt; &quot;Test(Test&amp;&amp;) called. this-&gt;buf @ &quot;
-			&lt;&lt; hex &lt;&lt; buf &lt;&lt; endl;
-		t.buf &#x3D; nullptr; &#x2F;&#x2F;将t.buf改为nullptr，使其不再指向原来内存区域
-	&#125;
-&#125;;
-
-Test GetTemp() &#123;
-	Test tmp;
-	cout &lt;&lt; &quot;GetTemp(): tmp.buf @ &quot;
-		&lt;&lt; hex &lt;&lt; tmp.buf &lt;&lt; endl;
-	return tmp;
-&#125;
-
-void fun(Test t) &#123;
-	cout &lt;&lt; &quot;fun(Test t): t.buf @ &quot;
-		&lt;&lt; hex &lt;&lt; t.buf &lt;&lt; endl;
-&#125;
-
-int main() &#123;
-	Test a &#x3D; GetTemp();
-	cout &lt;&lt; &quot;main() : a.buf @ &quot; &lt;&lt; hex &lt;&lt; a.buf &lt;&lt; endl;
-	fun(a);
-	return 0;
-&#125;
-
-&#x2F;&#x2F; g++ test.cpp --std&#x3D;c++11 -fno-elide-constructors -o test</code></pre>
-<ul>
-<li>移动语义<ul>
-<li><code>std::move</code> 函数<ul>
-<li>输入：左值（包括变量等，该左值一般不再使用）</li>
-<li>返回值：该左值对应的右值</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="§-6-5-赋值运算符"><a href="#§-6-5-赋值运算符" class="headerlink" title="§ 6.5 赋值运算符"></a>§ 6.5 赋值运算符</h3><ul>
-<li>拷贝复制运算符</li>
-</ul>
-<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 6.5.1
-
-&#x2F;&#x2F; 区分
-ClassName a;
-ClassName b;
-a &#x3D; b;
-
-ClassName a &#x3D; b;
-
-&#x2F;&#x2F; 前者调用
-ClassName&amp; operator&#x3D; (const ClassName&amp; right) &#123;
-   if (this !&#x3D; &amp;right) &#123;&#x2F;&#x2F; 避免自己赋值给自己
-		&#x2F;&#x2F; 将right对象中的内容拷贝到当前对象中...
-	&#125;
-   return *this;
-&#125;</code></pre>
-<ul>
-<li>移动赋值运算符</li>
-</ul>
-<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 6.5.2
-Test&amp; operator&#x3D; (Test&amp;&amp; right) &#123;
-	if (this &#x3D;&#x3D; &amp;right)  cout &lt;&lt; &quot;same obj!\n&quot;;
-	else &#123;	
-		this-&gt;buf &#x3D; right.buf;  &#x2F;&#x2F;直接赋值地址
-		right.buf &#x3D; nullptr;
-	cout &lt;&lt; &quot;operator&#x3D;(Test&amp;&amp;) called.\n&quot;;
-&#125;
-	return *this;
-&#125;</code></pre>
-<h3 id="§-6-6-类型转换"><a href="#§-6-6-类型转换" class="headerlink" title="§ 6.6 类型转换"></a>§ 6.6 类型转换</h3><ol>
-<li>在源类中定义<strong>目标类型转换运算符</strong></li>
-</ol>
-<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 6.6.1
-#include &lt;iostream&gt;
-using namespace std;
-
-
-class Dst &#123; &#x2F;&#x2F;目标类Destination
-public:
-  Dst() &#123; cout &lt;&lt; &quot;Dst::Dst()&quot; &lt;&lt; endl; &#125;
-&#125;;
-
-
-
-class Src &#123; &#x2F;&#x2F;源类Source
-public:
-  Src() &#123; cout &lt;&lt; &quot;Src::Src()&quot; &lt;&lt; endl; &#125;
-  operator Dst() const &#123; 
-	cout &lt;&lt; &quot;Src::operator Dst() called&quot; &lt;&lt; endl;
-	return Dst(); 
-  &#125;
-&#125;;</code></pre>
-<ol>
-<li>在目标类中定义“源类对象作参数的构造函数”</li>
-</ol>
-<pre class="language-c++" data-language="c++"><code class="language-c++">&#x2F;&#x2F; Example 6.6.2
-#include &lt;iostream&gt;
-using namespace std;
-
-class Src;	&#x2F;&#x2F; 前置类型声明，因为在Dst中要用到Src类
-class Dst &#123;
-public:
-  Dst() &#123; cout &lt;&lt; &quot;Dst::Dst()&quot; &lt;&lt; endl; &#125;
-  Dst(const Src&amp; s) &#123; 
-	cout &lt;&lt; &quot;Dst::Dst(const Src&amp;)&quot; &lt;&lt; endl; 
-  &#125;
-&#125;;
-
-class Src &#123;
-public:
-  Src() &#123; cout &lt;&lt; &quot;Src::Src()&quot; &lt;&lt; endl; &#125;
-&#125;;</code></pre>
-<ul>
-<li><p>注意：两种自动类型转换的方法不能同时使用，使用时请任选其中一种。</p>
-</li>
-<li><p>禁止自动类型转换</p>
-<ul>
-<li>如果用 <code>explicit</code> 修饰类型转换运算符或类型转换构造函数，则相应的类型转换必须显式地进行</li>
-</ul>
-</li>
-</ul>
 ]]></content>
       <tags>
         <tag>OOP</tag>
@@ -2358,6 +2358,32 @@ A::y &#x3D; 6;</code></pre>
       </tags>
   </entry>
   <entry>
+    <title>Java 中 Package 的概念</title>
+    <url>/2021/package-java/</url>
+    <content><![CDATA[<p><img src="https://i.loli.net/2021/06/22/x74o9FEeajuzrpk.png" alt="image-20210622084907577"></p>
+<h2 id="§-2-2-5-类的组织——包的概念"><a href="#§-2-2-5-类的组织——包的概念" class="headerlink" title="§ 2.2.5 类的组织——包的概念"></a>§ 2.2.5 类的组织——包的概念</h2><h3 id="编译单元与类空间"><a href="#编译单元与类空间" class="headerlink" title="编译单元与类空间"></a>编译单元与类空间</h3><ul>
+<li>编译单元：一个 Java 源代码文件<ul>
+<li>一个编译单元中只能有 一个 public 权限的类</li>
+<li>且该类名与文件名相同</li>
+<li>类名存在冲突问题</li>
+</ul>
+</li>
+<li>编译单元的组成部分<ul>
+<li>所属包的声明；</li>
+<li>Import 包的声明用来导入外部类；</li>
+<li>类和接口的声明.</li>
+</ul>
+</li>
+</ul>
+<h3 id="包与目录"><a href="#包与目录" class="headerlink" title="包与目录"></a>包与目录</h3><p><img src="https://i.loli.net/2021/06/22/PfxFjRqTn4pAGwb.png" alt="image-20210622093402716"></p>
+<p><img src="https://i.loli.net/2021/06/22/R5vp4OgNIoc3XVS.png" alt="image-20210622093500242"></p>
+<h3 id="引入包与静态引入"><a href="#引入包与静态引入" class="headerlink" title="引入包与静态引入"></a>引入包与静态引入</h3><p><img src="https://i.loli.net/2021/06/22/MVz5RybwFh9UrLT.png" alt="image-20210622093702915"></p>
+]]></content>
+      <tags>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>三角函数的正整数幂的不定积分</title>
     <url>/2020/simple-triangular-indefinite-integral/</url>
     <content><![CDATA[<p>啊说真的排版好麻烦明天再来调吧</p>
@@ -2442,29 +2468,127 @@ I_{n} &=\int \tan ^{n} x d x \\
       </tags>
   </entry>
   <entry>
-    <title>Java 中 Package 的概念</title>
-    <url>/2021/package-java/</url>
-    <content><![CDATA[<p><img src="https://i.loli.net/2021/06/22/x74o9FEeajuzrpk.png" alt="image-20210622084907577"></p>
-<h2 id="§-2-2-5-类的组织——包的概念"><a href="#§-2-2-5-类的组织——包的概念" class="headerlink" title="§ 2.2.5 类的组织——包的概念"></a>§ 2.2.5 类的组织——包的概念</h2><h3 id="编译单元与类空间"><a href="#编译单元与类空间" class="headerlink" title="编译单元与类空间"></a>编译单元与类空间</h3><ul>
-<li>编译单元：一个 Java 源代码文件<ul>
-<li>一个编译单元中只能有 一个 public 权限的类</li>
-<li>且该类名与文件名相同</li>
-<li>类名存在冲突问题</li>
+    <title>SQL 基础教程 笔记</title>
+    <url>/2021/sql/</url>
+    <content><![CDATA[<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://www.liaoxuefeng.com/wiki/1177760294764384">https://www.liaoxuefeng.com/wiki/1177760294764384</a></li>
+<li><a href="https://www.runoob.com/sql/sql-tutorial.html">https://www.runoob.com/sql/sql-tutorial.html</a></li>
 </ul>
-</li>
-<li>编译单元的组成部分<ul>
-<li>所属包的声明；</li>
-<li>Import 包的声明用来导入外部类；</li>
-<li>类和接口的声明.</li>
+<h2 id="数据查询"><a href="#数据查询" class="headerlink" title="数据查询"></a>数据查询</h2><h3 id="基础查询"><a href="#基础查询" class="headerlink" title="基础查询"></a>基础查询</h3><ul>
+<li>查询数据表的数据</li>
 </ul>
-</li>
+<pre class="language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> students<span class="token punctuation">;</span></code></pre>
+<ul>
+<li>判断到数据库的连接是否有效</li>
 </ul>
-<h3 id="包与目录"><a href="#包与目录" class="headerlink" title="包与目录"></a>包与目录</h3><p><img src="https://i.loli.net/2021/06/22/PfxFjRqTn4pAGwb.png" alt="image-20210622093402716"></p>
-<p><img src="https://i.loli.net/2021/06/22/R5vp4OgNIoc3XVS.png" alt="image-20210622093500242"></p>
-<h3 id="引入包与静态引入"><a href="#引入包与静态引入" class="headerlink" title="引入包与静态引入"></a>引入包与静态引入</h3><p><img src="https://i.loli.net/2021/06/22/MVz5RybwFh9UrLT.png" alt="image-20210622093702915"></p>
+<pre class="language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">SELECT</span> <span class="token number">1</span><span class="token punctuation">;</span></code></pre>
+<h3 id="条件查询"><a href="#条件查询" class="headerlink" title="条件查询"></a>条件查询</h3><ul>
+<li>增加条件</li>
+</ul>
+<pre class="language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> students <span class="token keyword">WHERE</span> score <span class="token operator">>=</span> <span class="token number">80</span><span class="token punctuation">;</span></code></pre>
+<pre class="language-SQL" data-language="SQL"><code class="language-SQL">SELECT * 
+FROM students 
+WHERE (score &gt;&#x3D; 60 AND score &lt; 90) OR gender &#x3D; &#39;M&#39;;</code></pre>
+<p><img src="https://i.loli.net/2021/06/23/fEkbpC2sIXxyNLY.png" alt="image-20210623165451226"></p>
+<h3 id="投影查询"><a href="#投影查询" class="headerlink" title="投影查询"></a>投影查询</h3><ul>
+<li>仅选中指定的列，且可以为该列起别名</li>
+</ul>
+<pre class="language-SQL" data-language="SQL"><code class="language-SQL">SELECT id alias_id, score alias_score, name
+FROM students;</code></pre>
+<h3 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h3><pre class="language-SQL" data-language="SQL"><code class="language-SQL">SELECT id, name, gender, score
+FROM students
+ORDER BY score DESC, name ASC;</code></pre>
+<ul>
+<li>ASC 可以省略 默认升序排序</li>
+</ul>
+<pre class="language-SQL" data-language="SQL"><code class="language-SQL">SELECT id, name, gender, score
+FROM students
+WHERE class_id &#x3D; 1
+ORDER BY score DESC;</code></pre>
+<h3 id="分页查询"><a href="#分页查询" class="headerlink" title="分页查询"></a>分页查询</h3><ul>
+<li>第一页</li>
+</ul>
+<pre class="language-SQL" data-language="SQL"><code class="language-SQL">SELECT id, name, gender, score 
+FROM students
+ORDER BY score DESC
+LIMIT 5 OFFSET 0;</code></pre>
+<ul>
+<li>第二页</li>
+</ul>
+<pre class="language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">SELECT</span> id<span class="token punctuation">,</span> name<span class="token punctuation">,</span> gender<span class="token punctuation">,</span> score 
+<span class="token keyword">FROM</span> students
+<span class="token keyword">ORDER</span> <span class="token keyword">BY</span> score <span class="token keyword">DESC</span>
+<span class="token keyword">LIMIT</span> <span class="token number">5</span> <span class="token keyword">OFFSET</span> <span class="token number">5</span><span class="token punctuation">;</span></code></pre>
+<ul>
+<li><code>OFFSET</code>超过了查询的最大数量并不会报错，而是得到一个空的结果集</li>
+</ul>
+<h3 id="聚合查询"><a href="#聚合查询" class="headerlink" title="聚合查询"></a>聚合查询</h3><pre class="language-SQL" data-language="SQL"><code class="language-SQL">SELECT COUNT(*) num FROM students;</code></pre>
+<ul>
+<li><code>COUNT(*)</code>表示查询所有列的行数，要注意聚合的计算结果虽然是一个数字，但查询的结果仍然是一个二维表，只是这个二维表只有一行一列，并且列名是<code>COUNT(*)</code></li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">函数</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">SUM</td>
+<td style="text-align:left">计算某一列的合计值，该列必须为数值类型</td>
+</tr>
+<tr>
+<td style="text-align:left">AVG</td>
+<td style="text-align:left">计算某一列的平均值，该列必须为数值类型</td>
+</tr>
+<tr>
+<td style="text-align:left">MAX</td>
+<td style="text-align:left">计算某一列的最大值</td>
+</tr>
+<tr>
+<td style="text-align:left">MIN</td>
+<td style="text-align:left">计算某一列的最小值</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="修改数据"><a href="#修改数据" class="headerlink" title="修改数据"></a>修改数据</h2><h3 id="INSERT"><a href="#INSERT" class="headerlink" title="INSERT"></a>INSERT</h3><ul>
+<li><s>出成绩</s></li>
+</ul>
+<pre class="language-SQL" data-language="SQL"><code class="language-SQL">INSERT INTO students 
+(class_id, name, gender, score) VALUES
+(2, &#39;c7w&#39;, &#39;M&#39;, 85),
+(1, &#39;g7w&#39;, &#39;M&#39;, 89);</code></pre>
+<h3 id="UPDATE"><a href="#UPDATE" class="headerlink" title="UPDATE"></a>UPDATE</h3><ul>
+<li><s>调分</s></li>
+</ul>
+<pre class="language-SQL" data-language="SQL"><code class="language-SQL">UPDATE students
+SET name&#x3D;&#39;xxw&#39;, score&#x3D;91
+WHERE id&#x3D;1;</code></pre>
+<pre class="language-SQL" data-language="SQL"><code class="language-SQL">UPDATE students
+SET score&#x3D;score+5 
+WHERE score&lt;95</code></pre>
+<h3 id="DELETE"><a href="#DELETE" class="headerlink" title="DELETE"></a>DELETE</h3><ul>
+<li><s>退学警告</s></li>
+</ul>
+<pre class="language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">DELETE</span> <span class="token keyword">FROM</span> students
+<span class="token keyword">WHERE</span> id<span class="token operator">=</span><span class="token number">2</span></code></pre>
+<h2 id="创建表"><a href="#创建表" class="headerlink" title="创建表"></a>创建表</h2><pre class="language-SQL" data-language="SQL"><code class="language-SQL">CREATE TABLE IF NOT EXISTS rara
+(
+id BIGINT NOT NULL AUTO_INCREMENT,
+message VARCHAR(255) NOT NULL,
+time TIMESTAMP NOT NULL,
+PRIMARY KEY (id)
+);</code></pre>
+<ul>
+<li>data_type 参数规定列的数据类型（例如 varchar、integer、decimal、date 等等）。</li>
+</ul>
+<p>今天也是没有什么干劲的一天，明天再继续加油吧TaT</p>
 ]]></content>
       <tags>
-        <tag>Java</tag>
+        <tag>SQL</tag>
       </tags>
   </entry>
 </search>
