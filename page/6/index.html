@@ -81,8 +81,8 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">14</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">21</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">15</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">22</span></a></li>
         <li class="menu-item menu-item-friends"><a href="/friends/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Friends</a></li>
   </ul>
 </nav>
@@ -130,14 +130,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-count">22</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -178,6 +178,152 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://cc7w.cf/2020/simple-triangular-indefinite-integral/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="c7w">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="c7w 的破站 v2.0">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/simple-triangular-indefinite-integral/" class="post-title-link" itemprop="url">三角函数的正整数幂的不定积分</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-11-22 09:36:41" itemprop="dateCreated datePublished" datetime="2020-11-22T09:36:41+08:00">2020-11-22</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2020-11-26 23:08:45" itemprop="dateModified" datetime="2020-11-26T23:08:45+08:00">2020-11-26</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>啊说真的排版好麻烦明天再来调吧</p>
+<h2 id="Knowledge-Base"><a href="#Knowledge-Base" class="headerlink" title="Knowledge Base"></a>Knowledge Base</h2><ul>
+<li>换元法（凑微分法）</li>
+</ul>
+<script type="math/tex; mode=display">
+\int f'(\phi(x))\phi'(x)dx = \int f'(\phi(x))d\phi(x) = f(\phi(x))+C</script><script type="math/tex; mode=display">
+\int f'(u)du = \int f'(\phi(x)) \phi'(x)dx = g(x)+C = g(\phi^{-1} (x))+C</script><ul>
+<li>分部积分法</li>
+</ul>
+<h2 id="关于三角函数的幂的积分"><a href="#关于三角函数的幂的积分" class="headerlink" title="关于三角函数的幂的积分"></a>关于三角函数的幂的积分</h2><h3 id="sin-或-cos-的幂"><a href="#sin-或-cos-的幂" class="headerlink" title="sin 或 cos 的幂"></a>sin 或 cos 的幂</h3><p>若指数中存在奇数：</p>
+<script type="math/tex; mode=display">
+\int \cos^7x \sin^{10}xdx</script><ol>
+<li>选定 cos 与 sin 中次幂较低，且为奇数的一个，使用凑微分法</li>
+<li>使用公式 $sin^2x+cos^2x=1$ 替换掉剩下的项</li>
+</ol>
+<p><em>Solve:</em></p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+&\int \cos ^{7} x \sin ^{10} x d x \\
+&=\int \cos ^{6} x \sin ^{10} x d \sin x \\
+&=\int\left(1-\sin ^{2} x\right)^{3} \sin ^{10} x d \sin x \\
+(t &=\sin x) \\
+&= \int\left(1-3 t^{2}+3 t^{4}-t^{6}\right) t^{10} d t \\
+&=\int\left(t^{10}-3 t^{12}+3 t^{14}-t^{16}\right) d t \\
+&=\frac {t^{11}} {11}-\frac{3}{13} t^{13}+\frac{3}{15} t^{15}-\frac{1}{17} t^{17}+C \\
+&=\frac{1}{11} \sin ^{11} x-\frac{3}{13} \sin ^{2} x+\frac{1}{5} \sin ^{10} x-\frac{1}{17} \sin ^{17} x+C
+\end{aligned}</script><p>若指数中不存在奇数：</p>
+<script type="math/tex; mode=display">
+\quad \int \cos ^{2} x \sin ^{4} x d x</script><ol>
+<li>使用二倍角公式</li>
+<li>展开后分别积分</li>
+</ol>
+<p><em>Solve:</em></p>
+<p>$\quad \int \cos ^{2} x \sin ^{4} x d x=\int \frac{1+\cos 2 x}{2} \frac{\left(1-\cos ^{2} x\right)^{2}}{4} d x$<br>$=\frac{1}{8} \int\left(\cos ^{2} 2 x-2 \cos 2 x+1\right)(1+\cos 2 x) d x$<br>$=\frac{1}{8} \int\left(\cos ^{3} 2 x-\cos ^{2} 2 x-\cos 2 x+1\right) d x$<br>$=\frac{1}{8} \int \cos ^{3} 2 x d x-\frac{1}{8} \int \cos ^{2} 2 x d x-\frac{1}{8} \int \cos 2 x d x+\frac{1}{8} \int d x$<br>$=\frac{1}{8} \cdot \frac{1}{2} \int \cos ^{2} 2x d \sin 2 x-\frac{1}{8} \int \frac{1+\cos 4 x}{2} d x-\frac{1}{8} \cdot \frac{1}{2} \sin 2 x+\frac{1}{8} x+C<br>$</p>
+<p>$=\frac{1}{16} \int d \sin 2 x-\frac{1}{16} \int \sin ^{2} 2 x d \sin 2 x-\frac{1}{16} x-\frac{1}{16} \cdot \frac{1}{4} \sin 4 x-\frac{1}{16} \sin 2 x+\frac{1}{8} x+C$</p>
+<p>$=\frac{x}{16}-\frac{\sin^32x}{48}-\frac{\sin4x}{64}+C$</p>
+<h3 id="tan-与-cot-的幂"><a href="#tan-与-cot-的幂" class="headerlink" title="tan 与 cot 的幂"></a>tan 与 cot 的幂</h3><script type="math/tex; mode=display">
+\int \tan ^{4} x d x</script><p>使用公式 $ \tan ^{2} x=\sec ^{2} x-1 $</p>
+<script type="math/tex; mode=display">
+\begin{array}{l}
+\int \tan ^{0} x d x=\int d x=x+C \\
+\int \tan ^{1} x d x=\int \frac{\sin x}{\cos x} d x=-\int \frac{1}{\cos x} d \cos x=-\ln |\cos x|+C \\
+\qquad=\ln |\sec x|+C \\
+\end{array}</script><script type="math/tex; mode=display">
+\begin{aligned}
+I_{n} &=\int \tan ^{n} x d x \\
+&=\int \tan ^{n-2} x \tan ^{2} x d x \\
+&=\int \tan ^{n-2} x\left(\sec ^{2} x-1\right) d x \\
+&=\int \tan ^{n-2} x \sec ^{2} x d x-\int \tan ^{n-2} x d x \\
+&=\int \tan ^{n-2} x d \tan x-\int \tan ^{n-2} x d x \\
+&=\frac{1}{n-1} \cdot \tan ^{n-1} x-I_{n-2}
+\end{aligned}</script><p><em>Solve:</em></p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\int \tan ^{4} x d x &=\int \tan ^{2} x\left(\sec ^{2} x-1\right) d x \\
+&=\int \tan ^{2} x \sec ^{2} x d x-\int \tan ^{2} x d x \\
+&=\frac{1}{3} \tan ^{3} x-\int \sec ^{2} x d x+\int d x \\
+&=\frac{1}{3} \tan ^{3} x-\tan x+x+C
+\end{aligned}</script><p>cot 的幂读者自证不难.</p>
+<h3 id="sec-与-csc-的幂"><a href="#sec-与-csc-的幂" class="headerlink" title="sec 与 csc 的幂"></a>sec 与 csc 的幂</h3><script type="math/tex; mode=display">
+\begin{aligned}
+\int \sec x d x &=\int \frac{(\sec x)(\sec x+\tan x)}{\sec x+\tan x} d x \\
+&=\int \frac{\sec x \tan x+\sec ^{2} x}{\sec x+\tan x} d x \\
+&=\ln |\sec x+\tan x|+C \\
+\int \sec ^{2} x d x &=\tan x+C
+\end{aligned}</script><script type="math/tex; mode=display">
+\begin{aligned}
+\int \sec ^{n} x d x &=\int \sec ^{n-2} x \sec ^{2} x d x \\
+&=\int \sec ^{n-2} x d \tan x \\
+&=\sec ^{n-2} x \tan x-\int \tan x(n-2) \sec ^{n-3} x \sec x \tan x d x \\
+&=\sec ^{n-2} \tan x-(n-2) \int \sec ^{n-2} x \tan ^{2} x d x \\
+&=\sec ^{n-2} x \tan x-(n-2) \int \sec ^{n-2} x\left(\sec ^{2} x-1\right) d x \\
+&=\sec ^{n-2} x \tan x-(n-2) \int \sec ^{n} x d x+(n-2) \int \sec ^{n-2} x d x \\
+\end{aligned}</script><p>因此我们有：</p>
+<script type="math/tex; mode=display">
+\int \sec ^{n} x d x=\frac{1}{n-1} \sec ^{n-2} x \tan x+\frac{n-2}{n-1} \int \sec ^{n-2} x d x</script><p>csc 的幂同理显然.</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -295,7 +441,7 @@
 
   
 
-  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-mml-chtml.js","integrity":"sha256-ncNI9OXOS5Ek4tzVYiOMmN/KKCPZ6V0Cpv2P/zHntiA="}}</script>
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-mml-chtml.js","integrity":"sha256-ncNI9OXOS5Ek4tzVYiOMmN/KKCPZ6V0Cpv2P/zHntiA="}}</script>
 <script src="/js/third-party/math/mathjax.js"></script>
 
 
