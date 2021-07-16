@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/avatar.jpg">
+  <link rel="mask-icon" href="/images/avatar.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"cc7w.cf","root":"/","images":"/images","scheme":"Pisces","version":"8.5.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="多线程思想。内含临界区，信号量，死锁以及读者写者问题。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多线程思想">
+<meta property="og:url" content="https://cc7w.cf/2021/multi-thread-and-concurrent/index.html">
+<meta property="og:site_name" content="c7w 的破站 v2.0">
+<meta property="og:description" content="多线程思想。内含临界区，信号量，死锁以及读者写者问题。">
+<meta property="og:locale">
+<meta property="og:image" content="https://i.loli.net/2021/07/15/MlNJHgWGeiE1ADk.png">
+<meta property="og:image" content="https://i.loli.net/2021/07/16/uVrpkj4i7xFKOX2.png">
+<meta property="article:published_time" content="2021-07-16T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-07-16T11:33:06.705Z">
+<meta property="article:author" content="c7w">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="多线程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/07/15/MlNJHgWGeiE1ADk.png">
+
+
+<link rel="canonical" href="https://cc7w.cf/2021/multi-thread-and-concurrent/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh","comments":true,"permalink":"https://cc7w.cf/2021/multi-thread-and-concurrent/","path":"2021/multi-thread-and-concurrent/","title":"多线程思想"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>多线程思想 | c7w 的破站 v2.0</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">c7w 的破站 v2.0</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">16</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">23</span></a></li>
+        <li class="menu-item menu-item-friends"><a href="/friends/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>Friends</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">1.</span> <span class="nav-text">参考资料</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%B4%E7%95%8C%E5%8C%BA"><span class="nav-number">2.</span> <span class="nav-text">临界区</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9C%80%E8%A6%81%E8%A2%AB%E8%88%8D%E5%BC%83%E7%9A%84%E5%81%9A%E6%B3%95"><span class="nav-number">2.1.</span> <span class="nav-text">需要被舍弃的做法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%A1%E5%8F%B7%E9%87%8F"><span class="nav-number">3.</span> <span class="nav-text">信号量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%92%E6%96%A5%E9%87%8F"><span class="nav-number">3.1.</span> <span class="nav-text">互斥量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F"><span class="nav-number">3.2.</span> <span class="nav-text">条件变量</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%BB%E9%94%81"><span class="nav-number">4.</span> <span class="nav-text">死锁</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%8F%E5%85%B8%E4%BE%8B%E5%AD%90%EF%BC%9ADiningPhilosophers"><span class="nav-number">4.1.</span> <span class="nav-text">经典例子：DiningPhilosophers</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%BB%E8%80%85%E5%86%99%E8%80%85%E9%97%AE%E9%A2%98"><span class="nav-number">5.</span> <span class="nav-text">读者写者问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%BB%E8%80%85%E4%BC%98%E5%85%88%E7%9A%84%E6%93%8D%E4%BD%9C%E6%A8%A1%E5%BC%8F"><span class="nav-number">5.1.</span> <span class="nav-text">读者优先的操作模式</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="c7w"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">c7w</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/c7w" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;c7w" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:admin@cc7w.cf" title="E-Mail → mailto:admin@cc7w.cf"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/c7wc7w" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;c7wc7w" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+          </div>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh">
+    <link itemprop="mainEntityOfPage" href="https://cc7w.cf/2021/multi-thread-and-concurrent/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="c7w">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="c7w 的破站 v2.0">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          多线程思想
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-07-17 00:00:00" itemprop="dateCreated datePublished" datetime="2021-07-17T00:00:00+08:00">2021-07-17</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-16 19:33:06" itemprop="dateModified" datetime="2021-07-16T19:33:06+08:00">2021-07-16</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>多线程思想。内含临界区，信号量，死锁以及读者写者问题。</p>
+<p><img src="https://i.loli.net/2021/07/15/MlNJHgWGeiE1ADk.png" alt="1024px-An_illustration_of_the_dining_philosophers_problem"></p>
+<a id="more"></a>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ul>
+<li>三系联合暑培 内部讲义</li>
+<li><a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E4%BF%A1%E5%8F%B7%E9%87%8F%E6%9C%BA%E5%88%B6">https://baike.baidu.com/item/%E4%BF%A1%E5%8F%B7%E9%87%8F%E6%9C%BA%E5%88%B6</a></li>
+<li><a target="_blank" rel="noopener" href="https://zh.wikipedia.org/zh-hans/%E4%BF%A1%E5%8F%B7%E9%87%8F">https://zh.wikipedia.org/zh-hans/%E4%BF%A1%E5%8F%B7%E9%87%8F</a></li>
+</ul>
+<h3 id="临界区"><a href="#临界区" class="headerlink" title="临界区"></a>临界区</h3><p>多个进程在访问<strong>共享数据</strong>的时候，为防止对资源的竞争，我们提出<strong>临界区</strong>的概念。</p>
+<p><strong>临界区</strong>这一概念满足，对于任意的两个进程，不能同时进入临界区，即达到一种进程间“互斥”的效果。</p>
+<p>具体来说，临界区的设计需要满足：（摘自讲义）</p>
+<ul>
+<li><p>任何两个进程不能同时处于临界区 </p>
+</li>
+<li><p>对 CPU 的速度和数量没有要求 </p>
+</li>
+<li><p>临界区外运行的进程不能阻塞到其他进程 </p>
+</li>
+<li><p>不能让一个进程无限期等待进入临界区 </p>
+</li>
+</ul>
+<h4 id="需要被舍弃的做法"><a href="#需要被舍弃的做法" class="headerlink" title="需要被舍弃的做法"></a>需要被舍弃的做法</h4><p><strong>锁变量</strong></p>
+<pre class="language-c#" data-language="c#"><code class="language-c#">int lock;
+
+void Process1()
+&#123;
+	while (lock &#x3D;&#x3D; 1);  &#x2F;&#x2F; (2)
+    lock &#x3D; 1;   &#x2F;&#x2F; (5)
+    &#x2F;&#x2F; 临界区   &#x2F;&#x2F; (5)
+    lock &#x3D; 0; 
+    &#x2F;&#x2F; 非临界区
+&#125;
+
+void Process2()
+&#123;
+	while (lock &#x3D;&#x3D; 1); &#x2F;&#x2F; (3)
+    lock &#x3D; 1;   &#x2F;&#x2F; (4)
+    &#x2F;&#x2F; 临界区   &#x2F;&#x2F; (5)
+    lock &#x3D; 0;  &#x2F;&#x2F; (1)
+    &#x2F;&#x2F; 非临界区
+&#125;</code></pre>
+<p>错误原因：</p>
+<p><code>Process1</code>在 <code>lock == 1</code> 判断为False后的瞬间，进行了进程调度；</p>
+<p>而此时<code>Process2</code>从(1)处继续运行，跨过非临界区，判断 <code>lock==1</code> 为 False 后，进入了临界区；</p>
+<p>而此时再发生一次进程调度，<code>Process1</code>也进入了临界区。</p>
+<p><strong>严格轮换法</strong></p>
+<pre class="language-c#" data-language="c#"><code class="language-c#">int turn &#x3D; 0;
+
+void Process1()
+&#123;
+	while (turn &#x3D;&#x3D; 0);  
+    &#x2F;&#x2F; 临界区   
+    turn &#x3D; 0;
+    &#x2F;&#x2F; 非临界区
+&#125;
+
+void Process2()
+&#123;
+	while (turn &#x3D;&#x3D; 1);  
+    &#x2F;&#x2F; 临界区   
+    turn &#x3D; 1;
+    &#x2F;&#x2F; 非临界区
+&#125;</code></pre>
+<p>舍弃原因：</p>
+<p>(1) 自旋锁（用于忙等待的锁），过于浪费资源</p>
+<p>(2) 优先级翻转问题：当某个进程的优先级高…</p>
+<p><strong>休眠与唤醒</strong></p>
+<pre class="language-c#" data-language="c#"><code class="language-c#">int cnt &#x3D; 0;
+
+void Process1()
+&#123;
+	while (1)
+	&#123;
+		if (cnt &#x3D;&#x3D; 1) sleep();
+		&#x2F;&#x2F; 临界区
+		cnt &#x3D; 1;
+		wakeup(Process2);
+		&#x2F;&#x2F; 非临界区
+	&#125;
+&#125;
+
+void Process2()
+&#123;
+	while (1)
+	&#123;
+		if(cnt &#x3D;&#x3D; 0) sleep();
+		cnt &#x3D; 0;
+		wakeup(1);
+	&#125;
+&#125;</code></pre>
+<p>存在的问题：</p>
+<p><code>Process1</code>判断<code>cnt==1</code>时进入条件结构体，此时发生了一次进程调度；</p>
+<p><code>Process2</code>此时将<code>cnt</code>置为0，并且尝试唤醒<code>Process1</code>，而<code>Process1</code>此时还没有休眠.</p>
+<p>然后<code>Process2</code>判断<code>cnt==0</code>为True，进入休眠.</p>
+<p>此时再发生一次进程调度，<code>Process1</code>也进入休眠,</p>
+<h3 id="信号量"><a href="#信号量" class="headerlink" title="信号量"></a>信号量</h3><p>上述做法均存在一定的问题，而能够解决这个临界区问题的一个很好的概念便是Dijkstra提出的<code>信号量</code>.</p>
+<p>信号量(Semaphore)，有时被称为信号灯，是在多线程环境下使用的一种设施，是可以用来保证两个或多个关键代码段不被并发调用。<strong>在进入一个关键代码段之前，线程必须获取一个信号量；一旦该关键代码段完成了，那么该线程必须释放信号量。</strong></p>
+<p>计数讯号量具备两种操作动作，称为V（<code>signal()</code>）与P（<code>wait()</code>）（即部分参考书常称的“PV操作”）。V操作会增加信号标S的数值，P操作会减少它。</p>
+<p>计数讯号量具备两种操作动作，称为V（signal()）与P（wait()）（即部分参考书常称的“PV操作”）。V操作会增加信号标S的数值，P操作会减少它。</p>
+<p>运作方式：</p>
+<ol>
+<li>初始化，给与它一个非负数的整数值。</li>
+<li>执行P（wait()），信号标S的值将被减少。企图进入临界区段的行程，需要先执行P（wait()）。当信号标S减为负值时，行程会被挡住，不能继续；当信号标S不为负值时，行程可以获准进入临界区段。</li>
+<li>执行V（signal()），信号标S的值会被增加。结束离开临界区段的行程，将会执行V（signal()）。当信号标S不为负值时，先前被挡住的其他行程，将可获准进入临界区段。</li>
+</ol>
+<pre class="language-c#" data-language="c#"><code class="language-c#">int sem &#x3D; 1; 
+
+void Process1()
+&#123;
+	while (1)
+	&#123;
+		P(sem);
+		&#x2F;&#x2F; 临界区
+		V(sem);
+	&#125;
+&#125;
+
+void Process2()
+&#123;
+	while (1)
+	&#123;
+		P(sem);
+		&#x2F;&#x2F; 临界区
+		V(sem);
+	&#125;
+&#125;</code></pre>
+<h4 id="互斥量"><a href="#互斥量" class="headerlink" title="互斥量"></a>互斥量</h4><p>我们的sem变量满足以下要求：<br>信号量的初始值是 1，且 P、V 操作在一个线程中成对出现，先有 P，后有 V，两个操作之间是互斥的临界区。</p>
+<p>这意味着同时只能有一个进程进入两个 P、V 操作之间。</p>
+<p>因此我们对这种特殊的情况进行单独处理，对信号量进行简化，得到“互斥量（mutex）”。 </p>
+<p>一个互斥量包含两个操作：<strong>加锁</strong>（lock，对应于 P 操作）和<strong>解锁</strong>（unlock，对应于 V 操作）。</p>
+<h4 id="条件变量"><a href="#条件变量" class="headerlink" title="条件变量"></a>条件变量</h4><p>条件变量（condition variable）是与互斥量配合使用的。在互斥量<strong>已经加锁</strong>的条件下，条件变量的基本操作有三个：</p>
+<ul>
+<li><p>将互斥量解锁并进入休眠状态（被唤醒时会重新加锁互斥量） </p>
+</li>
+<li><p>唤醒一个被休眠的进程 </p>
+</li>
+<li><p>唤醒所有休眠的进程</p>
+</li>
+</ul>
+<h3 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h3><p>死锁产生的条件：</p>
+<ul>
+<li><p>互斥条件：资源要么分配给了某个进程，要么就是可用的 </p>
+</li>
+<li><p>占有和等待条件：已经得到了某个资源的进程可以再请求新的资源（即一层锁不会导致死锁） </p>
+</li>
+<li><p>不可抢占条件：已经分配给一个进程的资源不能强制抢占，只能由占有它的进程自己释放 </p>
+</li>
+<li><p>环路等待条件：死锁发生时，进程一定可以形成一个环路，环路中每一个进程都等待着下一个进程占有的资源 </p>
+</li>
+</ul>
+<p><img src="https://i.loli.net/2021/07/16/uVrpkj4i7xFKOX2.png" alt="image-20210716122611212"></p>
+<h4 id="经典例子：DiningPhilosophers"><a href="#经典例子：DiningPhilosophers" class="headerlink" title="经典例子：DiningPhilosophers"></a>经典例子：DiningPhilosophers</h4><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/the-dining-philosophers/">https://leetcode-cn.com/problems/the-dining-philosophers/</a></p>
+<p>5 个沉默寡言的哲学家围坐在圆桌前，每人面前一盘意面。叉子放在哲学家之间的桌面上。（5 个哲学家，5 根叉子）</p>
+<p>所有的哲学家都只会在思考和进餐两种行为间交替。哲学家只有同时拿到左边和右边的叉子才能吃到面，而同一根叉子在同一时间只能被一个哲学家使用。每个哲学家吃完面后都需要把叉子放回桌面以供其他哲学家吃面。只要条件允许，哲学家可以拿起左边或者右边的叉子，但在没有同时拿到左右叉子时不能进食。</p>
+<p>假设面的数量没有限制，哲学家也能随便吃，不需要考虑吃不吃得下。</p>
+<p>设计一个进餐规则（并行算法）使得每个哲学家都不会挨饿；也就是说，在没有人知道别人什么时候想吃东西或思考的情况下，每个哲学家都可以在吃饭和思考之间一直交替下去。</p>
+<p>哲学家从 0 到 4 按 顺时针 编号。请实现函数 <code>void wantsToEat(philosopher, pickLeftFork, pickRightFork, eat, putLeftFork, putRightFork);</code></p>
+<p>philosopher 哲学家的编号。<br>pickLeftFork 和 pickRightFork 表示拿起左边或右边的叉子。<br>eat 表示吃面。<br>putLeftFork 和 putRightFork 表示放下左边或右边的叉子。<br>由于哲学家不是在吃面就是在想着啥时候吃面，所以思考这个方法没有对应的回调。<br>给你 5 个线程，每个都代表一个哲学家，请你使用类的同一个对象来模拟这个过程。在最后一次调用结束之前，可能会为同一个哲学家多次调用该函数。</p>
+<p>解题思路：</p>
+<ul>
+<li>使用C++ std::lock实现多锁原子锁定</li>
+</ul>
+<pre class="language-c++" data-language="c++"><code class="language-c++">class DiningPhilosophers &#123;
+private:
+    std::mutex mutexs[5];
+public:
+    DiningPhilosophers() &#123;
+    &#125;
+
+    void wantsToEat(int philosopher,
+                    function&lt;void()&gt; pickLeftFork,
+                    function&lt;void()&gt; pickRightFork,
+                    function&lt;void()&gt; eat,
+                    function&lt;void()&gt; putLeftFork,
+                    function&lt;void()&gt; putRightFork) &#123;
+        int lhs &#x3D; philosopher;
+        int rhs &#x3D; (philosopher+1)%5;
+
+        std::lock(mutexs[lhs], mutexs[rhs]);
+        std::lock_guard&lt;std::mutex&gt; lock_a(mutexs[lhs], std::adopt_lock);
+        std::lock_guard&lt;std::mutex&gt; lock_b(mutexs[rhs], std::adopt_lock);
+        
+        pickLeftFork();
+        pickRightFork();
+        eat();
+        putLeftFork();
+        putRightFork(); &#x2F;&#x2F;在临界区内，其实左边右边顺序无关紧要
+    &#125;
+&#125;;</code></pre>
+<ul>
+<li>随意指定一个人和其他人拿筷子的顺序不一样，这样也可以破坏闭环结构。<pre class="language-c++" data-language="c++"><code class="language-c++">class DiningPhilosophers &#123;
+private:
+    std::mutex forks[5];
+
+public:
+    DiningPhilosophers() &#123;
+        
+    &#125;
+
+    void wantsToEat(int philosopher,
+                    function&lt;void()&gt; pickLeftFork,
+                    function&lt;void()&gt; pickRightFork,
+                    function&lt;void()&gt; eat,
+                    function&lt;void()&gt; putLeftFork,
+                    function&lt;void()&gt; putRightFork) &#123;
+		if(philosopher &#x3D;&#x3D; 0)&#123;
+            forks[0].lock();
+            forks[4].lock();
+            pickLeftFork();
+            pickRightFork();
+            eat();
+            putRightFork();
+            putLeftFork();
+            forks[4].unlock();
+            forks[0].unlock();
+            return;
+        &#125;
+        forks[philosopher-1].lock();
+        forks[philosopher].lock();
+        pickLeftFork();
+        pickRightFork();
+        eat();
+        putRightFork();
+        putLeftFork();
+        forks[philosopher].unlock();
+        forks[philosopher-1].unlock();
+    &#125;
+&#125;;</code></pre>
+</li>
+</ul>
+<h3 id="读者写者问题"><a href="#读者写者问题" class="headerlink" title="读者写者问题"></a>读者写者问题</h3><p>一个资源，我们可以需要对它进行读写。</p>
+<p>读操作是不对资源进行更改的，而写操作对资源进行更改。</p>
+<p>这对我们提出了要求：可以多个进程同时读，但是读的过程中不允许写；只能有一个进程对它写入，写的过程不允许任何其他进程同时写或读。</p>
+<p>即我们要求：</p>
+<ol>
+<li>允许多个读者可同时对文件执行读操作</li>
+<li>只允许一个写者往文件中写信息</li>
+<li>任一写者在完成写操作之前不允许其他读者或写者工作</li>
+<li>写者执行写操作前，应让已有的写者和读者全部退出</li>
+</ol>
+<h4 id="读者优先的操作模式"><a href="#读者优先的操作模式" class="headerlink" title="读者优先的操作模式"></a>读者优先的操作模式</h4><pre class="language-c++" data-language="c++"><code class="language-c++">semaphore rmutex &#x3D; 1; &#x2F;&#x2F; 读进程互斥信号量
+semaphore wmutex &#x3D; 1; &#x2F;&#x2F; 写进程互斥信号量
+int readcount &#x3D; 0;    &#x2F;&#x2F; 读进程计数
+
+process reader_i() &#123;  &#x2F;&#x2F; 读进程
+    while(true) &#123;
+        P(rmutex);
+        readcount++;
+        if(readcount &#x3D;&#x3D; 1)
+        	P(wmutex);
+        V(rmutex);
+        &#123;读文件&#125;;
+        P(rmutex);
+        readcount--;
+        if(readcount &#x3D;&#x3D; 0)
+        	V(wmutex);
+        V(rmutex);
+    &#125;
+&#125;
+
+process writer_i() &#123;  &#x2F;&#x2F; 写进程
+    while(true) &#123;
+        P(wmutex);
+        &#123;写文件&#125;;
+        V(wmutex);
+    &#125;
+&#125;</code></pre>
+<p>要点：<strong>读者优先</strong>，读者可以抢占写者的资源。</p>
+<p>参考链接：<a target="_blank" rel="noopener" href="https://liuwynn.github.io/2018/11/28/%E8%AF%BB%E8%80%85-%E5%86%99%E8%80%85%E9%97%AE%E9%A2%98/">https://liuwynn.github.io/2018/11/28/%E8%AF%BB%E8%80%85-%E5%86%99%E8%80%85%E9%97%AE%E9%A2%98/</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"><i class="fa fa-tag"></i> C#</a>
+              <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" rel="tag"><i class="fa fa-tag"></i> 多线程</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/c-sharp-delegate-event/" rel="prev" title="C# 委托与事件">
+                  <i class="fa fa-chevron-left"></i> C# 委托与事件
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">c7w</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.1.4/es5/tex-mml-chtml.js","integrity":"sha256-ncNI9OXOS5Ek4tzVYiOMmN/KKCPZ6V0Cpv2P/zHntiA="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
