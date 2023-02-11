@@ -93,37 +93,37 @@ body:after {
 .article-entry dt {
   font-weight: bold;
 }
-.article-with-titlenum {
+.article-entry {
   counter-reset: h2;
 }
-.article-with-titlenum h2 {
+.article-entry h2 {
   counter-reset: h3;
 }
-.article-with-titlenum h2:before {
+.article-entry h2:before {
   padding-right: 1em;
   counter-increment: h2;
   content: counter(h2);
 }
-.article-with-titlenum h3 {
+.article-entry h3 {
   counter-reset: h4;
 }
-.article-with-titlenum h3:before {
+.article-entry h3:before {
   padding-right: 1em;
   counter-increment: h3;
   content: counter(h2) "." counter(h3);
 }
-.article-with-titlenum h4 {
+.article-entry h4 {
   counter-reset: h5;
 }
-.article-with-titlenum h4:before {
+.article-entry h4:before {
   padding-right: 1em;
   counter-increment: h4;
   content: counter(h2) "." counter(h3) "." counter(h4);
 }
-.article-with-titlenum h5 {
+.article-entry h5 {
   counter-reset: h6;
 }
-.article-with-titlenum h5:before {
+.article-entry h5:before {
   padding-right: 1em;
   counter-increment: h5;
   content: counter(h2) "." counter(h3) "." counter(h4) "." counter(h5);
@@ -508,7 +508,7 @@ body {
   -webkit-text-size-adjust: 100%;
 }
 #content {
-  margin: 0 auto;
+  margin: 4rem auto 0px;
 }
 .outer {
   margin: 0 auto;
@@ -608,7 +608,7 @@ a {
 }
 #header-title {
   text-align: center;
-  margin: 150px auto 60px;
+  margin: 0px auto 0px;
   left: 0;
 }
 #logo,
@@ -922,11 +922,9 @@ a.article-title:hover {
 }
 .article-entry blockquote {
   font-family: "biaodian", "LM-Roman-10", "Chinese", serif;
+  font-style: italic;
   margin: 1.6em 0;
   padding: 0px 2em;
-  padding: 0.25em 2em 0.25em calc(2em - 5px);
-  border-left: 5px solid #ddd;
-  background: #f7f7f7;
 }
 .article-entry blockquote strong {
   font-style: normal;
