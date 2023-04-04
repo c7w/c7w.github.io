@@ -540,7 +540,7 @@ body,
 }
 body {
   background: #fff;
-  font: 16px "biaodian", "LM-Roman-10", "Chinese", serif, sans-serif;
+  font: 17px "biaodian", "LM-Roman-10", "Chinese", serif, sans-serif;
   -webkit-text-size-adjust: 100%;
 }
 #content {
@@ -720,9 +720,9 @@ a {
 .nav-icon {
   font-family: FontAwesome;
   text-align: center;
-  font-size: 16px;
-  width: 16px;
-  height: 16px;
+  font-size: 17px;
+  width: 17px;
+  height: 17px;
   padding: 20px 15px;
   position: relative;
   cursor: pointer;
@@ -959,7 +959,7 @@ a.article-title:hover {
   font-style: normal;
 }
 .article-entry blockquote footer {
-  font-size: 16px;
+  font-size: 17px;
   font-family: font-sans;
   margin: 0.8em 0;
 }
@@ -1463,7 +1463,7 @@ a.article-title:hover {
   border-width: 1px;
   overflow: auto;
   color: #4d4d4c;
-  line-height: 25.6px;
+  line-height: 27.200000000000003px;
 }
 .article-entry .gist .gist-file .gist-data .line-numbers {
   color: #666;

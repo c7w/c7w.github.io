@@ -229,7 +229,7 @@ $$</div><p>我们希望的优化目标<span class="bd-box"><h-char class="bd bd-
 <div class="markdown-them-math-block">$$\begin{aligned}
 \mathcal{L}_{t-1} =\mathbb{E}_{q\left(\boldsymbol{x}_0, \boldsymbol{x}_t\right)}\left[\frac{1}{2 \sigma_t^2}\left\|\tilde{\boldsymbol{\mu}}\left(\boldsymbol{x}_t, \boldsymbol{x}_0\right)-\boldsymbol{\mu}_\theta\left(\boldsymbol{x}_t, t\right)\right\|^2\right]+C
 \end{aligned}
-$$</div><p>这相当于<strong>直接预测 <div class="markdown-them-math-block">$$p_\theta$$</div> 过程的均值</strong><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+$$</div><p>这相当于<strong>直接预测 <span class="markdown-them-math-inline">$p_\theta$</span> 过程的均值</strong><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
 <p>而由于我们在训练过程中知道前向过程 <span class="markdown-them-math-inline">$\mathbf{x}_t=\sqrt{\bar{\alpha}_t} \mathbf{x}_0+\sqrt{1-\bar{\alpha}_t} \boldsymbol{\epsilon}$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>且在训练过程中要将 <span class="markdown-them-math-inline">$\boldsymbol{\mu}_\theta\left(\boldsymbol{x}_t, t\right)$</span> 回归到的值只与 <span class="markdown-them-math-inline">$\boldsymbol{x}_0$</span> 和 <span class="markdown-them-math-inline">$\boldsymbol{x}_t$</span> 有关<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>于是我们可以代入消去这个回归值中的 <span class="markdown-them-math-inline">$\boldsymbol{x}_0$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>得到我们要把 <span class="markdown-them-math-inline">$\boldsymbol{\mu}_\theta\left(\boldsymbol{x}_t, t\right)$</span> 回归到<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
 <div class="markdown-them-math-block">$$\frac{1}{\sqrt{\alpha_t}}\left(\mathbf{x}_t-\frac{\beta_t}{\sqrt{1-\bar{\alpha}_t}} \boldsymbol{\epsilon}\right)
 $$</div><p>而这里的 <span class="markdown-them-math-inline">$\boldsymbol{x}_t$</span> 是 <span class="markdown-them-math-inline">$\boldsymbol{\mu}_\theta\left(\boldsymbol{x}_t, t\right)$</span> 的输入<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>本着简便的原则<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>我们可以设计<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
@@ -245,6 +245,7 @@ $$</div><p>这相当于对于不同时间步的 Loss 做了一个分配不同权
 <ul>
 <li><a target="_blank" rel="noopener" href="https://kxz18.github.io/2022/06/19/Diffusion/">https://kxz18.github.io/2022/06/19/Diffusion/</a><span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>推导懒得自己写直接参考了这里<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span></li>
 </ul>
+<p>感觉水够一篇的篇幅了<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>换一篇接着写 :)</p>
 
       
     </div>
@@ -315,33 +316,24 @@ $$</div><p>这相当于对于不同时间步的 Loss 做了一个分配不同权
 
 
 
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
 <script>
-  MathJax = {
-    options: {
-      enableMenu: false
-    },
-    tex: {
-      inlineMath: [['$', '$'], ['\\(', '\\)']],
-      displayMath: [['$$', '$$'], ['\\[', '\\]']],
-    }
-  };
-</script>
-<!-- <script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
-    CommonHTML: {
-      linebreaks: false
-    }
+  document.addEventListener("DOMContentLoaded", function() {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ],
+      throwOnError : false
+    });
   });
-  </script> -->
-<script type="text/javascript" id="MathJax-script" async
-  src="../../mathjax/tex-chtml.js">
 </script>
-<!-- <script type="text/javascript"
-   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS_CHTML">
-</script> -->
-
-
 
   </div>
 </body>
