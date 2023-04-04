@@ -52,6 +52,86 @@
       <div id="content" class="outer">
         <section id="main">
   
+    <article id="post-diffusion-ddpm" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a class="article-date">
+  <time class="dt-published" datetime="2023-04-04T16:11:54.961Z" itemprop="datePublished">2023-04-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>这一系列博文我们对 Diffusion 模型进行简单的介绍 :)</p>
+<p><img src="diffusion-ddpm.assets/Pasted%20image%2020230403223246.png" alt=""></p>
+<p>我们认为比较重要的 Paper List<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
+<ul>
+<li>
+<p>重新回顾 Diffusion<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>更具多样性的生成式模型</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2006.11239">[2006.11239]</a> <strong>Denoising Diffusion Probabilistic Models</strong> (NIPS’20)</li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2102.09672">[2102.09672]</a> Improved Denoising Diffusion Probabilistic Models (ICML’21)</li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2010.02502">[2010.02502]</a> Denoising Diffusion Implicit Models (ICLR’21)</li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2106.15282">[2106.15282]</a> Cascaded Diffusion Models for High Fidelity Image Generation (JMLR)</li>
+</ul>
+</li>
+<li>
+<p>为生成添加引导</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2105.05233">[2105.05233]</a> <strong>Diffusion Models Beat GANs on Image Synthesis (NIPS’21)</strong>
+<ul>
+<li>GLIDE: Towards Photorealistic Image Generation and Editing with Text-Guided Diffusion Models (ICML’22)</li>
+<li></li>
+</ul>
+</li>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2207.12598">[2207.12598]</a> <strong>Classifier-Free Diffusion Guidance (NIPS’21 Workshop)</strong></li>
+</ul>
+</li>
+<li>
+<p>Departure to Latent Space</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2112.10752v2">[2112.10752]</a> <strong>High-resolution image synthesis with latent diffusion models</strong> (CVPR’22 Oral)
+<ul>
+<li><a target="_blank" rel="noopener" href="https://arxiv.org/abs/2302.05543">[2302.05543]</a> Adding Conditional Control to Text-to-Image Diffusion Models</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>未分类<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>还没读<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>咕咕咕<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span></p>
+<ul>
+<li>Hierarchical Text-Conditional Image Generation with CLIP Latents</li>
+<li>Photorealistic Text-to-Image Diffusion Models with Deep Language Understanding</li>
+<li>Zero-Shot Contrastive Loss for Text-Guided Diffusion Image Style Transfer</li>
+</ul>
+</li>
+</ul>
+<h2 id="ddpm">DDPM</h2>
+<p><img src="diffusion-ddpm.assets/Pasted%20image%2020230404215439.png" alt=""></p>
+<p>DDPM<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>Denoising Diffusion Probabilistic Models<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span>是一种生成式模型<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>其可以将噪声 <span class="markdown-them-math-inline">$\mathbf{x}_T$</span> 经过一系列级联的去噪<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>Denoising<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span>过程生成具有真实感的图像 <span class="markdown-them-math-inline">$\mathbf{x}_0$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>在 DDPM 中<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>具有两个重要的过程<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>前向过程<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span><em>forward process, or diffusion process</em><span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span>和去噪过程<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span><em>denoising process</em><span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
+        
+          <p class="article-more-link">
+            <a href="../posts/diffusion-ddpm/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-license" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a class="article-date">
