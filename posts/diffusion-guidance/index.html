@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Diffusion-Guidance | c7w&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <meta name="description" content="Note
+在这篇文章中我们介绍几种常见的为 Diffusion Model 添加 Guidance 的方法。所谓添加 Guidance 是说，我们给定一些额外的 condition（如 text prompt, other images），如何降低生成的多样性，提高生成的准确性，生成与这些 cond">
+  
+  
+  
+    <link rel="shortcut icon" href="../../favicon.ico">
+  
+  <link rel="stylesheet" href="../../css/style.css">
+  
+    <link rel="stylesheet" href="../../fancybox/jquery.fancybox-1.3.4.css">
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <div id="nav-outer">
+  <nav id="main-nav" class="outer">
+    <a id="main-nav-toggle" class="nav-icon"></a>
+    
+      <a class="main-nav-link" href="../../index.html">Home</a>
+    
+      <a class="main-nav-link" href="../../archives">Posts</a>
+    
+      <a class="main-nav-link" href="../../about">About</a>
+    
+      <a class="main-nav-link" href="../../friends">Friends</a>
+    
+    <div class="main-nav-space-between"></div>
+    
+  </nav>
+</div>
+<!-- <div id="header-title">
+  <h1 id="logo-wrap">
+    <a href="../../index.html" id="logo">c7w&#39;s Blog</a>
+  </h1>
+  
+    <h2 id="subtitle-wrap">
+      <a href="../../index.html" id="subtitle">Ready for some fun stuff :)</a>
+    </h2>
+  
+</div> -->
+
+      <div id="content" class="outer">
+        <section id="main"><article id="post-diffusion-guidance" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a class="article-date">
+  <time class="dt-published" datetime="2023-04-05T03:34:55.345Z" itemprop="datePublished">2023-04-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="../../categories/Diffusion/">Diffusion</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Diffusion-Guidance
+    </h1>
+  
+
+      </header>
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="note">Note</h2>
+<p>在这篇文章中我们介绍几种常见的为 Diffusion Model 添加 Guidance 的方法<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>所谓添加 Guidance 是说<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>我们给定一些额外的 condition<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>如 text prompt, other images<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>如何降低生成的多样性<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>提高生成的准确性<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>生成与这些 condition 相符的图片<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>目前常用的两种加 Guidance 的方法<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
+<ul>
+<li>Classifier Guidance<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>通过一个 Classifier <span class="markdown-them-math-inline">$p\left(\mathbf{c} \mid \mathbf{z}_t\right)$</span> 来完成辅助的作用<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>具体来说<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>将生成过程的网络预测均值 <span class="markdown-them-math-inline">$\mu_\theta$</span> 朝着 Classifier 预测结果更加大的方向移动<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>这里的 Classifier 不一定局限于分类器<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>比如在 GLIDE 中可以使用 CLIP score 来作为 Guidance 的优化目标<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>只要能算梯度就可以<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span></li>
+<li>Classifier-free Guidance<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>不利用 Classifier<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>而是通过修改训练目标让当前 Diffusion Model 同时具有条件生成和非条件生成的能力<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></li>
+</ul>
+<p><img src="diffusion-guidance.assets/image-20230405113800887.png" alt="DDPM"></p>
+<p><img src="diffusion-guidance.assets/image-20230405113939879.png" alt="Classifier-guidance"></p>
+<p><img src="diffusion-guidance.assets/image-20230405114018865.png" alt="classifier-free guidance"></p>
+<p><img src="diffusion-guidance.assets/image-20230405123432842.png" alt="image-20230405123432842"></p>
+<h2 id="classifier-guidance">Classifier Guidance</h2>
+<p>正如之前说的<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>这种方法通过一个 Classifier <span class="markdown-them-math-inline">$p\left(\mathbf{c} \mid \mathbf{z}_t\right)$</span> 来完成辅助的作用<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>这种方法不需要额外训练扩散模型<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>而是直接在已有的 Diffusion Model 上<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>通过 Classifier 来指导生成所期望的图像<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>我们来给出其数学推导<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>假设我们有扩散模型反向过程 <span class="markdown-them-math-inline">$p_\theta\left(x_t \mid x_{t+1}\right)$</span> <span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>如果我们想获得 condition 在 <span class="markdown-them-math-inline">$y$</span> 上的概率分布 <span class="markdown-them-math-inline">$p_{\theta, \phi}\left(x_t \mid x_{t+1}, y\right)$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>我们可以有<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
+<div class="markdown-them-math-block">$$p_{\theta, \phi}\left(x_t \mid x_{t+1}, y\right)=Z p_\theta\left(x_t \mid x_{t+1}\right) p_\phi\left(y \mid x_t\right)
+$$</div><p>这里 <span class="markdown-them-math-inline">$Z$</span> 是归一化系数<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>再记<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
+<div class="markdown-them-math-block">$$\begin{aligned}
+p_\theta\left(x_t \mid x_{t+1}\right) &amp; =\mathcal{N}(\mu, \Sigma) \\
+\log p_\theta\left(x_t \mid x_{t+1}\right) &amp; =-\frac{1}{2}\left(x_t-\mu\right)^T \Sigma^{-1}\left(x_t-\mu\right)+C
+\end{aligned}
+$$</div><p>我们将 <span class="markdown-them-math-inline">$\log p_\phi\left(y \mid x_t\right)$</span> 在 <span class="markdown-them-math-inline">$x_t=\mu$</span> 附近做 Taylor 展开<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>有<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
+<div class="markdown-them-math-block">$$\begin{aligned}
+\log p_\phi\left(y \mid x_t\right) &amp; \left.\approx \log p_\phi\left(y \mid x_t\right)\right|_{x_t=\mu}+\left.\left(x_t-\mu\right) \nabla_{x_t} \log p_\phi\left(y \mid x_t\right)\right|_{x_t=\mu} \\
+&amp; =C_1 + \left(x_t-\mu\right) g
+\end{aligned}
+$$</div><p>于是<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>如果记 <span class="markdown-them-math-inline">$g=\left.\nabla_{x_t} \log p_\phi\left(y \mid x_t\right)\right|_{x_t=\mu}$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>那么 condition 在 <span class="markdown-them-math-inline">$y$</span> 上的概率分布 <span class="markdown-them-math-inline">$p_{\theta, \phi}\left(x_t \mid x_{t+1}, y\right)$</span> 可以近似地记为<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
+<div class="markdown-them-math-block">$$\begin{aligned}
+\log \left(p_\theta\left(x_t \mid x_{t+1}\right) p_\phi\left(y \mid x_t\right)\right) &amp; \approx-\frac{1}{2}\left(x_t-\mu\right)^T \Sigma^{-1}\left(x_t-\mu\right)+\left(x_t-\mu\right) g+C_2 \\
+&amp; =-\frac{1}{2}\left(x_t-\mu-\Sigma g\right)^T \Sigma^{-1}\left(x_t-\mu-\Sigma g\right)+\frac{1}{2} g^T \Sigma g+C_2 \\
+&amp; =-\frac{1}{2}\left(x_t-\mu-\Sigma g\right)^T \Sigma^{-1}\left(x_t-\mu-\Sigma g\right)+C_3 \\
+&amp; =\log p(z)+C_4, z \sim \mathcal{N}(\mu+\Sigma g, \Sigma)
+\end{aligned}
+$$</div><p>这也就是采样过程中梯度反传的来源<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
+<p><img src="diffusion-guidance.assets/image-20230405113939879.png" alt="Classifier-guidance"></p>
+<p>因为我们的 Classifier 要在带噪声的图片上做预测<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>所以这个 Classifier 最好不要直接用预训练好的模型<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>应该用其它的数据增广方法使其具有一定的鲁棒性<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>如在噪声图片上也做过训练<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span></p>
+<h2 id="classifier-free-guidance">Classifier-free Guidance</h2>
+<p>上述方法引入的 Classifier 会降低最终 Diffusion Model 的推理速度<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>而且如果直接使用任务的 Metric 作为 Classifier 的优化目标<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>也会有拟合 Metric 的嫌疑<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>这时就有了 Classifier-free 的 Guidance 方法出现<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
+<p><img src="diffusion-guidance.assets/image-20230405114018865.png" alt="classifier-free guidance"></p>
+<p>正如我们上面所说<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>Classifier-free 的方法不引入 Classifier<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>而是通过修改训练目标让当前 Diffusion Model 同时具有条件生成和非条件生成的能力<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>具体来说<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>在<strong>训练阶段</strong>我们随机 Dropout condition <span class="markdown-them-math-inline">$\mathbf{c}$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>而在<strong>测试阶段</strong>我们在生成阶段的去噪过程中<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>使用下式代替我们预测的噪声结果<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
+<div class="markdown-them-math-block">$$\tilde{\boldsymbol{\epsilon}}_\theta\left(\mathbf{z}_t, \mathbf{c}\right)=w \boldsymbol{\epsilon}_\theta\left(\mathbf{z}_t, \mathbf{c}\right)+(1-w) \boldsymbol{\epsilon}_\theta\left(\mathbf{z}_t\right)
+$$</div><p>也就是说<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
+<p><img src="diffusion-guidance.assets/image-20230405123429520.png" alt="image-20230405123429520"></p>
+<p>如果设置 <span class="markdown-them-math-inline">$w=1$</span> 表示我们禁用了这个 Classifier-free 的 Guidance<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>而在正常使用中我们一般都设置 <span class="markdown-them-math-inline">$w&gt;1$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>从隐空间的角度来看<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>我们实际上是在对 无条件生成时预测的噪声 和 条件生成时预测的噪声 做外插<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="../diffusion-ddpm/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">
+        
+          Diffusion-DDPM
+        
+      </div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+        <div><p><span id="busuanzi_container_site_pv">Site total view count: <span id="busuanzi_value_site_pv">Loading...</span></span></p><p>Powered by <a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/">Hexo</a> & Theme <a target="_blank" rel="noopener" href="https://github.com/bill-xia/hexo-theme-mashiro">Mashiro</a> & GitHub Pages</p><p>Copyright © 2020-2023 c7w. LICENSE CC BY-NC-SA 4.0.</p></div>
+      
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../archives" class="mobile-nav-link">Posts</a>
+  
+    <a href="../../about" class="mobile-nav-link">About</a>
+  
+    <a href="../../friends" class="mobile-nav-link">Friends</a>
+  
+</nav>
+    
+<script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="../../js/clipboard.min.js"></script>
+<script src="../../js/jquery-1.4.3.min.js"></script>
+
+<script src="../../fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+
+
+<script src="../../js/script.js"></script>
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ],
+      throwOnError : false
+    });
+  });
+</script>
+
+  </div>
+</body>
+</html>
