@@ -70,7 +70,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="../posts/diffusion-guidance/">Diffusion-Guidance</a>
+      <a class="p-name article-title" href="../posts/diffusion-guidance/">Diffusion-Guidance &amp; Latent Space</a>
     </h1>
   
 
@@ -79,7 +79,7 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h2 id="note">Note</h2>
+        <h2 id="note:-guidance">Note: Guidance</h2>
 <p>在这篇文章中我们介绍几种常见的为 Diffusion Model 添加 Guidance 的方法<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>所谓添加 Guidance 是说<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>我们给定一些额外的 condition<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>如 text prompt, other images<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>如何降低生成的多样性<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>提高生成的准确性<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>生成与这些 condition 相符的图片<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
 <p>目前常用的两种加 Guidance 的方法<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
 <ul>
@@ -88,9 +88,9 @@
 </ul>
 <p><img src="diffusion-guidance.assets/image-20230405113800887.png" alt="DDPM"></p>
 <p><img src="diffusion-guidance.assets/image-20230405113939879.png" alt="Classifier-guidance"></p>
-<p><img src="diffusion-guidance.assets/image-20230405114018865.png" alt="classifier-free guidance"></p>
-<p><img src="diffusion-guidance.assets/image-20230405123432842.png" alt="image-20230405123432842"></p>
-<h2 id="classifier-guidance">Classifier Guidance</h2>
+<p><img src="diffusion-guidance.assets/image-20230405114018865.png" alt="classifier-free guidance: training"></p>
+<p><img src="diffusion-guidance.assets/image-20230405123432842.png" alt="classifier-free guidance: sampling"></p>
+<h3 id="classifier-guidance">Classifier Guidance</h3>
 <p>正如之前说的<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>这种方法通过一个 Classifier <span class="markdown-them-math-inline">$p\left(\mathbf{c} \mid \mathbf{z}_t\right)$</span> 来完成辅助的作用<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>这种方法不需要额外训练扩散模型<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>而是直接在已有的 Diffusion Model 上<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>通过 Classifier 来指导生成所期望的图像<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
 <p>我们来给出其数学推导<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>假设我们有扩散模型反向过程 <span class="markdown-them-math-inline">$p_\theta\left(x_t \mid x_{t+1}\right)$</span> <span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>如果我们想获得 condition 在 <span class="markdown-them-math-inline">$y$</span> 上的概率分布 <span class="markdown-them-math-inline">$p_{\theta, \phi}\left(x_t \mid x_{t+1}, y\right)$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>我们可以有<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
 <div class="markdown-them-math-block">$$p_{\theta, \phi}\left(x_t \mid x_{t+1}, y\right)=Z p_\theta\left(x_t \mid x_{t+1}\right) p_\phi\left(y \mid x_t\right)
@@ -114,7 +114,7 @@ $$</div><p>于是<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-
 $$</div><p>这也就是采样过程中梯度反传的来源<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
 <p><img src="diffusion-guidance.assets/image-20230405113939879.png" alt="Classifier-guidance"></p>
 <p>因为我们的 Classifier 要在带噪声的图片上做预测<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>所以这个 Classifier 最好不要直接用预训练好的模型<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>应该用其它的数据增广方法使其具有一定的鲁棒性<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>如在噪声图片上也做过训练<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span></p>
-<h2 id="classifier-free-guidance">Classifier-free Guidance</h2>
+<h3 id="classifier-free-guidance">Classifier-free Guidance</h3>
 <p>上述方法引入的 Classifier 会降低最终 Diffusion Model 的推理速度<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>而且如果直接使用任务的 Metric 作为 Classifier 的优化目标<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>也会有拟合 Metric 的嫌疑<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>这时就有了 Classifier-free 的 Guidance 方法出现<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
 <p><img src="diffusion-guidance.assets/image-20230405114018865.png" alt="classifier-free guidance"></p>
 <p>正如我们上面所说<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>Classifier-free 的方法不引入 Classifier<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>而是通过修改训练目标让当前 Diffusion Model 同时具有条件生成和非条件生成的能力<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>具体来说<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>在<strong>训练阶段</strong>我们随机 Dropout condition <span class="markdown-them-math-inline">$\mathbf{c}$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>而在<strong>测试阶段</strong>我们在生成阶段的去噪过程中<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>使用下式代替我们预测的噪声结果<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
@@ -122,6 +122,14 @@ $$</div><p>这也就是采样过程中梯度反传的来源<span class="bd-box">
 $$</div><p>也就是说<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
 <p><img src="diffusion-guidance.assets/image-20230405123429520.png" alt="image-20230405123429520"></p>
 <p>如果设置 <span class="markdown-them-math-inline">$w=1$</span> 表示我们禁用了这个 Classifier-free 的 Guidance<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>而在正常使用中我们一般都设置 <span class="markdown-them-math-inline">$w&gt;1$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>从隐空间的角度来看<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>我们实际上是在对 无条件生成时预测的噪声 和 条件生成时预测的噪声 做外插<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<h2 id="latent-space">Latent Space</h2>
+<p>这一节我们从 Pixel Space 前往 Latent Space<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>阐释 Stable Diffusion 模型相对于前面的 Diffusion Model 的改进<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><img src="diffusion-guidance.assets/image-20230405175924649.png" alt="motivation"></p>
+<p>首先是 Stable Diffusion 的 Motivation<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>如果相对一张图片进行压缩<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>一般分为两个阶段<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>首先是感知压缩<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>perceptual compression<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span>阶段<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>它对应图片中的高频细节<span class="bd-box"><h-char class="bd bd-beg"><h-inner>；</h-inner></h-char></span>而后是语义压缩<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>semantic compression<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span>阶段<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>这个阶段更多的对应数据的语义和概念组成<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>传统的 Diffusion 方法的生成阶段既要恢复语义的压缩<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>又要恢复感知层面的压缩<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>因此花费了大量的计算在高频细节上<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>而如果我们把 Diffuse 和 Denoise 的对象改为隐空间中对语义对应的 latent code<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>便可以解决这个麻烦<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><img src="diffusion-guidance.assets/image-20230405154930869.png" alt="Stable Diffusion"></p>
+<p>于是<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>我们首先使用 VQGAN 建模这个 pixel space 到 latent space 的转换过程<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>我们使用一个 Encoder <span class="markdown-them-math-inline">$E$</span> 和一个 Decoder <span class="markdown-them-math-inline">$D$</span> 来建模这个转换过程<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>在训练过程中使用重建 Loss<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>辅以计算隐空间与标准正态分布的 KL Divergence 作为隐空间正则损失<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>之后我们所有的 Diffusion 与 Denoising 过程均在隐空间中进行<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>操作的具体对象是这个隐空间中的 latent code<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>至于加 condition 的方法<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>我们可以采用 cross attention layer 来进行<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>具体来说<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>我们将 condition 用编码器 <span class="markdown-them-math-inline">$\tau_\theta$</span> 编码<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>之后将 condition feature 与 latent code 之间做 cross attention<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>其中 Q 由 latent code 投影得到<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>K 和 V 由 condition feature 投影得到<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
 
       
     </div>
