@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>辐射度量学中的基本概念与物体材质 | c7w&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <meta name="description" content="这篇 blog 对图形学中学到的相关概念进行回顾 :)
+Blinn-Phong 着色模型
+着色模型是计算机图形学中的一个概念，用于描述如何计算在给定光照条件下，图形物体的颜色。着色（Shading）指的是计算图形物体表面各点颜色的过程。它是用于将三维物体渲染成二维图像的重要步骤之一。
+着色是具有局部">
+  
+  
+  
+    <link rel="shortcut icon" href="../../favicon.ico">
+  
+  <link rel="stylesheet" href="../../css/style.css">
+  
+    <link rel="stylesheet" href="../../fancybox/jquery.fancybox-1.3.4.css">
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <div id="nav-outer">
+  <nav id="main-nav" class="outer">
+    <a id="main-nav-toggle" class="nav-icon"></a>
+    
+      <a class="main-nav-link" href="../../index.html">Home</a>
+    
+      <a class="main-nav-link" href="../../archives">Posts</a>
+    
+      <a class="main-nav-link" href="../../about">About</a>
+    
+      <a class="main-nav-link" href="../../friends">Friends</a>
+    
+    <div class="main-nav-space-between"></div>
+    
+  </nav>
+</div>
+<!-- <div id="header-title">
+  <h1 id="logo-wrap">
+    <a href="../../index.html" id="logo">c7w&#39;s Blog</a>
+  </h1>
+  
+    <h2 id="subtitle-wrap">
+      <a href="../../index.html" id="subtitle">Ready for some fun stuff :)</a>
+    </h2>
+  
+</div> -->
+
+      <div id="content" class="outer">
+        <section id="main"><article id="post-radiometry-intro-and-texture" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a class="article-date">
+  <time class="dt-published" datetime="2023-04-08T11:29:29.179Z" itemprop="datePublished">2023-04-08</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="../../categories/Graphics/">Graphics</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      辐射度量学中的基本概念与物体材质
+    </h1>
+  
+
+      </header>
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>这篇 blog 对图形学中学到的相关概念进行回顾 :)</p>
+<h2 id="blinn-phong-着色模型">Blinn-Phong 着色模型</h2>
+<p><strong>着色模型</strong>是计算机图形学中的一个概念<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>用于描述<strong>如何计算在给定光照条件下<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>图形物体的颜色</strong><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span><strong>着色</strong><span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>Shading<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span>指的是计算图形物体表面各点颜色的过程<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>它是用于将三维物体渲染成二维图像的重要步骤之一<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>着色是具有<strong>局部性</strong>的<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>Shading Locality<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>这是说在着色计算中<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>每个像素的颜色值只与其周围相对较小区域内的几何形状和光照条件有关<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>在着色计算的过程中<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>我们只考虑参与着色计算的这个物体<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>而没有考虑其他物体<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>这样是无法表现阴影的<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><strong>Blinn-Phong 着色模型</strong>是一种基于 Phong 着色模型的改进<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>是 OpenGL 和 Direct3D 等渲染库的默认着色模型<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>它使用了半程向量<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>Halfway Vector<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span>的概念来计算镜面高光<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>Specular Highlight<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>比 Phong 模型更加精确地模拟了光的反射和物体表面的光滑程度<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>具体来说<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>Blinn-Phong 着色模型使用了以下三个分量来计算最终颜色<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
+<ol>
+<li><strong>漫反射分量</strong><span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>表示光线照射到物体表面后被散射的部分<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>这部分颜色通常与物体表面的颜色相同或类似<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></li>
+<li><strong>镜面反射分量</strong><span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>表示光线照射到物体表面后发生镜面反射的部分<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>通常呈现为白色高光<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>Blinn-Phong 着色模型使用半程向量来计算这个分量<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></li>
+<li><strong>环境光分量</strong><span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>表示在没有直接光照的情况下<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>物体表面被间接照射的部分<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>通常呈现为比较暗淡的颜色<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>这个分量可以理解为整个场景的背景色或环境色<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></li>
+</ol>
+<p><img src="radiometry-intro-and-texture.assets/hjsMQS1zJblKIOa.png" alt="Blinn-Phong Shading"></p>
+<p><strong>漫反射 Diffuse Reflection</strong>  对于某一个平面的漫反射项<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>假设某光源的光照强度为 <span class="markdown-them-math-inline">$I_d$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>距离着色点的距离为 <span class="markdown-them-math-inline">$r$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>着色点的漫反射系数为  <span class="markdown-them-math-inline">$k_d$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span><span class="markdown-them-math-inline">$\vec{n}$</span> 表示物体表面的法向量<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span><span class="markdown-them-math-inline">$\vec{l}$</span> 表示从物体表面指向光源的向量<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>那么漫反射项可以表示为<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
+<div class="markdown-them-math-block">$$L_d = k_{d} \frac{I_{d}}{r^2} \max(0, \vec{n} \cdot \vec{l})
+$$</div><p><strong>高光项 Specular Term</strong>  基于如果视线方向 <span class="markdown-them-math-inline">$\vec v$</span> 和镜面方向相近<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>那么半程向量就跟平面法向相近的事实<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>我们定义半程向量 <span class="markdown-them-math-inline">$\vec h := \text{bisector}(\vec v, \vec l) = \frac{v+l}{||v+l||}$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>然后我们可以定义高光项<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
+<div class="markdown-them-math-block">$$L_s = k_{s} \frac{I_{s}}{r^2} \max(0, \vec{n} \cdot \vec{h})^{p}
+$$</div><p>其中<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span><span class="markdown-them-math-inline">$I_{s}$</span> 表示光源的强度<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>距离着色点的距离为 <span class="markdown-them-math-inline">$r$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span><span class="markdown-them-math-inline">$k_{s}$</span> 表示物体表面的镜面反射系数<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span><span class="markdown-them-math-inline">$\vec{n}$</span> 表示物体表面的法向量<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span><span class="markdown-them-math-inline">$\vec{h}$</span> 表示半程向量<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span><span class="markdown-them-math-inline">$p$</span> 表示反射高光的粗糙程度<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>一般取值在 <span class="markdown-them-math-inline">$1$</span> 到 <span class="markdown-them-math-inline">$1000$</span> 之间<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>为什么要带有 <span class="markdown-them-math-inline">$p$</span> 次方呢<span class="bd-box"><h-char class="bd bd-beg"><h-inner>？</h-inner></h-char></span>这是因为我们想让产生高光的夹角处于一个相对较小的范围<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
+<p><img src="radiometry-intro-and-texture.assets/lL5AVnJi8DhTZPb.png" alt="p values"></p>
+<p><strong>环境光照 Ambient Term</strong>  环境光照的强度不取决于物体<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>我们在这里大胆假设每个地方<span class="bd-box"><h-char class="bd bd-beg"><h-inner>、</h-inner></h-char></span>每个方向的环境光照的大小都相同<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>也就是说<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>这一项会填充图中的黑色区域<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>将图像整体提升某个光照强度<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>形式化地<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>可以表示为<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
+<div class="markdown-them-math-block">$$L_a = k_a I_a
+$$</div><p>最终 Blinn-Phong 着色模型的实现就是上述三项相加<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<h2 id="辐射度量学<span-class="bd-box"><h-char class="bd bd-beg"><h-inner>、</h-inner></h-char></span>brdf 与渲染方程">辐射度量学<span class="bd-box"><h-char class="bd bd-beg"><h-inner>、</h-inner></h-char></span>BRDF 与渲染方程</h2>
+<h3 id="辐射度量学">辐射度量学</h3>
+<p><strong>辐射度量学</strong>提供了<strong>在物理上</strong>精准地描述光这个物理量的方法<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>我们将 Cover 以下概念<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
+<ul>
+<li>Radiant Flux 辐射通量</li>
+<li>Radiant Intensity 辐射强度</li>
+<li>Irradiance 辐射照度</li>
+<li>Radiance 辐射亮度</li>
+</ul>
+<p><strong>Radiant flux</strong>  辐射通量<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>Radiant flux<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span>是指电磁波或其他形式的辐射能量的总量<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>通常以<strong>单位时间内辐射出的能量总量</strong>来度量<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>单位是瓦特<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>W<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span>或者流明<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>lumen, lm<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>它是一个物理量<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>用于描述从光源或辐射源发出的辐射能量的总量<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>辐射通量不仅包括可见光<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>还包括其他电磁波<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>如紫外线<span class="bd-box"><h-char class="bd bd-beg"><h-inner>、</h-inner></h-char></span>红外线和微波等<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><img src="radiometry-intro-and-texture.assets/z41TFClAOsMcS9I.png" alt="接下来要介绍的物理量"></p>
+<p><strong>Radiant intensity</strong>  辐射强度<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>Radiant intensity<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span>是指<strong>单位立体角</strong>内<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>从辐射源某一方向发出的辐射功率密度<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>单位是<strong>瓦特每立体弧度</strong><span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>W/sr<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>记为<span class="bd-box"><h-char class="bd bd-end"><h-inner>“</h-inner></h-char></span>坎德拉<span class="bd-box"><h-char class="bd bd-beg"><h-inner>”</h-inner></h-char></span> cd<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>它是一个物理量<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>用于描述辐射源在某个方向上发射光线的强度<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>数学定义为 <span class="markdown-them-math-inline">$I(\omega) = \frac{d\Phi}{d\omega}$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>这里 <span class="markdown-them-math-inline">$\Phi$</span> 是 radiant flux<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>特别地<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>若光源均匀辐射<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>则我们有 <span class="markdown-them-math-inline">$I = \frac{\Phi}{4 \pi}$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><img src="radiometry-intro-and-texture.assets/la1fuCOdi9mKokN.png" alt="补充：立体角的定义"></p>
+<p><strong>Irradiance</strong>  辐照度<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>Irradiance<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span>是指单位面积<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>该平面要与光线垂直<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span>上接收到的辐射功率<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>通常用<strong>瓦特每平方米</strong><span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>W/m²<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>lux<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span>来表示<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>辐照度是一个物理量<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>用于描述辐射源向表面或物体发射的辐射能量在单位面积上的分布情况<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>数学定义为 <span class="markdown-them-math-inline">$E(x) = \frac{d\Phi(x)}{dA}$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><img src="radiometry-intro-and-texture.assets/uXeymz4bKvgBPiV.png" alt="Falloff: not intensity, but irradiance"></p>
+<p><strong>Radiance</strong>  辐射度<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>Radiance<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span>是<strong>每单位立体角</strong>和<strong>每单位投影面积</strong>上<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>由表面反射<span class="bd-box"><h-char class="bd bd-beg"><h-inner>、</h-inner></h-char></span>发射或接收的能量<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>辐射度是<strong>光线的属性</strong><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>数学定义上<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span><span class="markdown-them-math-inline">$L(p, \omega) = \frac{d^2\Phi(p, \omega)}{d\omega dA \cos \theta}$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><img src="radiometry-intro-and-texture.assets/image-20230409002231748.png" alt="Radiance"></p>
+<p>Irradiance 是一个表面 <span class="markdown-them-math-inline">$dA \cos \theta$</span> 接收到的能量<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>Radiance 是该表面朝着某个 <span class="markdown-them-math-inline">$\omega$</span> 立体角方向辐射出去或接收到的能量<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>后者具有表明方向的能力<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>二者关系可以表述为<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
+<div class="markdown-them-math-block">$$E(p) = \int_{H^2} L_i(p, \omega) \cos \theta \ d\omega
+$$</div><p>这里 <span class="markdown-them-math-inline">$H^2$</span> 表示半球面<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<h3 id="brdf- 双向反射分布函数">BRDF  双向反射分布函数</h3>
+<p>BRDF<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>Bidirectional Reflectance Distribution Function<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span>用于描述光在物体表面反射的方式<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>它是指在<strong>给定入射角和出射角</strong>的情况下<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span><strong>物体表面对于入射光线反射光线的能量分布情况</strong><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><img src="radiometry-intro-and-texture.assets/image-20230409003237889.png" alt="用 BRDF 表示反射"></p>
+<p>从 <span class="markdown-them-math-inline">$\omega_i$</span> 方向到达物体表面的 Radiance 会被转换成能量 <span class="markdown-them-math-inline">$E$</span> 进而被物体表面吸收<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>而物体表面吸收的能量又会转化成分散到 <span class="markdown-them-math-inline">$\omega_o$</span> 方向的 Radiance<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>BRDF 表述的就是这两个 Radiance 之间的比例关系<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><img src="radiometry-intro-and-texture.assets/QCrPA8qnHXOhu2W.png" alt="BRDF 的定义"></p>
+<p>使用 BRDF 可以用来定义镜面反射和漫反射<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>此外<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>BRDF 还可以用来定义物体表面的材质<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<h3 id="渲染方程">渲染方程</h3>
+<p>于是<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>借助于 BRDF 的定义<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>我们考虑真实的光线传播<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><img src="radiometry-intro-and-texture.assets/xbeovLICaJnK7sj.png" alt="反射方程"></p>
+<p>首先我们来考虑<strong>反射方程</strong><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>从某个点 <span class="markdown-them-math-inline">$dA$</span> 向 <span class="markdown-them-math-inline">$\omega_r$</span> 方向出射的 radiance<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>可以通过考虑所有 <span class="markdown-them-math-inline">$dA$</span> 到达这个点的 radiance 乘以其对应的 BRDF 占比<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>然后求和得到<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>有了反射方程之后<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>我们自然而然就可以得出<strong>渲染方程</strong><span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
+<div class="markdown-them-math-block">$$L_{o}\left(p, \omega_{o}\right)=L_{e}\left(p, \omega_{o}\right)+\int_{\Omega^{+}} L_{i}\left(p, \omega_{i}\right) f_{r}\left(p, \omega_{i}, \omega_{o}\right)\left(n \cdot \omega_{i}\right) \mathrm{d} \omega_{i}
+$$</div><p>渲染方程是反射方程项加上物体表面相对于 <span class="markdown-them-math-inline">$\omega_o$</span> 方向的自发光项<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<h2 id="材质与外观-materials and appearance">材质与外观 Materials and Appearance</h2>
+<p>在图形学中<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>材质可以用 BRDF 来表示<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>接下来<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>我们介绍几种典型的材质<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<h3 id="漫反射材料-diffuse/lambertian material">漫反射材料 Diffuse/Lambertian Material</h3>
+<p><img src="radiometry-intro-and-texture.assets/image-20230409004707571.png" alt="Diffuse Material"></p>
+<p>我们定义漫反射材料会将任何方向的入射光均匀地分散到所有的出射方向上<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>其 BRDF 的分布情况由由上图所示<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>如果我们假设入射光也是均匀分布在各个角度上的<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span><span class="markdown-them-math-inline">$L_{i}\left(\omega_{i}\right) = L_i$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>BRDF 对于各个出射方向也是常数 <span class="markdown-them-math-inline">$f_r$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>物体表面不会自发光<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>我们直接套用渲染方程的定义可以得到<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
+<div class="markdown-them-math-block">$$\begin{aligned}
+L_{o}\left(\omega_{o}\right) &amp;=\int_{H^{2}} f_{r} L_{i}\left(\omega_{i}\right) \cos \theta_{i} \mathrm{~d} \omega_{i} \\
+&amp;=f_{r} L_{i} \int_{H^{2}}\cos \theta_{i} \mathrm{~d} \omega_{i} \\
+&amp;=\pi f_{r} L_{i}
+\end{aligned}
+$$</div><p>这里 <span class="markdown-them-math-inline">$d \omega_i = r^2 \sin\theta \ d\phi \ d\theta$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>进而我们可以定义<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
+<div class="markdown-them-math-block">$${\rho} := f_{r}{\pi}
+$$</div><p>这里 <span class="markdown-them-math-inline">$\rho$</span> 就是我们说的 Albedo Color<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>称为物体表面的反射率<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>其取值在 <span class="markdown-them-math-inline">$[0, 1]$</span> 之间<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>表示物体表面对均匀入射光 <span class="markdown-them-math-inline">$L_i$</span> 的反射率 <span class="markdown-them-math-inline">$\frac{L_o(\omega_o)}{L_i}$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>这里 Albedo 可以是单通道的值<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>也可以是光谱的连续函数<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>但一般我们使用三通道 RGB 来表示分别对三种颜色的反射率<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<h3 id="抛光的金属-glossy material">抛光的金属 Glossy Material</h3>
+<p><img src="radiometry-intro-and-texture.assets/9xZHgA8u6icXKyo.png" alt="Glossy 的材质"></p>
+<h3 id="理想反射/折射材质">理想反射/折射材质</h3>
+<p><img src="radiometry-intro-and-texture.assets/RgoxIXL2qr3MaD7.png" alt="BSDF"></p>
+<h2 id="texture-maps">Texture Maps</h2>
+<p><img src="radiometry-intro-and-texture.assets/73575199d02d82594c3f1cbaa473e51.png" alt="与 Deferred Shading 中 Channel 的关系"></p>
+<ul>
+<li><strong>Albedo Map</strong><span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>表示物体表面对于不同波长的光线反射的比例<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>即表面的基本颜色<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></li>
+</ul>
+<p><img src="radiometry-intro-and-texture.assets/whataretexturemaps_blog_image4-1024x528.png" alt="Normal Map Example"></p>
+<ul>
+<li><strong>Normal Map</strong> (Bump Map)<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>法线贴图通过改变光线反射的方向<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>来使得着色看起来具有纹理和深度<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></li>
+</ul>
+<p><img src="radiometry-intro-and-texture.assets/whataretexturemaps_blog_image5.png" alt="Specular Roughness and Metallic Map Examples"></p>
+<ul>
+<li><strong>Roughness Map</strong> (Gloss Map)<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>粗糙度贴图用于控制物体表面的粗糙度<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>物体表面的粗糙度会影响光线的反射或折射方式<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>从而影响阴影和高光的形成<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>
+<ul>
+<li>当光线照射到表面时<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>部分光线会被反射出去<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>而部分光线会被折射进入物体内部<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>表面的粗糙度会影响反射和折射光线的分布情况<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></li>
+<li>如果表面非常光滑<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>即表面的粗糙度很小<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>反射光线的分布比较集中<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>高光区域很明显<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>而阴影区域很小<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>相反<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>如果表面非常粗糙<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>即表面的粗糙度很大<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>反射光线的分布比较散乱<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>高光区域会被扩散<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>而阴影区域会变大<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></li>
+</ul>
+</li>
+<li>Metalness Map<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>Metallic 属性描述了物体表面材料的金属特性<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>金属质感主要影响物体表面的颜色和反射效果<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>金属表面通常具有高度反射性<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>同时反射的颜色与金属本身的颜色相近<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>
+<ul>
+<li>Metallic<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>金属质感<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span>和 Smoothness<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>光滑度<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span>是 BRDF 中的两个关键属性<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>分别影响材质的反射颜色和高光反射效果<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>在 BRDF 中<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>这两个属性主要影响以下两个方面<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>
+<ul>
+<li>Diffuse<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>漫反射<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span>和 Specular<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>镜面反射<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span>分量<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>金属质感<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>Metallic<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span>在 BRDF 中主要影响 Diffuse 和 Specular 分量的权重<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>对于金属材质<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>Diffuse 分量较小或接近于零<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>而 Specular 分量较大<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>反射光的颜色接近于材质本身的颜色<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>对于非金属材质<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>Diffuse 分量较大<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>Specular 分量较小<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>反射光的颜色接近于白色<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></li>
+<li>Specular 的光滑度<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>Smoothness 在 BRDF 中主要影响镜面反射<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>Specular<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span>的分布<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>光滑度越高<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>Specular 分量的分布越集中<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>高光反射越明显<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>物体表面看起来越光滑<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>相反<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>光滑度较低时<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>Specular 分量的分布较为分散<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>高光反射效果较弱<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>物体表面看起来较为粗糙</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Height / Displacement Map<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>Height map<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>高度图<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span>和 Displacement map<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>位移图<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span>通过表示表面高度变化来增强物体的外观<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>使其看起来更加真实和复杂<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>
+<ul>
+<li>Height Map<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>高度图<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>高度图是一种灰度图像<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>用于表示物体表面上的高度差异<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>亮度值较高的像素表示表面凸起的区域<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>而亮度值较低的像素表示凹陷的区域<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>这样可以在保持较低的计算资源消耗的同时实现较好的视觉效果<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>但是<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>高度图不能真正改变物体的几何形状<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>因此在侧面观察时可能无法完全实现真实的立体效果<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></li>
+<li>Displacement Map<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>位移图<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>位移图与高度图类似<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>也是用于表示物体表面上的高度差异<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>但是<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>位移图会直接影响物体的几何形状<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>通过在渲染时实际地改变物体的顶点位置来实现更真实的凹凸效果<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>位移贴图通常需要更多的计算资源<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>因为它们需要在渲染过程中动态地细分和移动物体的表面<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></li>
+</ul>
+</li>
+</ul>
+<p><img src="radiometry-intro-and-texture.assets/whataretexturemaps_blog_image3.jpg" alt="Ambient Occlusion Example"></p>
+<p><img src="radiometry-intro-and-texture.assets/whataretexturemaps_blog_image2.jpg" alt="Ambient Occlusion ON Example"></p>
+<ul>
+<li>Ambient Occlusion<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char><h-char class="bd bd-end"><h-inner>“</h-inner></h-char></span>环境吸收<span class="bd-box"><h-char class="bd bd-beg"><h-inner>”</h-inner></h-char></span>或者<span class="bd-box"><h-char class="bd bd-end"><h-inner>“</h-inner></h-char></span>环境光吸收<span class="bd-box"><h-char class="bd bd-beg"><h-inner>”</h-inner></h-char></span>图<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>如果入射光线过强时<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>AO 技术可以让阴影更加柔和<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>更加真实<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></li>
+</ul>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li>GAMES101-现代计算机图形学入门</li>
+<li><a target="_blank" rel="noopener" href="https://www.vntana.com/blog/what-are-texture-maps-and-why-do-they-matter-for-3d-fashion/">https://www.vntana.com/blog/what-are-texture-maps-and-why-do-they-matter-for-3d-fashion/</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="../diffusion-guidance/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">
+        
+          Diffusion-Guidance &amp; Latent Space
+        
+      </div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+        <div><p><span id="busuanzi_container_site_pv">Site total view count: <span id="busuanzi_value_site_pv">Loading...</span></span></p><p>Powered by <a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/">Hexo</a> & Theme <a target="_blank" rel="noopener" href="https://github.com/bill-xia/hexo-theme-mashiro">Mashiro</a> & GitHub Pages</p><p>Copyright © 2020-2023 c7w. LICENSE CC BY-NC-SA 4.0.</p></div>
+      
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../archives" class="mobile-nav-link">Posts</a>
+  
+    <a href="../../about" class="mobile-nav-link">About</a>
+  
+    <a href="../../friends" class="mobile-nav-link">Friends</a>
+  
+</nav>
+    
+<script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="../../js/clipboard.min.js"></script>
+<script src="../../js/jquery-1.4.3.min.js"></script>
+
+<script src="../../fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+
+
+<script src="../../js/script.js"></script>
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ],
+      throwOnError : false
+    });
+  });
+</script>
+
+  </div>
+</body>
+</html>
