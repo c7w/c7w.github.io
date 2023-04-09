@@ -46,10 +46,12 @@ body:after {
 }
 .article-entry strong {
   font-weight: bold;
+  color: #800080;
 }
 .article-entry em,
 .article-entry cite {
   font-style: italic;
+  color: #006400;
 }
 .article-entry sup,
 .article-entry sub {
