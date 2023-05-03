@@ -1,0 +1,5 @@
+https://c7w.tech/posts/radiometry-intro-and-texture/
+https://c7w.tech/posts/diffusion-guidance/
+https://c7w.tech/posts/diffusion-ddpm/
+https://c7w.tech/posts/license/
+https://c7w.tech/posts/hello-world/
