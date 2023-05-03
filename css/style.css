@@ -873,7 +873,7 @@ a {
   transition: color 0.2s;
 }
 a.article-title:hover {
-  color: #777;
+  color: #00f;
 }
 .article-entry {
   text-align: justify;
@@ -907,7 +907,7 @@ a.article-title:hover {
   margin: 1.65em 0 1.1em;
 }
 .article-entry a {
-  color: #777;
+  color: #00f;
   text-decoration: none;
 }
 .article-entry a:hover {
@@ -1377,7 +1377,7 @@ a.article-title:hover {
   line-height: 1.6em;
 }
 .archive-article-title:hover {
-  color: #777;
+  color: #00f;
 }
 .archive-article-footer {
   margin-top: 1em;
@@ -1445,7 +1445,7 @@ a.article-title:hover {
   color: #555;
 }
 #footer a {
-  color: #777;
+  color: #00f;
   text-decoration: none;
 }
 #footer a:hover {
@@ -1538,7 +1538,7 @@ a.article-title:hover {
   margin-left: 15px;
 }
 .article-entry .gist .gist-file .gist-meta a {
-  color: #777;
+  color: #00f;
   font-weight: normal;
 }
 .article-entry .gist .gist-file .gist-meta a:hover {
