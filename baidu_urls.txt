@@ -1,4 +1,6 @@
+https://c7w.tech/posts/csarch/
 https://c7w.tech/posts/os/
+https://c7w.tech/posts/cyber-security/
 https://c7w.tech/posts/radiometry-intro-and-texture/
 https://c7w.tech/posts/diffusion-guidance/
 https://c7w.tech/posts/diffusion-ddpm/

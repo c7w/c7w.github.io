@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="baidu-site-verification" content="codeva-kligclmjAj" />
+  
+  
+  <title>《计算机系统结构》 课程复习 Note | c7w&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <meta name="description" content="
+计算机系统结构基本概念
+
+
+
+提高并行性的技术途径：时间重叠 资源重复 资源共享
+程序执行的极大值影响算术平均值，极小值影响调和平均值。
+
+指令系统的设计
+
+区别不同指令系统的主要因素： CPU用来存储操作数的存储单元类型
+
+
+
+表示操作数类型 / 寻址方式：① 编码到操作码中 ② 设置额外字段（">
+  
+  
+  
+    <link rel="shortcut icon" href="../../favicon.ico">
+  
+  <link rel="stylesheet" href="../../css/style.css">
+  
+    <link rel="stylesheet" href="../../fancybox/jquery.fancybox-1.3.4.css">
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <div id="nav-outer">
+  <nav id="main-nav" class="outer">
+    <a id="main-nav-toggle" class="nav-icon"></a>
+    
+      <a class="main-nav-link" href="../../index.html">Home</a>
+    
+      <a class="main-nav-link" href="../../archives">Posts</a>
+    
+      <a class="main-nav-link" href="../../about">About</a>
+    
+      <a class="main-nav-link" href="../../friends">Friends</a>
+    
+    <div class="main-nav-space-between"></div>
+    
+  </nav>
+</div>
+<!-- <div id="header-title">
+  <h1 id="logo-wrap">
+    <a href="../../index.html" id="logo">c7w&#39;s Blog</a>
+  </h1>
+  
+    <h2 id="subtitle-wrap">
+      <a href="../../index.html" id="subtitle">Ready for some fun stuff :)</a>
+    </h2>
+  
+</div> -->
+
+      <div id="content" class="outer">
+        <section id="main"><article id="post-csarch" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a class="article-date">
+  <time class="dt-published" datetime="2023-06-13T09:54:24.199Z" itemprop="datePublished">2023-06-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="../../categories/System/">System</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      《计算机系统结构》 课程复习 Note
+    </h1>
+  
+
+      </header>
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><img src="csarch.assets/image-20230606020658635.png" alt="image-20230606020658635"></p>
+<h2 id="计算机系统结构基本概念">计算机系统结构基本概念</h2>
+<p><img src="csarch.assets/image-20230606015654723.png" alt="image-20230606015654723"></p>
+<p><img src="csarch.assets/image-20230612010839685.png" alt="image-20230612010839685"></p>
+<p><img src="csarch.assets/image-20230612010848209.png" alt="image-20230612010848209"></p>
+<p>提高并行性的技术途径<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>时间重叠 资源重复 资源共享</p>
+<p>程序执行的极大值影响算术平均值<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>极小值影响调和平均值<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><img src="csarch.assets/image-20230612011200470.png" alt="image-20230612011200470"></p>
+<h2 id="指令系统的设计">指令系统的设计</h2>
+<p><img src="csarch.assets/image-20230606021704584.png" alt="image-20230606021704584"></p>
+<p>区别不同指令系统的主要因素<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span> CPU用来存储操作数的存储单元类型</p>
+<p><img src="csarch.assets/image-20230606124530049.png" alt="image-20230606124530049"></p>
+<p><img src="csarch.assets/image-20230606124539376.png" alt="image-20230606124539376"></p>
+<p><img src="csarch.assets/image-20230606124550087.png" alt="image-20230606124550087"></p>
+<p>表示操作数类型 / 寻址方式<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>① 编码到操作码中 ② 设置额外字段<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>硬件标识 / 地址描述符<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span></p>
+<p><img src="csarch.assets/image-20230606125203483.png" alt="image-20230606125203483"></p>
+<p><img src="csarch.assets/image-20230606024539351.png" alt="image-20230606024539351"></p>
+<h2 id="流水线技术">流水线技术</h2>
+<p>定位方式<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>直接定位方式<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>装入主存之前<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char><h-char class="bd bd-beg"><h-inner>、</h-inner></h-char></span>静态定位<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>装入主存时<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char><h-char class="bd bd-beg"><h-inner>、</h-inner></h-char></span>动态定位<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>执行过程中<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span></p>
+<p><img src="csarch.assets/image-20230606163105726.png" alt="image-20230606163105726"></p>
+<p>时空图<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>横轴<span class="bd-box"><h-char class="bd bd-beg"><h-inner>、</h-inner></h-char></span>纵轴<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>通过时间<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>排空时间<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>T=(n+k-1)t</p>
+<p>连接图<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>输入-&gt;流水段1-&gt;流水寄存器-&gt;流水段2-&gt;流水寄存器-&gt;输出<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span></p>
+<p>静态与动态流水线都是多功能流水线<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>分类标准为在同一时间内<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>多功能流水线中的各段是否可以按照不同的方式连接<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>同时执行多种功能<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><strong>吞吐率</strong><span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>单位时间内流水线完成的任务数量<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>TP = n个任务/完成n个任务的时间T<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><img src="csarch.assets/image-20230606184811141.png" alt="image-20230606184811141"></p>
+<p>解决瓶颈问题<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>细分瓶颈段<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>或者重复设置瓶颈段</p>
+<p><strong>加速比</strong><span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>完成同样一批任务<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>不使用流水线所用的时间与使用流水线所用的时间之比<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>表面上看流水线级数越多越好<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><img src="csarch.assets/image-20230606185149575.png" alt="image-20230606185149575"></p>
+<p><strong>效率</strong><span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>是指流水线的设备利用率<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>在时空图上<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>流水线的效率定义为n个任务占用的时空区与m个功能段总的时空区之比<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><em>做分析题的时候<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>Slides 两道例题<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span>注意是静态流水还是动态流水线<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></em></p>
+<hr>
+<p>线性与非线性流水线<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>根据流水线中是否存在反馈回路<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>前者可以被连接图唯一表示<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>后者需要被连接图和预约表共同表示<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span><strong>单功能非线性流水线的调度</strong><span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>预约表横向<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>向右<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span>是时间<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>一般用时钟周期表示<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>纵向<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>向下<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span>是流水线的段<span class="bd-box"><h-char class="bd bd-beg"><h-inner>；</h-inner></h-char></span>引起非线性流水线冲突的启动距离称为<strong>禁止启动距离</strong><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>向一条非线性流水线的输入端顺序输入两个任务之间的时间间隔称为启动距离/等待时间<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span> 不发生冲突的启动距离一般是一个循环数列<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>称为非线性流水线的<strong>启动循环</strong><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>记作<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>1<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>7<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span> 启动距离5也可以认为是一个循环数列<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>称为非线性流水线的<strong>恒定循环</strong><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>记作<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>5<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>  流水线调度目的<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span><strong>找出一个最小启动循环<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>按照这周期向流水线输入新任务<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>流水线的各个功能段都不会发生冲突<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>而且流水线的吞吐率和效率最高</strong><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><img src="csarch.assets/image-20230606191658288.png" alt="image-20230606191658288"></p>
+<p><img src="csarch.assets/image-20230606192137601.png" alt="image-20230606192137601"></p>
+<p>下面是<strong>单功能非线性流水线调度算法</strong><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>①由预约表得到<strong>禁止集合</strong><span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>将预约表中的每一行中任意两个<span class="bd-box"><h-char class="bd bd-end"><h-inner>“</h-inner></h-char></span>×<span class="bd-box"><h-char class="bd bd-beg"><h-inner>”</h-inner></h-char></span>之间的距离都计算出来<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>去掉重复的<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>由这些数形成禁止集合 <span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>如 {2,4,6}<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span></p>
+<p>② 由禁止集合得到冲突向量 <span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>冲突向量用一个m位的二进制数表示<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>其中m是禁止向量中的最大值<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>一般格式为C=CmCm-1…Ci…C2C1<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span></p>
+<p>③ 由冲突向量构造调度流水线的状态图<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>将冲突向量C作为初始冲突向量送入一<br>
+个m位逻辑右移移位器<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>移位m次<span class="bd-box"><h-char class="bd bd-beg"><h-inner>；</h-inner></h-char></span>n <strong>若移出的是<span class="bd-box"><h-char class="bd bd-end"><h-inner>“</h-inner></h-char></span>0<span class="bd-box"><h-char class="bd bd-beg"><h-inner>”</h-inner></h-char><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>用移位器中的值与初始冲突向量作<span class="bd-box"><h-char class="bd bd-end"><h-inner>“</h-inner></h-char></span>按位或<span class="bd-box"><h-char class="bd bd-beg"><h-inner>”</h-inner></h-char></span>运算<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>得到一个新的冲突向量<span class="bd-box"><h-char class="bd bd-beg"><h-inner>；</h-inner></h-char></span>n 若移出的是<span class="bd-box"><h-char class="bd bd-end"><h-inner>“</h-inner></h-char></span>1<span class="bd-box"><h-char class="bd bd-beg"><h-inner>”</h-inner></h-char><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>不作任何处理</strong><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>将中间形成的每一个新的冲突向量同样处理<span class="bd-box"><h-char class="bd bd-beg"><h-inner>；</h-inner></h-char></span>画出状态图<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span></p>
+<p>④ 在状态图中找出可用启动距离<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>并计算平均启动距离<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>在状态图中从初始状态出发<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>能构成一种间隔拍数呈周期性重复的方案就是可用启动距离  <span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span></p>
+<p>⑤找出平均启动距离最小的启动循环或恒定循环</p>
+<p>流水线<strong>最小平均启动距离</strong>的限制范围<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>① 下限是预约表中任意一行里<span class="bd-box"><h-char class="bd bd-end"><h-inner>“</h-inner></h-char></span>×<span class="bd-box"><h-char class="bd bd-beg"><h-inner>”</h-inner></h-char></span>的最多个数<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>理想最小平均启动距离<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>理想最小启动循环<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>一般恒定循环作为最小启动循环<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span> 最小平均启动距离的上限是冲突向量中1的个数再加上1 <span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>采用预留算法来调度非线性流水线<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>可以达到最优调度<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>核心思想<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>通过插入非计算延迟段——修改预约表实现最小启动循环<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>每一行中与第1个<span class="bd-box"><h-char class="bd bd-end"><h-inner>“</h-inner></h-char></span>×<span class="bd-box"><h-char class="bd bd-beg"><h-inner>”</h-inner></h-char></span>的距离为2的倍数的位置都要预留出来<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span></p>
+<hr>
+<p>指令相关<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>两条指令之间存在某种依赖关系<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>分为<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>数据相关<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>真数据相关<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>RAW<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char><h-char class="bd bd-beg"><h-inner>、</h-inner></h-char></span>名相关<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>反相关 WAR<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>输出相关 WAW<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char><h-char class="bd bd-beg"><h-inner>、</h-inner></h-char></span>控制相关<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>流水线冲突<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>结构冲突<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>Stall+Bubble<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>数据冲突<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>bypassing 定向技术<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>编译器调度<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>控制冲突<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>3种通过软件<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>编译器<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span>来减少分支延迟的方法<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>对分支的处理方法在程序的执行过程中始终是不变的<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>是静态的<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>保证分支结果出来之前不能改变处理机的状态<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>①预测分支失败  ②预测分支成功 ③ 延迟分支  <span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span></p>
+<p>流水线最佳段数的选择<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>平衡流水线深度与造价<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>PCR=最大吞吐量 / 流水线价格<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>求极大值点<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<h2 id="数据级并行<span-class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>向量处理机">数据级并行<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>向量处理机</h2>
+<p><img src="csarch.assets/image-20230607135733233.png" alt="image-20230607135733233"></p>
+<p>向量平衡点<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>为了使向量硬件设备和标量硬件设备利用率相等<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>一个程序中向量代码所占的百分比<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>向量代码:标量代码运算速度比<span class="bd-box"><h-char class="bd bd-beg"><h-inner>？</h-inner></h-char><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><strong>存储器-存储器型结构</strong><span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>纵向处理方式采用<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>利用几个<strong>独立的存储器模块</strong>来支持向对独立的数据<strong>并发</strong>访问<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>解决数据访问冲突<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>① 将存储器个数选为质数且大于等于向量长度 ② 在运算流水线的输入端和输出端增加可变缓冲器<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><strong>寄存器-寄存器型结构</strong><span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>分组处理方式采用<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>构造一个具有所要求带宽的高速寄存器<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>实现高速寄存器与主寄存器之间的快速数据交换<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><img src="csarch.assets/image-20230607161526564.png" alt="image-20230607161526564"></p>
+<p>CRAY-1 向量处理冲突<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>并行工作的各向量指令的源向量或结果向量使用了相同的Vi<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>或并行工作的各向量指令要使用同一个功能部件<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>下面是一些提高向量处理机性能的常用技术<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>① 设置多个功能部件. ② 向量流水线冲突分析<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>指令不相关时可以并行执行<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>功能部件冲突<span class="bd-box"><h-char class="bd bd-beg"><h-inner>、</h-inner></h-char></span>源寄存器冲突<span class="bd-box"><h-char class="bd bd-beg"><h-inner>、</h-inner></h-char></span>结果寄存器冲突都需要避免<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>③ 向量流水线<strong>链接技术</strong><span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>具有<strong>先写后读</strong>相关的两条指令<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>在<strong>不出现功能部件冲突和源向量冲突</strong>的情况下<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>可以把功能部件链接起来进行流水处理<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>结果寄存器可作为后继指令的操作数寄存器<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><img src="csarch.assets/image-20230607163536126.png" alt="image-20230607163536126"><img src="csarch.assets/image-20230607163548423.png" alt="image-20230607163548423"></p>
+<p><img src="csarch.assets/image-20230607163749897.png" alt="image-20230607163749897"></p>
+<p><img src="csarch.assets/image-20230607163758252.png" alt="image-20230607163758252"></p>
+<p>④ 分段开采技术<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>当向量的长度大于向量寄存器的长度时<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>必须把长向量分成长度固定的段<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>然后循环分段处理<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>每一次循环只处理一个向量段<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>先处理余数部分<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>然后对剩下的部分分组处理<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>⑤ 向量的条件执行<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>可以使用屏蔽向量的方式来完成条件执行<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>下面介绍<strong>衡量向量处理机性能的主要参数</strong><span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
+<p>① 向量指令的处理时间 Tvp<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>如果不考虑Ts<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>定义启动时间 Tstart = Tvf - 1<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><img src="csarch.assets/image-20230607164945744.png" alt="image-20230607164945744"></p>
+<p>进而我们考虑<strong>一组</strong>向量指令的处理时间<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>把能在同一个时钟周期内一起开始执行的几条向量指令称为一个<strong>编队</strong><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>同一个编队中的向量指令之间一定不存在流水向量功能部件的冲突和数据的冲突<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>编队后<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>这个向量指令序列的总的执行时间为各编队的执行时间的和<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>编队时考虑<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>无冲突<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>如果可链接则链接<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>编队后<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>单个编队的启动时间为编队内所有指令的启动时间的最大值<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>记为 <span class="markdown-them-math-inline">$T^{i}_{\text{start}}$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>所有编队的总运行时间为 <span class="markdown-them-math-inline">$\sum_i T^{i}_{\text{start}} + m n$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>这里 m 表示 m 个编队<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>n 是向量长度<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><img src="csarch.assets/image-20230607171010474.png" alt="image-20230607171010474"></p>
+<p>然后<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>我们再进一步考虑支持分段开采下的一组向量指令的处理时间<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>设 n = p * MVL + q<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>这里 MVL 为向量寄存器长度<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>p 为商 q 为余数<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>由于我们需要对分段开采时引入额外的处理操作<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>我们假设这个额外的处理时间为 Tloop<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>于是余数处理的时间为<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
+<p><img src="csarch.assets/image-20230607172532619.png" alt="image-20230607172532619"></p>
+<p><img src="csarch.assets/image-20230607172549901.png" alt="image-20230607172549901"></p>
+<p>② 最大性能 <span class="markdown-them-math-inline">$R_{\infin}$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>表示当向量长度为无穷大时<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>向量处理机的最高性能<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>也称为峰值性能.</p>
+<p><img src="csarch.assets/image-20230607174800240.png" alt="image-20230607174800240"></p>
+<p>③ 半性能向量长度 <span class="markdown-them-math-inline">$n_{1/2}$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>半性能向量长度是指向量处理机的性能为其最大性能的一半时所需的向量长度<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>评价向量流水线的建立时间对性能影响<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>④ 向量长度临界值 <span class="markdown-them-math-inline">$n_v$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>对于某一计算任务而言<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>向量方式的处理速度优于标量串行方式处理速度时所需的最小向量长度<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<h2 id="存储系统<span-class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>层次存储降低指令延迟">存储系统<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>层次存储降低指令延迟</h2>
+<p><img src="csarch.assets/image-20230607183641564.png" alt="image-20230607183641564"></p>
+<p>先注意一手每条指令 1+m 次存储器访问<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>其中 m 是给 L/S 指令的<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><strong>性能参数</strong><span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>① 命中率 H = N1 / (N1 + N2)<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>平均访问时间 T = H x T1 + (1-H) x T2<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>② 访问效率 e = T1 / (H * T1 + (1-H) * T2) <span class="bd-box"><h-char class="bd bd-beg"><h-inner>；</h-inner></h-char></span>提升效率的方法<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>提高命中率 H<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>降低阶差 T2/T1<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>③ 缺失开销 <span class="markdown-them-math-inline">$T_M = T_2 + T_B$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>从下层访存时间 + 数据传输时间<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span><span class="markdown-them-math-inline">$T_A = T_1 + (1-H) T_M$</span>.</p>
+<p><img src="csarch.assets/image-20230607185746736.png" alt="image-20230607185746736"></p>
+<p><img src="csarch.assets/image-20230607185736329.png" alt="image-20230607185736329"></p>
+<p>Cache 所要研究的内容<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span><strong>映像规则<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>查找算法<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>替换算法<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>写策略</strong></p>
+<p><strong>Cache 的性能分析</strong></p>
+<div class="markdown-them-math-block">$$T_\text{CPU} = \text{IC} \times (\text{CPI}_\text{exec.} + 每条指令的平均访存次数 \times (1-H) \times T_M) \times T_\text{cycle}
+$$</div><p>Cache 对于低 CPI<span class="bd-box"><h-char class="bd bd-beg"><h-inner>、</h-inner></h-char></span>高时钟频率的 CPU 来说更加重要<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>从 <span class="markdown-them-math-inline">$T_A = T_1 + (1-H) T_M$</span> 分析可知<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>提高 Cache 性能可以 (a) 降低缺失率 (b) 减少缺失开销 © 减少命中时间<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>三种缺失类型<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>强制性缺失<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>大的 Cache block<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char><h-char class="bd bd-beg"><h-inner>、</h-inner></h-char></span>容量缺失<span class="bd-box"><h-char class="bd bd-beg"><h-inner>、</h-inner></h-char></span>冲突缺失<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>Higher associativity<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>容量为 N 的直接映象 Cache 的缺失率和容量为 N/2 的两路组相联Cache的缺失率差不多相同<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>使用两级 Cache<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>减少缺失开销</p>
+<ul>
+<li>平均访存时间 ＝ 命中时间L1＋缺失率L1×<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>命中时间L2＋缺失率L2×缺失开销L2<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span></li>
+<li>局部缺失率＝该级Cache的缺失次数/到达该级Cache的访问次数</li>
+<li>全局缺失率＝该级Cache的缺失次数/CPU发出的访存的总次数</li>
+<li>每条指令的平均访存停顿时间＝ 每条指令的平均缺失次数L1×命中时间L2＋每条指令的平均缺失次数L2×缺失开销L</li>
+</ul>
+<p><img src="csarch.assets/image-20230612123723477.png" alt="image-20230612123723477"></p>
+<p><img src="csarch.assets/image-20230612123730890.png" alt="image-20230612123730890"></p>
+<p><img src="csarch.assets/image-20230612123738715.png" alt="image-20230612123738715"></p>
+<p>然后是如何编写 Cache 友好的代码<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>缺失率分析<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>交换顺序<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>分组<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<h2 id="指令级并行<span-class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>硬件方法">指令级并行<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>硬件方法</h2>
+<p><img src="csarch.assets/image-20230608172414539.png" alt="image-20230608172414539"></p>
+<p>指令集并行的硬件方法或者软件方法都是围绕着提升理想 CPI<span class="bd-box"><h-char class="bd bd-beg"><h-inner>、</h-inner></h-char></span>解决数据冲突与控制冲突这些事情而展开的<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><img src="csarch.assets/image-20230608153303759.png" alt="image-20230608153303759"></p>
+<p>代码变换与指令调度必须保持的两个关键属性<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>数据流和异常行为不变</p>
+<p>动态调度中<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>将译码阶段分成<strong>发射</strong><span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>检测结构冲突<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span>和<strong>读操作数</strong><span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>检测数据冲突<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span>两个阶段<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>进入动态调度后<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>会存在 WAW 和 WAR 相关的问题<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>同时<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>动态调度还需要考虑异常是否精确的问题<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>下面介绍两种动态调度算法<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
+<p>① **记分牌调度算法<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>**我们需要维护三张表<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span><strong>指令执行状态表<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>功能部件状态表<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span><u>结果</u>寄存器状态表</strong><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><img src="csarch.assets/image-20230608160415896.png" alt="image-20230608160415896"></p>
+<p>下面是算法的流程<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
+<ul>
+<li>发射阶段<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>当 功能部件可用 且 不存在 WAW 冲突 时可以发射<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>发射需要修改指令状态表的单元格<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>部件状态表的一整行<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>Rj Rk 表示是否 ready<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>如果不 ready 需要在 Qj Qk 填写等待的功能部件的名字<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>Fi 表示目的寄存器<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span>和结果寄存器的单元格<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>填写部件名字<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span></li>
+<li>读操作数阶段<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>当 两个操作数都已经就绪<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>Rj == yes &amp; Rk == yes<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span>时读取<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>修改操作数就绪状态为 no<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>并且清空对应的 Qj 和 Qk<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>只修改功能部件状态表<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span></li>
+<li>执行阶段<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>等待功能部件执行结束<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></li>
+<li>写结果阶段<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>当 不存在 WAR 冲突<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>对于其它功能部件中的指令<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>Rj/Rk 为 yes<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>且 Fj/Fk 为待写入的 Fi<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span> 时可以进入<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>此时需要清空结果寄存器状态表中结果寄存器和功能部件的对应关系<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>清除功能部件状态表中的对应行<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>将 Busy 置为 no<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>并通过广播将等待该功能部件结果的结果就绪状态 Rj/Rk 设为 yes<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>检查功能部件表的其他行<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>将 Qj/Qk 为本部件的 Rj/Rk 设置为 yes<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span></li>
+</ul>
+<p>我们还可以通过寄存器重命名的方式来解决 WAR 相关和 WAW 相关<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>引入显式动态寄存器重命名机制<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>设置 ARF 和 PRF 并维护它们之间的映射表<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>这就有了<strong>显式动态寄存器重命名的记分牌调度算法</strong><span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>修改结果寄存器状态表为 ARF - PRF 映射表<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><img src="csarch.assets/image-20230608171844980.png" alt="image-20230608171844980"></p>
+<p>② **Tomasulo 调度算法<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>**我们首先介绍一些这个调度算法引入的硬件架构<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
+<p>(a) <strong>保留站</strong><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>每个保留站中保存<u>若干</u>条已经发射并等待到本功能部件执行的指令的相关信息<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>在一条指令发射到保留站的时候<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>如果该指令的源操作数已经在寄存器中就绪<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>则将之取到该保留站中<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>如果操作数还没有计算出来<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>则在该保留站中记录将产生这个操作数的保留站的标识<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>功能部件<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>我们引入公共数据总线<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>CDB<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span>来承接所有功能部件的计算结果<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>由这条总线将结果广播到所有等待操作数的保留站中<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>(b) <strong>Load/Store 缓冲器</strong><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>Load 缓冲器记录有效地址分量<span class="bd-box"><h-char class="bd bd-beg"><h-inner>、</h-inner></h-char></span>正在进行的 Load 访存地址和已经完成的 Load 结果等待广播<span class="bd-box"><h-char class="bd bd-beg"><h-inner>；</h-inner></h-char></span>Store 缓冲器记录有效地址分量<span class="bd-box"><h-char class="bd bd-beg"><h-inner>、</h-inner></h-char></span>正在进行的 Store 目标地址<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>保存地址和数据直到存储部件接收<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>在 Tomasulo 算法中<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>寄存器换名是通过保留站和发射逻辑共同完成<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>当指令发射时<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>如果其操作数还没有计算出来<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>则将该指令中相应的寄存器号换名为将<strong>产生这个操作数的保留站的标识</strong><span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>使用一个寄存器状态表来记录某个寄存器是否正在等待被某个执行部件写<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>不然直接换成<strong>数据本身</strong><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>和寄存器脱离了关系<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>因此称为<strong>隐式寄存器重命名</strong><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>这使得 Tomasulo 算法的冲突检测和指令执行控制是分布的<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><img src="csarch.assets/image-20230608174827286.png" alt="image-20230608174827286"></p>
+<p>我们再详细展开一下 Tomasulo 调度算法的过程与上面的记分牌算法作对比<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>我们共有三个阶段<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
+<ul>
+<li><strong>发射</strong>阶段<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>指令在 有空闲保留站 时可以发射<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>修改指令状态表<span class="bd-box"><h-char class="bd bd-beg"><h-inner>、</h-inner></h-char></span>保留站记录行<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>如果值 Ready 直接放入 Vj / Vk<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>不然在 Qj / Qk 中记录功能部件名<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char><h-char class="bd bd-beg"><h-inner>、</h-inner></h-char></span>目标寄存器状态表<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>对于 Load 和 Store 指令<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>将保留站的 A 字段设置为偏移立即数<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></li>
+<li><strong>执行</strong>阶段<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>如果 Qj / Qk 均为空<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>则可进入执行阶段<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>Load / Store 命令除了这个条件之外<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>还需要在处于缓冲队列头部时才进入执行阶段<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>将 A 此时替换成有效地址<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></li>
+<li><strong>写回</strong>阶段<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>将结果广播到 CDB <span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>进而影响 <em>(a)</em> 所有的保留站<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>对任意 Qj / Qk 为当前 FU<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>将 Qj / Qk 置空并将结果填入到 Vj / Vk <em>(b)</em> 目标寄存器<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>将值写入目标寄存器并释放目标寄存器状态表的表项 <em>©</em> 释放当前保留站的该指令记录项<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></li>
+</ul>
+<p>由于这两种动态调度方式都是顺序发射<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>乱序执行<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>乱序提交<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>很难实现精确异常<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>因此我们再引入 ROB 设计以允许顺序提交的出现<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><img src="csarch.assets/image-20230608182632174.png" alt="image-20230608182632174"></p>
+<p>我们用 ROB 表来替换指令运行状态表<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>注意这里原来在保留站中记录的部件名<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>在寄存器结果状态中记录的部件名全都换成了 ROB_IDX<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><img src="csarch.assets/image-20230608182727962.png" alt="image-20230608182727962"></p>
+<h2 id="指令级并行<span-class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>软件方法">指令级并行<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>软件方法</h2>
+<p><img src="csarch.assets/image-20230608134402068.png" alt="image-20230608134402068"></p>
+<p>基本的指令调度<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>使用 delay slot<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>调换指令顺序<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>注意修改偏移量</p>
+<p>上述基本的指令调度不能跨越基本块<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>分支指令<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>不能提升有效操作<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>非控制循环和解决数据相关等待用<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span>比例<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>因此我们采取<strong>循环展开</strong>的方式<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>这是开发循环级并行的有效方法<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>具体来说<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>我们<strong>把循环体的代码复制多次并按顺序排放<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>然后进一步消除名相关<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>进而调整循环的结束条件</strong><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><img src="csarch.assets/image-20230608134928763.png" alt="image-20230608134928763"></p>
+<p>全局展开<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>① 注意原来 else 分支的数据相关 ② 将分支汇总的指令可以复制两份到两个不同分支中<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>然后删除原来的指令<span class="bd-box"><h-char class="bd bd-beg"><h-inner>；</h-inner></h-char></span>或是调度到分支之前</p>
+<p><strong>静态多指令流出<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>VLIW技术</strong><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>把同时流出的或者满足特定约束的一组操作打包在一起<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>得到一条更长的指令<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>在VLIW处理器中<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>相关检测和指令调度工作全部由编译器完成<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<h2 id="互连网络">互连网络</h2>
+<p><img src="csarch.assets/image-20230606211636255.png" alt="image-20230606211636255"></p>
+<p><strong>互连网络</strong><span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span><strong>开关元件</strong>按一定<strong>拓扑结构</strong>和<strong>控制方式</strong>构成的网络以实现计算机系统内部多个处理机或多个功能部件间的相互连接<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>三大要素<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>互连结构<span class="bd-box"><h-char class="bd bd-beg"><h-inner>、</h-inner></h-char></span>开关元件<span class="bd-box"><h-char class="bd bd-beg"><h-inner>、</h-inner></h-char></span>控制方式<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><strong>互连函数</strong><span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>置换函数或排列函数<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span>通过数学表达式建立输入端号与输出端号的连接关系<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>即在互连函数f的作用下<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>输入端x连接到输出端f(x)<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>用 <span class="markdown-them-math-inline">$n =\log_2N$</span> 位二进制来表示N个输入端和输出端的二进制地址<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>介绍几种常用的基本互连函数及其主要特征<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>① 恒等函数 <span class="markdown-them-math-inline">$I(x_3x_2x_1x_0) = x_3x_2x_1x_0$</span>.</p>
+<p>② 交换函数 <span class="markdown-them-math-inline">$\text{Cube}_1 (x_2x_1x_0) = x_2 \overline x_1 x_0$</span>.</p>
+<p>③ 均匀洗牌函数 <span class="markdown-them-math-inline">$\sigma$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>即把输入端的二进制编号<strong>循环左移</strong>一位<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>超函数和子函数分别用 <span class="markdown-them-math-inline">$\sigma^{(k)}$</span> 和 <span class="markdown-them-math-inline">$\sigma_{(k)}$</span> 表示<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>表示对高 <span class="markdown-them-math-inline">$k$</span> 位或者低 <span class="markdown-them-math-inline">$k$</span> 位做一次循环左移<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>逆均匀洗牌函数 <span class="markdown-them-math-inline">$\sigma^{-1}$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>② 与 ③ 可以组成混洗交换函数<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>④ 蝶式函数 <span class="markdown-them-math-inline">$\beta$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>把输入端的二进制编号的最高位与最低位互换位置<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>超函数与子函数<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>⑤ 反位序函数 <span class="markdown-them-math-inline">$\rho$</span>​<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>将输入端二进制编号的位序颠倒过来求得相应输出端的编号<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>⑥ 移数函数 <span class="markdown-them-math-inline">$\alpha_{±k}(x) = (x ± k) \mod N$</span>.</p>
+<p>⑦ PM2I 函数<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span><span class="markdown-them-math-inline">$\text{PM2}_{±i} = (x ± 2^i ) \mod N$</span>.</p>
+<p>互连网络的结构参数<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>网络规模<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>网络中结点的个数<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span>N<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>结点度 d<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>结点距离<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>两个结点间距离的最小值<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char><h-char class="bd bd-beg"><h-inner>、</h-inner></h-char></span>网络直径 D<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>最大结点距离<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char><h-char class="bd bd-beg"><h-inner>、</h-inner></h-char></span>等分宽度 b<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>评估互连网络性能的两个基本指标<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>时延和带宽<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>互连网络通常可以分为两大类<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>① 静态互连网络<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>各结点之间有固定的连接通路<span class="bd-box"><h-char class="bd bd-beg"><h-inner>、</h-inner></h-char></span>且在运行中不能改变的网络<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span> ② 动态互连网络<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>由交换开关构成<span class="bd-box"><h-char class="bd bd-beg"><h-inner>、</h-inner></h-char></span>可按运行程序的要求动态地改变连接状态的网络<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>下面介绍几种<strong>静态互连网络</strong><span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
+<p>① 线性阵列<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>端节点 d=1<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>其余结点 d=2<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>直径 D=N-1<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>等分宽度 b=1</p>
+<p>② 环<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>d=2<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>b=2, 单向环 D=N<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>双向环 D=N/2<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>带弦环<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>度为 k 就隔 k 个位置<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>全连接<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>d=N-1<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>D=1<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>③ 循环移数网络<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>一般地<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>如果 <span class="markdown-them-math-inline">$| j-i|=2^r, r= 0,1,\cdots, \log_2 N$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>则结点i与结点j连接<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>这里结点度 d = 2n -1<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>直径 D=n/2<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>网络规模 <span class="markdown-them-math-inline">$N=2^n$</span></p>
+<p>⑥ 网格形<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>一个由 <span class="markdown-them-math-inline">$N=n^k$</span> 个结点构成的 <span class="markdown-them-math-inline">$k$</span> 维网格形网络<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>每维 <span class="markdown-them-math-inline">$n$</span> 个结点<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span>的内部结点度 <span class="markdown-them-math-inline">$d=2k$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>网络直径 <span class="markdown-them-math-inline">$D=k(n-1)$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>；</h-inner></h-char></span>如果 k =2<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>则平面网格 d=4, D=2n-2, b=n<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>规模为n×n的Illiac网络<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>d=4, D=n-1, b=2n<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>环网形<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>d=4, D=2*floor(n/2), b=2n.</p>
+<p>⑦ 超立方体<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>n-立方体中结点的度都是n<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>直径也是n<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>等分宽度为 <span class="markdown-them-math-inline">$b=2^{n-1}$</span>.</p>
+<p><img src="csarch.assets/image-20230606225658604.png" alt="image-20230606225658604"></p>
+<p><strong>动态互连网络</strong><span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>总线网络<span class="bd-box"><h-char class="bd bd-beg"><h-inner>、</h-inner></h-char></span>交叉开关网络<span class="bd-box"><h-char class="bd bd-beg"><h-inner>、</h-inner></h-char></span>多级互联网络<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>n输入 x n输出的开关<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>合法状态 <span class="markdown-them-math-inline">$n \times n$</span> 个<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>置换连接 <span class="markdown-them-math-inline">$n!$</span> 种<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span></p>
+<p><img src="csarch.assets/image-20230606232915782.png" alt="image-20230606232915782"></p>
+<p>多级立方体网络 N 输入<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>有 <span class="markdown-them-math-inline">$\log_2 N$</span> 级别<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>每级有 N/2 个 2x2 开关<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>需要 <span class="markdown-them-math-inline">$\log_2 N \times N /2$</span> 个 2x2 开关<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>STARAN 网络 / Omega 网络<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>(a) 4 组 2 元交换 (b) 2 组 4 元交换 © 1 组 8 元交换.</p>
+<p><img src="csarch.assets/image-20230606233150199.png" alt="image-20230606233150199"></p>
+<p>消息传递机制<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>当源结点和目的结点之间没有直接的连接时<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>消息需要经过中间的结点进行传递<span class="bd-box"><h-char class="bd bd-beg"><h-inner>；</h-inner></h-char></span>寻径就是用来实现这种传递的通信方法和算法<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>有的称之为路由<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="../os/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">
+        
+          《操作系统》课程复习 Note
+        
+      </div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+        <div><p><span id="busuanzi_container_site_pv">Site total view count: <span id="busuanzi_value_site_pv">Loading...</span></span></p><p>Powered by <a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/">Hexo</a> & Theme <a target="_blank" rel="noopener" href="https://github.com/bill-xia/hexo-theme-mashiro">Mashiro</a> & GitHub Pages</p><p>Copyright © 2020-2023 c7w. LICENSE CC BY-NC-SA 4.0.</p></div>
+      
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../archives" class="mobile-nav-link">Posts</a>
+  
+    <a href="../../about" class="mobile-nav-link">About</a>
+  
+    <a href="../../friends" class="mobile-nav-link">Friends</a>
+  
+</nav>
+    
+<script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script src="../../js/clipboard.min.js"></script>
+<script src="../../js/jquery-1.4.3.min.js"></script>
+
+<script src="../../fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+
+
+<script src="../../js/script.js"></script>
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ],
+      throwOnError : false
+    });
+  });
+</script>
+
+  </div>
+</body>
+</html>
