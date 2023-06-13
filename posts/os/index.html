@@ -175,8 +175,7 @@ lec1 OS overview
 <p><strong>最低松弛度优先算法<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>LLF<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span></strong>  根据任务紧急或者松弛程度<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>来确定任务优先级<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>松弛度=必须完成时间-本身还需要运行时间-当前时间<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
 <p><strong>优先级反置</strong><span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>高优先级进程长时间等待低优先级进程所占用资源的现象<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
 <p><img src="os.assets/image-20230610225445360.png" alt="image-20230610225445360"></p>
-<p>一种解决方案<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span><strong>优先级继承</strong><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>占用资源的低优先级进程继承申请资源的高优先级进程的优先级<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>只在占有资源的低优先级进程被阻塞时<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>才提高占有资源进程的优先级<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
-<p>优先级天花板协议<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>占用资源进程的优先级与所有可能申请该资源的进程的最高优先级相同<span class="bd-box"><h-char class="bd bd-beg"><h-inner>；</h-inner></h-char></span>不管是否发生等待,都提升占用资源进程的优先级<span class="bd-box"><h-char class="bd bd-beg"><h-inner>；</h-inner></h-char></span>优先级高于系统中所有被锁定的资源的优先级上限<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>任务执行临界区时就不会被阻塞<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>两种解决方案<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>① <strong>优先级继承</strong><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>占用资源的低优先级进程继承申请资源的高优先级进程的优先级<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>只在占有资源的低优先级进程被阻塞时<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>才提高占有资源进程的优先级<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>② <strong>优先级天花板协议</strong><span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>占用资源进程的优先级与所有可能申请该资源的进程的最高优先级相同<span class="bd-box"><h-char class="bd bd-beg"><h-inner>；</h-inner></h-char></span>不管是否发生等待,都提升占用资源进程的优先级<span class="bd-box"><h-char class="bd bd-beg"><h-inner>；</h-inner></h-char></span>优先级高于系统中所有被锁定的资源的优先级上限<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>任务执行临界区时就不会被阻塞<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
 <h3 id="多处理机调度">多处理机调度</h3>
 <p><img src="os.assets/image-20230610231901528.png" alt="image-20230610231901528"></p>
 <p>SMP是指对称多处理器结构<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>是指服务器中多个CPU对称工作<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>无主次或从属关系<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>各CPU共享相同的物理内存<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>每个 CPU访问内存中的任何地址所需时间是相同的<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>因此SMP也被称为一致存储器访问结构<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
@@ -268,6 +267,141 @@ lec1 OS overview
 <p><img src="os.assets/image-20230610150917980.png" alt="image-20230610150917980"></p>
 <p><img src="os.assets/image-20230610151726858.png" alt="image-20230610151726858"></p>
 <p><img src="os.assets/image-20230610152021692.png" alt="image-20230610152021692"></p>
+<p><span class="bd-box"><h-char class="bd bd-end"><h-inner>【</h-inner></h-char></span>读者写者问题的信号量实现<span class="bd-box"><h-char class="bd bd-beg"><h-inner>】</h-inner></h-char></span></p>
+<p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Readers%E2%80%93writers_problem#cite_note-3">https://en.wikipedia.org/wiki/Readers–writers_problem#cite_note-3</a></p>
+<p><strong>读者优先</strong></p>
+<div class="highlight"><pre class="code"><code>semaphore resource=<span class="hljs-number">1</span>;
+semaphore rmutex=<span class="hljs-number">1</span>;
+readcount=<span class="hljs-number">0</span>;
+
+<span class="hljs-comment">/*
+   resource.P() is equivalent to wait(resource)
+   resource.V() is equivalent to signal(resource)
+   rmutex.P() is equivalent to wait(rmutex)
+   rmutex.V() is equivalent to signal(rmutex)
+*/</span>
+
+writer() &#123;
+    resource.P();          <span class="hljs-comment">//Lock the shared file for a writer</span>
+
+    &lt;CRITICAL Section&gt;
+    <span class="hljs-comment">// Writing is done</span>
+
+    &lt;EXIT Section&gt;
+    resource.V();          <span class="hljs-comment">//Release the shared file for use by other readers. Writers are allowed if there are no readers requesting it.</span>
+&#125;
+
+reader() &#123;
+    rmutex.P();           <span class="hljs-comment">//Ensure that no other reader can execute the &lt;Entry&gt; section while you are in it</span>
+    &lt;CRITICAL Section&gt;
+    readcount++;          <span class="hljs-comment">//Indicate that you are a reader trying to enter the Critical Section</span>
+    <span class="hljs-keyword">if</span> (readcount == <span class="hljs-number">1</span>)   <span class="hljs-comment">//Checks if you are the first reader trying to enter CS</span>
+        resource.P();     <span class="hljs-comment">//If you are the first reader, lock the resource from writers. Resource stays reserved for subsequent readers</span>
+    &lt;EXIT CRITICAL Section&gt;
+    rmutex.V();           <span class="hljs-comment">//Release</span>
+
+    <span class="hljs-comment">// Do the Reading</span>
+
+    rmutex.P();           <span class="hljs-comment">//Ensure that no other reader can execute the &lt;Exit&gt; section while you are in it</span>
+    &lt;CRITICAL Section&gt;
+    readcount--;          <span class="hljs-comment">//Indicate that you no longer need the shared resource. One fewer reader</span>
+    <span class="hljs-keyword">if</span> (readcount == <span class="hljs-number">0</span>)   <span class="hljs-comment">//Checks if you are the last (only) reader who is reading the shared file</span>
+        resource.V();     <span class="hljs-comment">//If you are last reader, then you can unlock the resource. This makes it available to writers.</span>
+    &lt;EXIT CRITICAL Section&gt;
+    rmutex.V();           <span class="hljs-comment">//Release</span>
+&#125;
+</code></pre></div>
+<p><strong>写者优先</strong></p>
+<div class="highlight"><pre class="code"><code><span class="hljs-keyword">int</span> readcount, writecount;                   <span class="hljs-comment">//(initial value = 0)</span>
+semaphore rmutex, wmutex, readTry, resource; <span class="hljs-comment">//(initial value = 1)</span>
+
+<span class="hljs-comment">//READER</span>
+reader() &#123;
+&lt;ENTRY Section&gt;
+  readTry.P();                 <span class="hljs-comment">//Indicate a reader is trying to enter</span>
+  rmutex.P();                  <span class="hljs-comment">//lock entry section to avoid race condition with other readers</span>
+  readcount++;                 <span class="hljs-comment">//report yourself as a reader</span>
+  <span class="hljs-keyword">if</span> (readcount == <span class="hljs-number">1</span>)          <span class="hljs-comment">//checks if you are first reader</span>
+    resource.P();              <span class="hljs-comment">//if you are first reader, lock the resource</span>
+  rmutex.V();                  <span class="hljs-comment">//release entry section for other readers</span>
+  readTry.V();                 <span class="hljs-comment">//indicate you are done trying to access the resource</span>
+
+&lt;CRITICAL Section&gt;
+<span class="hljs-comment">//reading is performed</span>
+
+&lt;EXIT Section&gt;
+  rmutex.P();                  <span class="hljs-comment">//reserve exit section - avoids race condition with readers</span>
+  readcount--;                 <span class="hljs-comment">//indicate you&#x27;re leaving</span>
+  <span class="hljs-keyword">if</span> (readcount == <span class="hljs-number">0</span>)          <span class="hljs-comment">//checks if you are last reader leaving</span>
+    resource.V();              <span class="hljs-comment">//if last, you must release the locked resource</span>
+  rmutex.V();                  <span class="hljs-comment">//release exit section for other readers</span>
+&#125;
+
+<span class="hljs-comment">//WRITER</span>
+writer() &#123;
+&lt;ENTRY Section&gt;
+  wmutex.P();                  <span class="hljs-comment">//reserve entry section for writers - avoids race conditions</span>
+  writecount++;                <span class="hljs-comment">//report yourself as a writer entering</span>
+  <span class="hljs-keyword">if</span> (writecount == <span class="hljs-number">1</span>)         <span class="hljs-comment">//checks if you&#x27;re first writer</span>
+    readTry.P();               <span class="hljs-comment">//if you&#x27;re first, then you must lock the readers out. Prevent them from trying to enter CS</span>
+  wmutex.V();                  <span class="hljs-comment">//release entry section</span>
+  resource.P();                <span class="hljs-comment">//reserve the resource for yourself - prevents other writers from simultaneously editing the shared resource</span>
+&lt;CRITICAL Section&gt;
+  <span class="hljs-comment">//writing is performed</span>
+  resource.V();                <span class="hljs-comment">//release file</span>
+
+&lt;EXIT Section&gt;
+  wmutex.P();                  <span class="hljs-comment">//reserve exit section</span>
+  writecount--;                <span class="hljs-comment">//indicate you&#x27;re leaving</span>
+  <span class="hljs-keyword">if</span> (writecount == <span class="hljs-number">0</span>)         <span class="hljs-comment">//checks if you&#x27;re the last writer</span>
+    readTry.V();               <span class="hljs-comment">//if you&#x27;re last writer, you must unlock the readers. Allows them to try enter CS for reading</span>
+  wmutex.V();                  <span class="hljs-comment">//release exit section</span>
+&#125;
+</code></pre></div>
+<p><strong>保证公平防止饥饿</strong></p>
+<div class="highlight"><pre class="code"><code><span class="hljs-keyword">int</span> readcount;                <span class="hljs-comment">// init to 0; number of readers currently accessing resource</span>
+
+<span class="hljs-comment">// all semaphores initialised to 1</span>
+semaphore resource;           <span class="hljs-comment">// controls access (read/write) to the resource. Binary semaphore.</span>
+semaphore rmutex;             <span class="hljs-comment">// for syncing changes to shared variable readcount</span>
+semaphore serviceQueue;       <span class="hljs-comment">// FAIRNESS: preserves ordering of requests (signaling must be FIFO)</span>
+
+<span class="hljs-comment">//READER</span>
+reader() &#123;
+&lt;ENTRY Section&gt;
+  serviceQueue.P();           <span class="hljs-comment">// wait in line to be serviced</span>
+  rmutex.P();                 <span class="hljs-comment">// request exclusive access to readcount</span>
+  readcount++;                <span class="hljs-comment">// update count of active readers</span>
+  <span class="hljs-keyword">if</span> (readcount == <span class="hljs-number">1</span>)         <span class="hljs-comment">// if I am the first reader</span>
+    resource.P();             <span class="hljs-comment">// request resource access for readers (writers blocked)</span>
+  serviceQueue.V();           <span class="hljs-comment">// let next in line be serviced</span>
+  rmutex.V();                 <span class="hljs-comment">// release access to readcount</span>
+    
+&lt;CRITICAL Section&gt;
+<span class="hljs-comment">//reading is performed</span>
+    
+&lt;EXIT Section&gt;
+  rmutex.P();                 <span class="hljs-comment">// request exclusive access to readcount</span>
+  readcount--;                <span class="hljs-comment">// update count of active readers</span>
+  <span class="hljs-keyword">if</span> (readcount == <span class="hljs-number">0</span>)         <span class="hljs-comment">// if there are no readers left</span>
+    resource.V();             <span class="hljs-comment">// release resource access for all</span>
+  rmutex.V();                 <span class="hljs-comment">// release access to readcount</span>
+&#125;
+
+<span class="hljs-comment">//WRITER</span>
+writer() &#123;
+&lt;ENTRY Section&gt;
+  serviceQueue.P();           <span class="hljs-comment">// wait in line to be serviced</span>
+  resource.P();               <span class="hljs-comment">// request exclusive access to resource</span>
+  serviceQueue.V();           <span class="hljs-comment">// let next in line be serviced</span>
+    
+&lt;CRITICAL Section&gt;
+<span class="hljs-comment">// writing is performed</span>
+    
+&lt;EXIT Section&gt;
+  resource.V();               <span class="hljs-comment">// release resource access for next reader/writer</span>
+&#125;
+</code></pre></div>
 <p><img src="os.assets/image-20230610152658257.png" alt="image-20230610152658257"></p>
 <p><img src="os.assets/image-20230610152706036.png" alt="image-20230610152706036"></p>
 <p>死锁问题 – 必要条件<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
