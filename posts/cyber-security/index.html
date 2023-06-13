@@ -8,10 +8,10 @@
   <title>《网络空间安全导论》 课程作业 | c7w&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
-  <meta name="description" content="《网络空间安全导论》作业 1
-第四章 数据加密
+  <meta name="description" content="第四章 数据加密
 1、公钥密码的出现解决了对称加密算法的什么问题？但对称加密至今仍被广泛使用，请至少从一个角度简述对称加密算法未被淘汰的原因？
-使用对称加密算法进行传输数据需要使用基于共享密钥的数据传输方式，共享密钥这一过程同样面临着被窃听的问题 —— 对称密码中密钥的">
+使用对称加密算法进行传输数据需要使用基于共享密钥的数据传输方式，共享密钥这一过程同样面临着被窃听的问题 —— 对称密码中密钥的分发问题。
+从算法速度的角度上">
   
   
   
@@ -81,8 +81,7 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h1 id="<span-class="bd-box"><h-char class="bd bd-end"><h-inner>《</h-inner></h-char></span>网络空间安全导论<span class="bd-box"><h-char class="bd bd-beg"><h-inner>》</h-inner></h-char></span>作业 1"><span class="bd-box"><h-char class="bd bd-end"><h-inner>《</h-inner></h-char></span>网络空间安全导论<span class="bd-box"><h-char class="bd bd-beg"><h-inner>》</h-inner></h-char></span>作业 1</h1>
-<h2 id="第四章-数据加密">第四章 数据加密</h2>
+        <h2 id="第四章-数据加密">第四章 数据加密</h2>
 <p><strong>1<span class="bd-box"><h-char class="bd bd-beg"><h-inner>、</h-inner></h-char></span>公钥密码的出现解决了对称加密算法的什么问题<span class="bd-box"><h-char class="bd bd-beg"><h-inner>？</h-inner></h-char></span>但对称加密至今仍被广泛使用<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>请至少从一个角度简述对称加密算法未被淘汰的原因<span class="bd-box"><h-char class="bd bd-beg"><h-inner>？</h-inner></h-char></span></strong></p>
 <p>使用对称加密算法进行传输数据需要使用基于共享密钥的数据传输方式<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>共享密钥这一过程同样面临着被窃听的问题 —— 对称密码中<u>密钥的分发问题</u><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
 <p>从算法速度的角度上来说<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>对称加密比公钥加密的速度快得多<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>使用公钥加密传输大规模的信息会拖慢信息传输的速度<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
@@ -142,7 +141,6 @@
 <li>分布式部署降低攻击对性能的影响</li>
 </ul>
 <p>案例<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span><a target="_blank" rel="noopener" href="http://blog.nsfocus.net/dns-ddos-attack-analysis/">http://blog.nsfocus.net/dns-ddos-attack-analysis/</a></p>
-<h1 id="<span-class="bd-box"><h-char class="bd bd-end"><h-inner>《</h-inner></h-char></span>网络空间安全导论<span class="bd-box"><h-char class="bd bd-beg"><h-inner>》</h-inner></h-char></span>作业 2_1"><span class="bd-box"><h-char class="bd bd-end"><h-inner>《</h-inner></h-char></span>网络空间安全导论<span class="bd-box"><h-char class="bd bd-beg"><h-inner>》</h-inner></h-char></span>作业 2_1</h1>
 <h2 id="ch9-dns 安全">Ch9 DNS 安全</h2>
 <p><strong>1<span class="bd-box"><h-char class="bd bd-beg"><h-inner>、</h-inner></h-char></span>简述 DNS 缓存策略在性能提升和引入安全威胁上具有的影响<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></strong></p>
 <p>DNS缓存策略通过缓存域名解析结果<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>可以提高访问网站的速度和性能<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>当用户首次访问域名时<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>DNS解析器会向域名服务器查询并获取域名的IP地址<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>然后将结果缓存起来<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>对于后续的请求<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>如果域名解析结果在缓存中存在<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>解析器将直接使用缓存的结果<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>避免了重复的网络查询<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>从而提高了响应速度和整体性能<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
@@ -180,7 +178,6 @@
 <li>核心功能就是发放和管理数字证书</li>
 <li>负责用户证书的黑名单登记和发布</li>
 </ul>
-<h1 id="<span-class="bd-box"><h-char class="bd bd-end"><h-inner>《</h-inner></h-char></span>网络空间安全导论<span class="bd-box"><h-char class="bd bd-beg"><h-inner>》</h-inner></h-char></span>作业 2_2"><span class="bd-box"><h-char class="bd bd-end"><h-inner>《</h-inner></h-char></span>网络空间安全导论<span class="bd-box"><h-char class="bd bd-beg"><h-inner>》</h-inner></h-char></span>作业 2_2</h1>
 <h2 id="ch12-分布式系统安全">Ch12 分布式系统安全</h2>
 <p><strong>1<span class="bd-box"><h-char class="bd bd-beg"><h-inner>、</h-inner></h-char></span>请解释分布式系统当中的日蚀攻击和拜占庭节点攻击</strong></p>
 <p><strong>日蚀攻击</strong><span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>针对网络节点发现以及邻居节点维护两个过程进行攻击<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>使得受害节点的所有邻居节点都是由攻击者所控制的恶意节点<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>攻击者可以选择性的转发对攻击者有利的消息给受害者<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>从而配合其它网络攻击<span class="bd-box"><h-char class="bd bd-beg"><h-inner>；</h-inner></h-char></span>攻击者可以完全隔离受害者与网络中其它节点的信息交互<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
