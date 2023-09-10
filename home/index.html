@@ -53,6 +53,141 @@
       <div id="content" class="outer">
         <section id="main">
   
+    <article id="post-cs285" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a class="article-date">
+  <time class="dt-published" datetime="2023-09-09T14:49:57.149Z" itemprop="datePublished">2023-09-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="../categories/RL/">RL</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="../posts/cs285/">Note for CS 285, Deep Reinforcement Learning</a>
+    </h1>
+  
+
+      </header>
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>This is note for CS 285, DRL @ UCB.</p>
+<p>Following <a target="_blank" rel="noopener" href="http://rail.eecs.berkeley.edu/deeprlcourse-fa21/">http://rail.eecs.berkeley.edu/deeprlcourse-fa21/</a>.</p>
+<h2 id="lec-2 supervised learning of behaviors">Lec 2. Supervised Learning of Behaviors</h2>
+<p>首先引入一些记号<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>输入的 Observation 记为 <span class="markdown-them-math-inline">$\mathbf o$</span><span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>输入图像<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>输出的 Action 记为 <span class="markdown-them-math-inline">$\mathbf a$</span><span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>预测标签<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>而策略网络<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>Policy<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span>记为 <span class="markdown-them-math-inline">$\pi_\theta(\mathbf a \mid \mathbf o)$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>我们使用下标 <span class="markdown-them-math-inline">$t$</span> 来表示离散化之后的时间步<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>即 <span class="markdown-them-math-inline">$\mathbf o_t$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span><span class="markdown-them-math-inline">$\mathbf a_t$</span> 和 <span class="markdown-them-math-inline">$\pi_\theta(\mathbf a_t \mid \mathbf o_t)$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>有时我们使用 <span class="markdown-them-math-inline">$\mathbf s_t$</span> 来表示当前时间步的状态<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>State<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span><span class="markdown-them-math-inline">$\mathbf s_t$</span> 和 <span class="markdown-them-math-inline">$\mathbf o_t$</span> 的区别在于<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>(1) Observation 是观察到的现象<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>State 是由 Action 决定的反应系统状态的量<span class="bd-box"><h-char class="bd bd-beg"><h-inner>；</h-inner></h-char></span>(2) 仅使用 Observation 可能没办法去推断 State<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>不同的 Observation 可能对应同一个 State<span class="bd-box"><h-char class="bd bd-beg"><h-inner>；</h-inner></h-char></span>(3) 状态 State 往往是被认为满足马尔科夫性质的<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>而 Observation 却不是如此<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>也有的记号用 <span class="markdown-them-math-inline">$\mathbf x_t$</span> 表示 State<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span><span class="markdown-them-math-inline">$\mathbf u_t$</span> 表示 Action<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><img src="cs285.assets/image-20230910152826762.png" alt="image-20230910152826762"></p>
+<p><strong>Imitation Learning</strong> 是一种学习 Policy 的方式<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>它也叫 <strong>behavioral cloning</strong><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>即收集了大笔 <span class="markdown-them-math-inline">$\mathbf o_t$</span> 和专家给出的 <span class="markdown-them-math-inline">$\mathbf a_t$</span> 对作为训练数据<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>使用有监督学习的方式去进行学习<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>跟常见的有监督学习不同<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>这种方式通常来说是不工作的<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>除非训练数据照顾到足够多的 Corner Cases<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>这是因为 State 的误差会随着多次 Inference 的时间步累积<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>如下图所示<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
+<p><img src="cs285.assets/image-20230909231207503.png" alt="image-20230909231207503"></p>
+<p><strong><span class="bd-box"><h-char class="bd bd-end"><h-inner>【</h-inner></h-char></span>解决方案 1<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>DAgger<span class="bd-box"><h-char class="bd bd-beg"><h-inner>】</h-inner></h-char></span></strong> 想要解决上述的问题<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>Distributional drift Problem<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>解决思路 1 应该是尽可能减少因为误差累积导致的 State 偏差<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>一个可能的解决方案是从训练数据的角度出发<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>我们尽可能照顾到更多的情况<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>如下图所示<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
+<p><img src="cs285.assets/image-20230909231654997.png" alt="image-20230909231654997"></p>
+<p>也就是说<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>我们尝试去修改我们的训练数据 <span class="markdown-them-math-inline">$p_\text{data} (\mathbf o_t)$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>我们可以试着以 <span class="markdown-them-math-inline">$p_{\pi_\theta} (\mathbf o_t)$</span> 作为训练状态<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>然后让人工标注在这个训练状态下需要什么样的 Action <span class="markdown-them-math-inline">$\mathbf a_t$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>然后使用当前的策略网络去进行推理<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>收集下一个需要标注的状态<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>这种方法叫做 DAgger<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>Dataset Aggregation<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
+<p><img src="cs285.assets/image-20230909232153665.png" alt="image-20230909232153665"></p>
+<p><strong><span class="bd-box"><h-char class="bd bd-end"><h-inner>【</h-inner></h-char></span>解决方案 2<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>更好地拟合专家<span class="bd-box"><h-char class="bd bd-beg"><h-inner>】</h-inner></h-char></span></strong> 另一种解决方案是更好地去拟合专家给出的 Action 数据<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>减少单步产生的误差<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>这主要从以下两个方面着手<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
+<ul>
+<li>Observation 不满足马尔科夫性质<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>将 Policy 的 Formulation 从 <span class="markdown-them-math-inline">$\pi_\theta(\mathbf a_t \mid \mathbf o_t)$</span> 改为 <span class="markdown-them-math-inline">$\pi_\theta(\mathbf a_t \mid \mathbf o_t, \mathbf o_{t-1}, \cdots, \mathbf o_1)$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>这通过采用一些具有记忆功能的网络结构来实现<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>
+<ul>
+<li>这样做会一定程度上减轻 Causal Confusion 的问题<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>fixed-capacity policies that are trained to fixed training error on the same demonstrations with access to more information can actually yield worse performance<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span></li>
+</ul>
+</li>
+<li>从人类中学到的 Action 并不是唯一的<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>(1) 可以考虑输出 mixture of Gaussians 作为答案<span class="bd-box"><h-char class="bd bd-beg"><h-inner>；</h-inner></h-char></span>(2) 可以考虑让策略网络输入 latent variable 作为输入<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>将 observation 作为 condition 对 random latent variable 进行 decode<span class="bd-box"><h-char class="bd bd-beg"><h-inner>；</h-inner></h-char></span>(3) 自回归离散化 Autoregressive discretization<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>逐个输出维度进行离散化后<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>对 softmax 之后的结果采样<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>将采样得到的结果输入另一个网络中进行下一个输出维度的离散化和采样<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>如此迭代<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></li>
+</ul>
+<p><strong><span class="bd-box"><h-char class="bd bd-end"><h-inner>【</h-inner></h-char></span>解决方案 3<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>更稳定的 trajectory<span class="bd-box"><h-char class="bd bd-beg"><h-inner>】</h-inner></h-char></span></strong> 我们也可以让 trajectory 的性质更稳定<span class="bd-box"><h-char class="bd bd-end"><h-inner>（</h-inner></h-char></span>对微小误差有容忍度<span class="bd-box"><h-char class="bd bd-beg"><h-inner>）</h-inner></h-char></span>来解决 Distributional drift 的问题<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>具体方案在后面的章节介绍<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>小结<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span>Imitation Learning 这种范式的固有问题就是需要人类专家来提供数据<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>而这往往是有限或者在表示方式上十分困难的<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><strong>Cost functions<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>Reward functions</strong> 的相关介绍<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>从一个具体例子出发<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>我们可以形式化表示我们的目标为<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
+<div class="markdown-them-math-block">$$\min _\theta E_{\mathbf{a} \sim \pi_\theta(\mathbf{a} \mid \mathbf{s}), \mathbf{s}^{\prime} \sim p\left(\mathbf{s}^{\prime} \mid \mathbf{s}, \mathbf{a}\right)}\left[\delta\left(\mathbf{s}^{\prime}=\text { eaten by tiger }\right)\right] \\
+\Rightarrow \min _\theta E_{\mathbf{s}_{1: T}, \mathbf{a}_{1: T}}\left[\sum_t \delta\left(\mathbf{s}_t=\text { eaten by tiger }\right)\right] \\
+\Rightarrow  \min _\theta E_{\mathbf{s}_{1: T}, \mathbf{a}_{1: T}}\left[\sum_t c\left(\mathbf{s}_t, \mathbf{a}_t\right)\right] (*)
+$$</div><p>这里 <span class="markdown-them-math-inline">$c(\mathbf s_t, \mathbf a_t)$</span> 就是 cost function<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>或者我们将 min 改成 max 就是 reward function <span class="markdown-them-math-inline">$r$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><strong>Goal-conditioned Policies.</strong> 我们将最终的 Goal State 也作为 Policy Network 的输入<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>通过仿真环境采集足够多的数据<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>并筛选到达某个最终 Goal 的数据出来进行 Retrai</p>
+<p><img src="cs285.assets/image-20230910002855958.png" alt="image-20230910002855958"></p>
+<h2 id="lec-4 introduction to reinforcement learning">Lec 4. Introduction to Reinforcement Learning</h2>
+<h3 id="notations">Notations</h3>
+<p><strong>Markov Decision Process</strong> (MDP)</p>
+<p><img src="cs285.assets/image-20230910153641900.png" alt="image-20230910153641900"></p>
+<p><span class="markdown-them-math-inline">$r$</span> : <span class="markdown-them-math-inline">$\mathcal S \times \mathcal A \rightarrow \mathbb R$</span>, 是 reward function.</p>
+<p><strong>Partially-observed MDP</strong></p>
+<p><img src="cs285.assets/image-20230910153835737.png" alt="image-20230910153835737"></p>
+<p>**<span class="bd-box"><h-char class="bd bd-end"><h-inner>【</h-inner></h-char></span>强化学习的 Objective<span class="bd-box"><h-char class="bd bd-beg"><h-inner>】</h-inner></h-char></span>**由于 Markov 性质<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>我们可以将强化学习的目标写成<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
+<div class="markdown-them-math-block">$$\begin{gathered}
+\underbrace{p_\theta\left(\mathbf{s}_1, \mathbf{a}_1, \ldots, \mathbf{s}_T, \mathbf{a}_T\right)}_{p_\theta(\tau)}=p\left(\mathbf{s}_1\right) \prod_{t=1}^T \pi_\theta\left(\mathbf{a}_t \mid \mathbf{s}_t\right) p\left(\mathbf{s}_{t+1} \mid \mathbf{s}_t, \mathbf{a}_t\right) \\
+\\
+\theta^{\star} =\arg \max _\theta E_{\tau \sim p_\theta(\tau)}\left[\sum_t r\left(\mathbf{s}_t, \mathbf{a}_t\right)\right] \\
+=\arg \max _\theta \sum_{t=1}^T E_{\left(\mathbf{s}_t, \mathbf{a}_t\right) \sim p_\theta\left(\mathbf{s}_t, \mathbf{a}_t\right)}\left[r\left(\mathbf{s}_t, \mathbf{a}_t\right)\right]
+
+\end{gathered}
+$$</div><p>这里 <span class="markdown-them-math-inline">$\tau$</span> 表示整个 trajectory<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span><span class="markdown-them-math-inline">$p_\theta\left(\mathbf{s}_t, \mathbf{a}_t\right)$</span> 是 state-action marginal distribution<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>当我们考虑无穷步的时候<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>由于 <span class="markdown-them-math-inline">$p_\theta\left(\mathbf{s}_t, \mathbf{a}_t\right)$</span> 最终会收敛成静态分布 <span class="markdown-them-math-inline">$p_\theta\left(\mathbf{s}, \mathbf{a}\right)$</span><span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>我们可以将强化学习的目标写成<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
+<div class="markdown-them-math-block">$$\theta^{\star}=\arg \max _\theta \frac{1}{T} \sum_{t=1}^T E_{\left(\mathbf{s}_t, \mathbf{a}_t\right) \sim p_\theta\left(\mathbf{s}_t, \mathbf{a}_t\right)}\left[r\left(\mathbf{s}_t, \mathbf{a}_t\right)\right] \rightarrow E_{(\mathbf{s}, \mathbf{a}) \sim p_\theta(\mathbf{s}, \mathbf{a})}[r(\mathbf{s}, \mathbf{a})]
+$$</div><h3 id="value-functions">Value Functions</h3>
+<p><img src="cs285.assets/image-20230910162227134.png" alt="image-20230910162227134"></p>
+<p><img src="cs285.assets/image-20230910162501088.png" alt="image-20230910162501088"></p>
+<h3 id="algorithms">Algorithms</h3>
+<p>The anatomy of a RL Algo. is a loop of following three steps:</p>
+<ul>
+<li>Generate Samples (i.e. run the policy)</li>
+<li>Fit a model, and then estimate the return</li>
+<li>Improve the policy</li>
+</ul>
+<p><img src="cs285.assets/image-20230910162725476.png" alt="image-20230910162725476"></p>
+<p><img src="cs285.assets/image-20230910163605865.png" alt="image-20230910163605865"></p>
+<p>在考虑 sample efficiency 时<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>off policy 是说 sample 与 policy 无关<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>on policy 是说如果 policy 修改<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>就需要生成新的 sample<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><img src="cs285.assets/image-20230910163741440.png" alt="image-20230910163741440"></p>
+<h2 id="lec-5 policy gradients">Lec 5. Policy Gradients</h2>
+<p>我们考虑对 Objective 进行求梯度<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<div class="markdown-them-math-block">$$\begin{aligned}
+&amp;\theta^{\star}=\arg \max _\theta \underbrace{E_{\tau \sim p_\theta(\tau)}\left[\sum_t r\left(\mathbf{s}_t, \mathbf{a}_t\right)\right]}_{J(\theta)}\\
+&amp;\begin{gathered}
+J(\theta)=E_{\tau \sim p_\theta(\tau)}[r(\tau)]=\int p_\theta(\tau) r(\tau) d \tau \\
+\end{gathered}
+\end{aligned}
+$$</div><p>进行简单的代换<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>我们有<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
+<p><img src="cs285.assets/image-20230910224304717.png" alt="image-20230910224304717"></p>
+<p>由于<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
+<div class="markdown-them-math-block">$$\log p_\theta(\tau)=\log p\left(\mathbf{s}_1\right)+\sum_{t=1}^T \left( \log \pi_\theta\left(\mathbf{a}_t \mid \mathbf{s}_t\right)+\log p\left(\mathbf{s}_{t+1} \mid \mathbf{s}_t, \mathbf{a}_t\right)\right)
+$$</div><p>而且<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
+<div class="markdown-them-math-block">$$\nabla_\theta\log p\left(\mathbf{s}_1\right) = 0, \\
+\nabla_\theta\log p\left(\mathbf{s}_{t+1} \mid \mathbf{s}_t, \mathbf{a}_t\right) = 0,
+$$</div><p>于是<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
+<div class="markdown-them-math-block">$$\nabla_\theta J(\theta)=E_{\tau \sim p_\theta(\tau)}\left[\left(\sum_{t=1}^T \nabla_\theta \log \pi_\theta\left(\mathbf{a}_t \mid \mathbf{s}_t\right)\right)\left(\sum_{t=1}^T r\left(\mathbf{s}_t, \mathbf{a}_t\right)\right)\right]
+$$</div><p>然后我们可以用采样 N 个小样本作为一个 Batch 的方法来对期望值进行估计<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p><img src="cs285.assets/image-20230910224815354.png" alt="image-20230910224815354"></p>
+<p><img src="cs285.assets/image-20230910225128255.png" alt="image-20230910225128255"></p>
+<p>这个 formulation 在 partially observed (no states but observations) 的情况下也适用<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>Policy gradient 的方法也有一定的问题<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>比如在下图所示<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span></p>
+<p><img src="cs285.assets/image-20230910234333172.png" alt="image-20230910234333172"></p>
+<p><img src="cs285.assets/image-20230910234411440.png" alt="image-20230910234411440"></p>
+<p>这是 Policy gradient 方法存在的 <strong>High Variance</strong> 问题<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>具体来说<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>上述两幅图的有颜色的线段代表 sample<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>bar 代表 reward 的大小<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>横轴表示 trajectory<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>蓝色的线表示在某个 Policy 下的 possibility distribution<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>上下两幅图的区别是给 reward function 加了一个常量<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>而这导致这次对策略的更新变得十分不稳定<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>如果采到的数据集足够大这个问题自然可以缓解<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>但在有限数据集下这个问题仍然存在<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span></p>
+<p>This problem can be identified as follows. Without any a priori model of the system we’re seeking to optimize, we begin with a policy whose distribution of actions over a given state is effectively uniform. Of course, as we train the model we hope to shape the probability density so that it’s unimodal on a single action, or possibly multimodal over a few successful actions that can be taken in that state. However, acquiring this knowledge requires our model to observe the outcomes of many different actions taken in many different states. This is made exponentially worse in continuous action or state spaces as visiting even close to every state-action pair is computationally intractable.</p>
+<p><strong>Variance Reduction</strong>. 这里介绍 <strong>reward to go</strong> 方法<span class="bd-box"><h-char class="bd bd-beg"><h-inner>。</h-inner></h-char></span>这个方法基于 causality<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>即当 <span class="markdown-them-math-inline">$t \lt t'$</span> 时<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>在 <span class="markdown-them-math-inline">$t$</span> 时刻获得的 reward 不会被 <span class="markdown-them-math-inline">$t'$</span> 时刻做出的策略影响<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>即现在的策略的更新方向不应该与过去的 reward 有关<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>这也就是说<span class="bd-box"><h-char class="bd bd-beg"><h-inner>，</h-inner></h-char></span>我们可以将 policy gradient 的 formulation 修改为<span class="bd-box"><h-char class="bd bd-beg"><h-inner>：</h-inner></h-char></span></p>
+<div class="markdown-them-math-block">$$\nabla_\theta J(\theta) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=1}^T \nabla_\theta \log \pi_\theta\left(\mathbf{a}_{i, t} \mid \mathbf{s}_{i, t}\right) \underbrace{(\sum_{t'=t}^T r\left(\mathbf{s}_{i, t^{\prime}}, \mathbf{a}_{i, t^{\prime}}\right)}_{\begin{array}{c}
+\text { &quot;reward to go&quot; } \\
+\hat{Q}_{i, t}
+\end{array}})
+$$</div><p><span class="bd-box"><h-char class="bd bd-end"><h-inner>【</h-inner></h-char></span>TODO 咕咕咕<span class="bd-box"><h-char class="bd bd-beg"><h-inner>】</h-inner></h-char></span></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-csarch" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a class="article-date">
